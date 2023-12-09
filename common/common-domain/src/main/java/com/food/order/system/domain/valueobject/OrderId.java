@@ -13,7 +13,7 @@ import java.util.UUID;
 * kullanılacağı için ortak library içerisinde yani burada tanımlandı.
 * */
 public class OrderId extends BaseId<UUID> {
-    protected OrderId(UUID value) {
+    public OrderId(UUID value) {
         super(value);
     }
 }
