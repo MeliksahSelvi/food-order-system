@@ -43,10 +43,8 @@ public class Order extends AggregateRoot<OrderId> {
     }
 
     public void validateOrder() {
-        /*todo
-         *eğer burası initialorder() methodundan sonra çağrılacaksa validateInitialOrder() methodu çağrıldığı zaman
-         * orderstatus ve id değerleri zaten initialorder() methodunda doldurulmuştu ve bizim null alma ihtimalimiz yok.
-         * sürekli hata almaz mıyız?
+        /*
+         *Burası initialorder() methodundan önce çağrılacak.
          * */
         validateInitialOrder();
         validateTotalPrice();
