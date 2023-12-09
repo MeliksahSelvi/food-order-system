@@ -2,10 +2,13 @@ package com.food.order.system.order.service.domain.entity;
 
 import com.food.order.system.domain.entity.AggregateRoot;
 import com.food.order.system.domain.valueobject.*;
+import com.food.order.system.order.service.domain.exception.OrderDomainException;
+import com.food.order.system.order.service.domain.valueobject.OrderItemId;
 import com.food.order.system.order.service.domain.valueobject.StreetAddress;
 import com.food.order.system.order.service.domain.valueobject.TrackingId;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author mselvi
@@ -13,8 +16,8 @@ import java.util.List;
  */
 
 /*
-* Order Aggregate'i için Aggregate Root olarak Order'ı seçtik.
-* */
+ * Order Aggregate'i için Aggregate Root olarak Order'ı seçtik.
+ * */
 public class Order extends AggregateRoot<OrderId> {
     private final CustomerId customerId;
     private final RestaurantId restaurantId;
@@ -25,19 +28,75 @@ public class Order extends AggregateRoot<OrderId> {
     private OrderStatus orderStatus;
     private List<String> failureMessages;
 
-    private Order(Builder builder){
-        super.setId(builder.orderId);
-        this.customerId=builder.customerId;
-        this.restaurantId= builder.restaurantId;
-        this.streetAddress=builder.streetAddress;
-        this.price=builder.price;
-        this.items=builder.items;
-        this.trackingId=builder.trackingId;
-        this.orderStatus=builder.orderStatus;
-        this.failureMessages=builder.failureMessages;
+    public void initializeOrder() {
+        setId(new OrderId(UUID.randomUUID()));
+        trackingId = new TrackingId(UUID.randomUUID());
+        orderStatus = OrderStatus.PENDING;
+        initializeOrderItems();
     }
 
-    public Builder builder(){
+    private void initializeOrderItems() {
+        long itemId = 1;
+        for (OrderItem orderItem : items) {
+            orderItem.initializeOrderItem(getId(), new OrderItemId(itemId++));
+        }
+    }
+
+    public void validateOrder() {
+        /*todo
+         *eğer burası initialorder() methodundan sonra çağrılacaksa validateInitialOrder() methodu çağrıldığı zaman
+         * orderstatus ve id değerleri zaten initialorder() methodunda doldurulmuştu ve bizim null alma ihtimalimiz yok.
+         * sürekli hata almaz mıyız?
+         * */
+        validateInitialOrder();
+        validateTotalPrice();
+        validateItemsPrice();
+    }
+
+    private void validateInitialOrder() {
+        if (orderStatus != null || getId() != null) {
+            throw new OrderDomainException("Order is not in correct state for initialization!");
+        }
+    }
+
+    private void validateTotalPrice() {
+        if (price == null || !price.isGreaterThanZero()) {
+            throw new OrderDomainException("Total price must be greater than zero!");
+        }
+    }
+
+    private void validateItemsPrice() {
+        Money orderItemsTotal = items.stream().map(orderItem -> {
+            validateItemPrice(orderItem);
+            return orderItem.getSubTotal();
+        }).reduce(Money.ZERO, Money::add);
+
+        if (!price.equals(orderItemsTotal)) {
+            throw new OrderDomainException("Total price: " + price.getAmount()
+                    + " is not equal Order Items total: " + orderItemsTotal.getAmount() + "!");
+        }
+    }
+
+    private void validateItemPrice(OrderItem orderItem) {
+        if (!orderItem.isPriceValid()) {
+            throw new OrderDomainException("Order item price: " + orderItem.getPrice().getAmount()
+                    + " is not valid for product " + orderItem.getProduct().getId().getValue());
+        }
+    }
+
+    private Order(Builder builder) {
+        setId(builder.orderId);
+        this.customerId = builder.customerId;
+        this.restaurantId = builder.restaurantId;
+        this.streetAddress = builder.streetAddress;
+        this.price = builder.price;
+        this.items = builder.items;
+        this.trackingId = builder.trackingId;
+        this.orderStatus = builder.orderStatus;
+        this.failureMessages = builder.failureMessages;
+    }
+
+    public Builder builder() {
         return new Builder();
     }
 
@@ -73,7 +132,7 @@ public class Order extends AggregateRoot<OrderId> {
         return failureMessages;
     }
 
-    public static final class Builder{
+    public static final class Builder {
         private OrderId orderId;
         private CustomerId customerId;
         private RestaurantId restaurantId;
@@ -87,52 +146,52 @@ public class Order extends AggregateRoot<OrderId> {
         private Builder() {
         }
 
-        public Builder orderId(OrderId val){
-            orderId=val;
+        public Builder orderId(OrderId val) {
+            orderId = val;
             return this;
         }
 
-        public Builder customerId(CustomerId val){
-            customerId=val;
+        public Builder customerId(CustomerId val) {
+            customerId = val;
             return this;
         }
 
-        public Builder restaurantId(RestaurantId val){
-            restaurantId=val;
+        public Builder restaurantId(RestaurantId val) {
+            restaurantId = val;
             return this;
         }
 
-        public Builder streetAddress(StreetAddress val){
-            streetAddress=val;
+        public Builder streetAddress(StreetAddress val) {
+            streetAddress = val;
             return this;
         }
 
-        public Builder price(Money val){
-            price=val;
+        public Builder price(Money val) {
+            price = val;
             return this;
         }
 
-        public Builder items(List<OrderItem> val){
-            items=val;
+        public Builder items(List<OrderItem> val) {
+            items = val;
             return this;
         }
 
-        public Builder trackingId(TrackingId val){
-            trackingId=val;
+        public Builder trackingId(TrackingId val) {
+            trackingId = val;
             return this;
         }
 
-        public Builder orderStatus(OrderStatus val){
-            orderStatus=val;
+        public Builder orderStatus(OrderStatus val) {
+            orderStatus = val;
             return this;
         }
 
-        public Builder failureMessages(List<String> val){
-            failureMessages=val;
+        public Builder failureMessages(List<String> val) {
+            failureMessages = val;
             return this;
         }
 
-        public Order build(){
+        public Order build() {
             return new Order(this);
         }
     }

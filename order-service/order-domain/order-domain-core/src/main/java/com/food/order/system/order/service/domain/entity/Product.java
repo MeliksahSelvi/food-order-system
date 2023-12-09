@@ -14,7 +14,7 @@ public class Product extends BaseEntity<ProductId> {
     private Money price;
 
     public Product(ProductId productId,String name, Money price) {
-        super.setId(productId);
+        setId(productId);
         this.name = name;
         this.price = price;
     }
