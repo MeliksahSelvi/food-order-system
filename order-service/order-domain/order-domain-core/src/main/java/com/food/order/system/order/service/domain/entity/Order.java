@@ -82,6 +82,46 @@ public class Order extends AggregateRoot<OrderId> {
         }
     }
 
+    //todo bu methoda niye failureMessages beklemiyoruz?
+    public void pay() {
+        if (orderStatus != OrderStatus.PENDING) {
+            throw new OrderDomainException("Order is not correct state for pay operation!");
+        }
+        orderStatus = OrderStatus.PAID;
+    }
+
+    //todo bu methoda niye failureMessages beklemiyoruz?
+    public void approve() {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException("Order is not correct state for approve operation!");
+        }
+        orderStatus = OrderStatus.APPROVED;
+    }
+
+    public void initCancel(List<String> failureMessages) {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException("Order is not correct state for initCancel operation!");
+        }
+        orderStatus = OrderStatus.CANCELLING;
+        updateFailureMessages(failureMessages);
+    }
+
+    public void cancel(List<String> failureMessages) {
+        if (!(orderStatus == OrderStatus.PENDING || orderStatus == OrderStatus.CANCELLING)) {
+            throw new OrderDomainException("Order is not correct state for cancel operation!");
+        }
+        orderStatus = OrderStatus.CANCELLED;
+        updateFailureMessages(failureMessages);
+    }
+
+    private void updateFailureMessages(List<String> failureMessages) {
+        if (this.failureMessages == null) {
+            this.failureMessages = failureMessages;
+        } else if (this.failureMessages != null && failureMessages != null) {
+            this.failureMessages.addAll(failureMessages.stream().filter(message -> !message.isEmpty()).toList());
+        }
+    }
+
     private Order(Builder builder) {
         setId(builder.orderId);
         this.customerId = builder.customerId;
@@ -94,7 +134,7 @@ public class Order extends AggregateRoot<OrderId> {
         this.failureMessages = builder.failureMessages;
     }
 
-    public Builder builder() {
+    public static Builder builder() {
         return new Builder();
     }
 
