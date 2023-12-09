@@ -9,11 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- bu modül hepsini içeren bir jar üretebilmek için tüm modüllere bağımlı olacak -->
+    <!-- bu modül hepsini içeren bir jar üretebilmek için oluşturuldu tüm modüllere bağımlı olacak -->
 
     <artifactId>order-container</artifactId>
-    <properties>
-    </properties>
 
     <dependencies>
         <dependency>

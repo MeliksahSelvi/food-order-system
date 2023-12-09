@@ -10,9 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>order-application-service</artifactId>
-
-    <properties>
-    </properties>
+    <!-- bu modül core domain'e ulaşmak isteyenlerin iletişim kuracağı modül. ports and adapters, data access, messaging gibi modüller direkt domain core ile
+    iletişime geçemez.-->
 
     <dependencies>
         <dependency>
