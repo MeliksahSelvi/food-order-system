@@ -13,10 +13,14 @@ public class Product extends BaseEntity<ProductId> {
     private String name;
     private Money price;
 
-    public Product(ProductId productId,String name, Money price) {
+    public Product(ProductId productId, String name, Money price) {
         setId(productId);
         this.name = name;
         this.price = price;
+    }
+
+    public Product(ProductId productId) {
+        setId(productId);
     }
 
     public String getName() {
@@ -28,7 +32,7 @@ public class Product extends BaseEntity<ProductId> {
     }
 
     public void updateWithConfirmedNameAndPrice(String name, Money price) {
-        this.name=name;
-        this.price=price;
+        this.name = name;
+        this.price = price;
     }
 }
