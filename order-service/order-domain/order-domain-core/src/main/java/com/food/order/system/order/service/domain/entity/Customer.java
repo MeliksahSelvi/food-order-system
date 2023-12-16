@@ -10,8 +10,4 @@ import com.food.order.system.domain.valueobject.CustomerId;
 
 public class Customer extends AggregateRoot<CustomerId> {
 
-    //todo burayı eklemedi neden? Customer oluştururken CustomerId değerini nasıl veriyor bakalım.
-    public Customer(CustomerId customerId) {
-        setId(customerId);
-    }
 }
