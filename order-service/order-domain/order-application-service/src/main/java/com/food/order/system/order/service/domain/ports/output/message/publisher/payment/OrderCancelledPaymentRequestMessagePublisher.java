@@ -10,6 +10,7 @@ import com.food.order.system.order.service.domain.event.OrderCancelledEvent;
 
 /*
  * Bir order cancelled edildiğinde domain core layer, bu output portu kullanarak OrderCancelledEvent publish edecek.
+ * Implementation'u (secondary adapter) order messaging modülünde yapılacak.
  * */
 public interface OrderCancelledPaymentRequestMessagePublisher extends DomainEventPublisher<OrderCancelledEvent> {
 }

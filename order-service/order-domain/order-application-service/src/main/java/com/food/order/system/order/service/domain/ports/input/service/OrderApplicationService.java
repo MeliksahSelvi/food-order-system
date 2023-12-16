@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
  */
 
 /*
-* Client tarafından kullanılacak input port
+* Client tarafından kullanılacak input port. Implementation'u (primary adapter) yine application-service'de olacak.
 * */
 public interface OrderApplicationService {
 

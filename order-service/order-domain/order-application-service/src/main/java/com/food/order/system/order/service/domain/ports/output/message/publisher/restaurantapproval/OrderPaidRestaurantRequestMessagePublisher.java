@@ -10,6 +10,7 @@ import com.food.order.system.order.service.domain.event.OrderPaidEvent;
 
 /*
  * Bir order işleminde ödeme yapıldığında domain core layer, bu output portu kullanarak OrderPaidEvent publish edecek.
+ * Implementation'u (secondary adapter) order messaging modülünde yapılacak.
  * */
 public interface OrderPaidRestaurantRequestMessagePublisher extends DomainEventPublisher<OrderPaidEvent> {
 }

@@ -10,6 +10,7 @@ import com.food.order.system.order.service.domain.event.OrderCreatedEvent;
 
 /*
  * Bir order create edildiğinde domain core layer, bu output portu kullanarak OrderCreatedEvent publish edecek.
+ * Implementation'u (secondary adapter) order messaging modülünde yapılacak.
  * */
 public interface OrderCreatedPaymentRequestMessagePublisher extends DomainEventPublisher<OrderCreatedEvent> {
 }
