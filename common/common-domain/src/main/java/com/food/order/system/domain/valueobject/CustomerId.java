@@ -12,7 +12,7 @@ import java.util.UUID;
  * bu valueobject ortak olduğu için library şeklinde tanımlanıp gerekli bounded context'lerde kullanılacak.
  * */
 public class CustomerId extends BaseId<UUID> {
-    protected CustomerId(UUID value) {
+    public CustomerId(UUID value) {
         super(value);
     }
 }
