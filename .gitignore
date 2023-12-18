@@ -5,4 +5,10 @@
 /order-service/order-domain/order-application-service/target/
 /order-service/order-domain/order-domain-core/target/
 /order-service/order-messaging/target/
+/common/common-domain/target/
+/infrastructure/docker-compose
+/infrastructure/kafka/kafka-config-data/target
+/infrastructure/kafka/kafka-model/target
+/infrastructure/kafka/kafka-producer/target
+/infrastructure/kafka/kafka-consumer/target
 /.idea
