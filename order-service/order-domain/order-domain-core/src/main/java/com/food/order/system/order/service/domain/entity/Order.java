@@ -24,9 +24,11 @@ public class Order extends AggregateRoot<OrderId> {
     private final StreetAddress deliveryAddress;
     private final Money price;
     private final List<OrderItem> items;
+
     private TrackingId trackingId;
     private OrderStatus orderStatus;
     private List<String> failureMessages;
+    public static final String FAILURE_MESSAGES_DELIMITER = ",";
 
     public void initializeOrder() {
         setId(new OrderId(UUID.randomUUID()));

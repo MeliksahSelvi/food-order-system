@@ -13,9 +13,10 @@ import org.springframework.validation.annotation.Validated;
 
 @Service
 @Slf4j
-@Validated//neden eklendi ve bu class neden public
+@Validated//neden eklendi ve bu class neden order application service impl gibi package privacy değil
 /*
- * bu listener (primary adapter) payment ve restaurant bounded context'ler içindeki domain eventler tarafından triggerlanacak.aslında saga pattern yapacak.
+ * bu listener (primary adapter) restaurant  bounded context'i tarafından gönderilen eventi takip eden messaging yapısının
+ * çağıracağı input portunun implementation'u
  * */
 public class RestaurantApprovedResponseMessageListenerImpl implements RestaurantApprovalResponseMessageListener {
     @Override
