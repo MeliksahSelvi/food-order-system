@@ -27,7 +27,7 @@
         <mockito.version>5.7.0</mockito.version>
         <spring-kafka.version>3.0.12</spring-kafka.version>
         <kafka-avro-serializers.version>7.4.0</kafka-avro-serializers.version>
-        <avro.version>1.11.2</avro.version>
+        <avro.version>1.11.0</avro.version>
     </properties>
 
     <dependencyManagement>
@@ -35,6 +35,12 @@
             <dependency>
                 <groupId>com.food.order.system</groupId>
                 <artifactId>common-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.food.order.system</groupId>
+                <artifactId>common-application</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
