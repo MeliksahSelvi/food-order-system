@@ -20,6 +20,7 @@
             <groupId>com.food.order.system</groupId>
             <artifactId>kafka-config-data</artifactId>
         </dependency>
+        <!-- domain   core eklemeye gerek varmıydı eğer varsa onun yerine domain application layer eklemek daha mantıklı mı?    -->
         <dependency>
             <groupId>com.food.order.system</groupId>
             <artifactId>order-domain-core</artifactId>
