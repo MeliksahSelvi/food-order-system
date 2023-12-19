@@ -5,7 +5,9 @@
 /order-service/order-domain/order-application-service/target/
 /order-service/order-domain/order-domain-core/target/
 /order-service/order-messaging/target/
+/customer-service/target
 /common/common-domain/target/
+/common/common-application/target/
 /infrastructure/docker-compose
 /infrastructure/kafka/kafka-config-data/target
 /infrastructure/kafka/kafka-model/target
