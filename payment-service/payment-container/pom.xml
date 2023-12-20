@@ -9,6 +9,52 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- bu modül hepsini içeren bir jar üretebilmek için oluşturuldu tüm modüllere bağımlı olacak -->
+    <!--    hem domain core hem de data access modülünü tarayan spring boot application class bu modülde olacak-->
     <artifactId>payment-container</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.food.order.system</groupId>
+            <artifactId>payment-domain-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.order.system</groupId>
+            <artifactId>payment-application-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.order.system</groupId>
+            <artifactId>payment-dataaccess</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.order.system</groupId>
+            <artifactId>payment-messaging</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <from>
+                        <image>openjdk:17</image>
+                    </from>
+                    <to>
+                        <image>registry.hub.docker.com/meliksahselvi/${project.groupId}-${project.artifactId}:${project.version}</image>
+                    </to>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
