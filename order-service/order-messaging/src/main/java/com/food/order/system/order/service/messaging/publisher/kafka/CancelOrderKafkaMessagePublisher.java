@@ -1,6 +1,7 @@
 package com.food.order.system.order.service.messaging.publisher.kafka;
 
 import com.food.order.system.kafka.order.avro.model.PaymentRequestAvroModel;
+import com.food.order.system.kafka.producer.KafkaMessageHelper;
 import com.food.order.system.kafka.producer.service.KafkaProducer;
 import com.food.order.system.order.service.domain.config.OrderServiceConfigData;
 import com.food.order.system.order.service.domain.event.OrderCancelledEvent;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 
 /*
- * Bir order cancel edildiğinde payment-service bounded context'ine OrderCancelledEvent eventini publish yapacak component
+ * Bir order cancel edildiğinde payment-service bounded context'ine OrderCancelledEvent eventini publish yapacak secondary adapter
  * */
 @Component
 @Slf4j
@@ -25,7 +26,7 @@ public class CancelOrderKafkaMessagePublisher implements OrderCancelledPaymentRe
 
     private final OrderMessagingDataMapper orderMessagingDataMapper;
     private final OrderServiceConfigData orderServiceConfigData;
-    private final OrderKafkaMessageHelper orderKafkaMessageHelper;
+    private final KafkaMessageHelper kafkaMessageHelper;
     private final KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer;
 
     @Override
@@ -38,7 +39,7 @@ public class CancelOrderKafkaMessagePublisher implements OrderCancelledPaymentRe
             kafkaProducer.send(orderServiceConfigData.getPaymentRequestTopicName(),
                     orderId,
                     message,
-                    orderKafkaMessageHelper.getKafkaCallback(orderServiceConfigData.getPaymentResponseTopicName()
+                    kafkaMessageHelper.getKafkaCallback(orderServiceConfigData.getPaymentResponseTopicName()
                             , message, orderId, "PaymentRequestAvroModel")//todo class name
             );
             log.info("PaymentRequestAvroModel sent to Kafka for order id: {}", message.getOrderId());
