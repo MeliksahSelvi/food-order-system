@@ -17,6 +17,9 @@ import java.util.UUID;
  * @Created 19.12.2023
  */
 
+/*
+* Payment Aggregate'inin Aggregate Root'u olarak bu Entity'i seçtik.
+* */
 public class Payment extends AggregateRoot<PaymentId> {
 
     private final OrderId orderId;
