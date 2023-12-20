@@ -1,7 +1,7 @@
-package com.food.order.system.order.service.dataaccess.restaurant.repository;
+package com.food.order.system.dataaccess.restaurant.repository;
 
-import com.food.order.system.order.service.dataaccess.restaurant.entity.RestaurantEntity;
-import com.food.order.system.order.service.dataaccess.restaurant.entity.RestaurantEntityId;
+import com.food.order.system.dataaccess.restaurant.entity.RestaurantEntity;
+import com.food.order.system.dataaccess.restaurant.entity.RestaurantEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +18,5 @@ import java.util.UUID;
 public interface RestaurantJpaRepository extends JpaRepository<RestaurantEntity, RestaurantEntityId> {
 
     //method name içindeki in ifadesi verilen list içindeki id'ler ile where clause içinde in ifadesini kullanması için
-    Optional<List<RestaurantEntity>> findByRestaurantIdAndProductIdIn(UUID restaurantId,List<UUID> productIds);
+    Optional<List<RestaurantEntity>> findByRestaurantIdAndProductIdIn(UUID restaurantId, List<UUID> productIds);
 }

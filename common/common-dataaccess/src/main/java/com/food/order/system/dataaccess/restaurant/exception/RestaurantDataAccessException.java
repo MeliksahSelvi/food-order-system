@@ -1,4 +1,4 @@
-package com.food.order.system.order.service.dataaccess.restaurant.exception;
+package com.food.order.system.dataaccess.restaurant.exception;
 
 /**
  * @Author mselvi
