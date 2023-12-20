@@ -9,4 +9,5 @@ package com.food.order.system.domain.event;
 * Domain bazlı eventler için marker interface. Generic aldığı tür entity'i temsil edecek.
 * */
 public interface DomainEvent<T>{
+    void fire();
 }

@@ -11,6 +11,9 @@ import java.util.List;
  * @Created 19.12.2023
  */
 
+/*
+ * Payment domain eventlerine ortak kod sağlayan root event
+ * */
 public abstract class PaymentEvent implements DomainEvent<Payment> {
 
     private final Payment payment;
