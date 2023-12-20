@@ -17,6 +17,9 @@ import java.util.UUID;
  * @Created 18.12.2023
  */
 
+/*
+ * Restaurant aggregate root'unun secondary adapter'ı
+ * */
 @Component
 @RequiredArgsConstructor
 public class RestaurantRepositoryImpl implements RestaurantRepository {

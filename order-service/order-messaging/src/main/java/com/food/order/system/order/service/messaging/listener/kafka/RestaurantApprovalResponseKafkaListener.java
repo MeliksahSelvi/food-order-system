@@ -21,6 +21,10 @@ import static com.food.order.system.order.service.domain.entity.Order.FAILURE_ME
  * @Created 18.12.2023
  */
 
+/*
+ * restaurant-service bounded context'i içinde bir event fırlatıldığında yakalayıp o cevaba göre domain layer'daki input portlarını
+ * triggerlayacak olan kafka listener
+ * */
 @Slf4j
 @Component
 @RequiredArgsConstructor

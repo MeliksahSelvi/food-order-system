@@ -8,7 +8,7 @@ import com.food.order.system.payment.service.domain.dto.PaymentRequest;
  */
 
 /*
- * Order bounded context'i üzerinde order create ediliği zaman oluşan eventi dinleyen payment messaging yapısının çağıracağı input portu.
+ * Order bounded context'i üzerinde order create ediliği zaman oluşan ödeme işlemi talebini dinleyen payment messaging yapısının çağıracağı input portu.
  * Implementation'u (primary adapter) yine application-service katmanında olacak.
  * */
 public interface PaymentRequestMessageListener {

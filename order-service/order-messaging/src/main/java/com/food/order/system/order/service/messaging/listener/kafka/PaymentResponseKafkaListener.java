@@ -20,8 +20,8 @@ import java.util.List;
  */
 
 /*
- * payment-service bounded context'i içinde bir event çağrıldığında yakalayıp o cevaba göre domain layer'daki input portlarını
- * triggerlayacak olan kafka listener
+ * payment-service bounded context'i içinde ödeme işlemi ile alakalı bir event fırlatıldığında yakalayıp
+ *  o cevaba göre domain layer'daki input portlarını triggerlayacak olan kafka listener
  * */
 @Component
 @Slf4j

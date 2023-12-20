@@ -16,6 +16,9 @@ import java.util.UUID;
  * @Created 18.12.2023
  */
 
+/*
+ * Customer aggregate root'unun secondary adapter'ı
+ * */
 @Component
 @RequiredArgsConstructor
 public class CustomerRepositoryImpl implements CustomerRepository {

@@ -16,6 +16,9 @@ import java.util.Optional;
  * @Created 18.12.2023
  */
 
+/*
+* Order aggregate root'unun secondary adapter'ı
+* */
 @Component
 @RequiredArgsConstructor
 public class OrderRepositoryImpl implements OrderRepository {
