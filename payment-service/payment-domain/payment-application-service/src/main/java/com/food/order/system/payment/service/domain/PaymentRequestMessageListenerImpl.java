@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  */
 
 /*
- * Bu listener (primary adapter) order bounded context'i tarafından gönderilen eventi takip eden messaging yapısının
+ * Bu listener (primary adapter) order bounded context'i tarafından gönderilen eventi takip eden payment messaging yapısının
  * çağıracağı input portunun implementation'u
  * */
 @Service

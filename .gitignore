@@ -11,10 +11,15 @@
 /payment-service/payment-messaging/target
 /payment-service/payment-domain/payment-application-service/target
 /payment-service/payment-domain/payment-domain-core/target
-/payment-service/payment-messaging/target
+/restaurant-service/restaurant-container/target
+/restaurant-service/restaurant-dataaccess/target
+/restaurant-service/restaurant-messaging/target
+/restaurant-service/restaurant-domain/restaurant-application-service/target
+/restaurant-service/restaurant-domain/restaurant-domain-core/target
 
 /common/common-domain/target/
 /common/common-application/target/
+/common/common-dataaccess/target/
 /infrastructure/docker-compose
 /infrastructure/kafka/kafka-config-data/target
 /infrastructure/kafka/kafka-model/target

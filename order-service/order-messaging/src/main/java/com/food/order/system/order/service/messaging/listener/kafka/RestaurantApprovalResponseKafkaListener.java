@@ -22,8 +22,8 @@ import static com.food.order.system.order.service.domain.entity.Order.FAILURE_ME
  */
 
 /*
- * restaurant-service bounded context'i içinde bir event fırlatıldığında yakalayıp o cevaba göre domain layer'daki input portlarını
- * triggerlayacak olan kafka listener
+ * restaurant bounded context'i içinde approval işlemi sonucunda order işleminin approval veya reject edildiğini
+ * kontrol edip cevaba göre domain layer'daki input portlarını triggerlayacak olan kafka listener
  * */
 @Slf4j
 @Component
@@ -32,7 +32,6 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
 
     private final RestaurantApprovalResponseMessageListener restaurantApprovalResponseMessageListener;
     private final OrderMessagingDataMapper orderMessagingDataMapper;
-
 
     @Override
     @KafkaListener(id = "${kafka-consumer-config.restaurant-approval-consumer-group-id}",

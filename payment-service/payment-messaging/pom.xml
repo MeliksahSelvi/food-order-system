@@ -8,7 +8,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
+    <!-- bu modül; domain core'nin bir output port kullanarak messaging,domain event publish gibi işlemleri yapabilmesi için oluşturuldu.
+         output portları secondary adapter ile implement ederek domain core bağımlı bir şekilde onun ilgili işlemlerini yapmasını sağlayacak.-->
     <artifactId>payment-messaging</artifactId>
 
     <dependencies>

@@ -10,7 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>payment-dataaccess</artifactId>
-
+    <!-- bu modül; domain core'nin bir output port kullanarak DB işlemlerini yapabilmesi için oluşturuldu.
+     output portları secondary adapter ile implement ederek domain core bağımlı bir şekilde onun DB işlemlerini yapmasını sağlayacak.-->
     <dependencies>
         <dependency>
             <groupId>com.food.order.system</groupId>

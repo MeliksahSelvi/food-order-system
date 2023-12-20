@@ -15,8 +15,9 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 @Validated//neden eklendi ve bu class neden order application service impl gibi package privacy değil
 /*
- * bu listener (primary adapter) payment  bounded context'i tarafından gönderilen eventi takip eden messaging yapısının
- * çağıracağı input portunun implementation'u
+ * bu listener (primary adapter) payment  bounded context'i tarafından gönderilen eventi takip eden
+ * ve siparişin ödenme durumuna göre restaurant-service'ye event publish ederek restaurant messaging yapısının
+ * çağıracağı primary adapter
  * */
 public class PaymentResponseMessageListenerImpl implements PaymentResponseMessageListener {
     @Override
