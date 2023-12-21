@@ -17,7 +17,7 @@ import org.springframework.validation.annotation.Validated;
 /*
  * bu listener (primary adapter) payment  bounded context'i tarafından gönderilen eventi takip eden
  * ve siparişin ödenme durumuna göre restaurant-service'ye event publish ederek restaurant messaging yapısının
- * çağıracağı primary adapter
+ * dinleme yapacağı primary adapter
  * */
 public class PaymentResponseMessageListenerImpl implements PaymentResponseMessageListener {
     @Override
