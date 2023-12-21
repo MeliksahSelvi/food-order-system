@@ -1,5 +1,5 @@
 INSERT INTO customer.customers(id,username,first_name,last_name)
-values ('03522d1a-9e52-11ee-8c90-0242ac120002','user_1','First','User');
+values ('d215b5f8-0249-4dc5-89a3-51fd148cfb41','user_1','First','User');
 
 INSERT INTO customer.customers(id,username,first_name,last_name)
-values ('03522f4a-9e52-11ee-8c90-0242ac120002','user_2','Second','User');
+values ('d215b5f8-0249-4dc5-89a3-51fd148cfb43','user_2','Second','User');

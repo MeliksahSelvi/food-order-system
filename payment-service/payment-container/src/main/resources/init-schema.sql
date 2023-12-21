@@ -4,9 +4,9 @@ CREATE SCHEMA payment;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-DROP TYPE IF EXISTS payment_status;
+DROP TYPE IF EXISTS paymentstatus;
 
-CREATE TYPE payment_status AS ENUM ('COMPLETED', 'CANCELLED', 'FAILED');
+CREATE TYPE paymentstatus AS ENUM ('COMPLETED', 'CANCELLED', 'FAILED');
 
 DROP TABLE IF EXISTS "payment".payments CASCADE;
 
@@ -17,7 +17,7 @@ CREATE TABLE "payment".payments
     order_id uuid NOT NULL,
     price numeric(10,2) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL,
-    status payment_status NOT NULL,
+    paymentstatus paymentstatus NOT NULL,
     CONSTRAINT payments_pkey PRIMARY KEY (id)
 );
 
@@ -42,7 +42,7 @@ CREATE TABLE "payment".credit_history
     id uuid NOT NULL,
     customer_id uuid NOT NULL,
     amount numeric(10,2) NOT NULL,
-    type transaction_type NOT NULL,
+    transaction_type transaction_type NOT NULL,
     CONSTRAINT credit_history_pkey PRIMARY KEY (id)
 );
 
@@ -60,15 +60,15 @@ CREATE TABLE "payment".credit_history
 --     type character varying COLLATE pg_catalog."default" NOT NULL,
 --     payload jsonb NOT NULL,
 --     outbox_status outbox_status NOT NULL,
---     payment_status payment_status NOT NULL,
+--     paymentStatus paymentStatus NOT NULL,
 --     version integer NOT NULL,
 --     CONSTRAINT order_outbox_pkey PRIMARY KEY (id)
 -- );
 --
 -- CREATE INDEX "payment_order_outbox_saga_status"
 --     ON "payment".order_outbox
---         (type, payment_status);
+--         (type, paymentStatus);
 --
--- CREATE UNIQUE INDEX "payment_order_outbox_saga_id_payment_status_outbox_status"
+-- CREATE UNIQUE INDEX "payment_order_outbox_saga_id_paymentStatus_outbox_status"
 --     ON "payment".order_outbox
---         (type, saga_id, payment_status, outbox_status);
+--         (type, saga_id, paymentStatus, outbox_status);

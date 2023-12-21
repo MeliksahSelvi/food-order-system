@@ -54,7 +54,7 @@ public class PaymentMessagingDataMapper {
                 .setOrderId(paymentEvent.getPayment().getOrderId().getValue().toString())
                 .setPrice(paymentEvent.getPayment().getPrice().getAmount())
                 .setCreatedAt(paymentEvent.getCreatedAt().toInstant())
-                .setPaymentStatus(PaymentStatus.valueOf(paymentEvent.getPayment().getPaymentStatus().name()))
+                .setPaymentStatus(PaymentStatus.valueOf(paymentEvent.getPayment().getPaymentstatus().name()))
                 .setFailureMessages(paymentEvent.getFailureMessages())
                 .build();
     }

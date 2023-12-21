@@ -47,7 +47,12 @@ public class PaymentRequestHelper {
     public PaymentEvent persistPayment(PaymentRequest paymentRequest) {
         log.info("Received payment complete event for order id: {}", paymentRequest.getOrderId());
         Payment payment = paymentDataMapper.paymentRequestToPayment(paymentRequest);
-        PaymentEvent paymentEvent = getEventFromDomainService(payment);
+        CreditEntry creditEntry = getCreditEntry(payment.getCustomerId());
+        List<CreditHistory> creditHistories = getCreditHistories(payment.getCustomerId());
+        List<String> failureMessages = new ArrayList<>();
+        PaymentEvent paymentEvent = paymentDomainService.validateAndInitiatePayment(payment, creditEntry, creditHistories, failureMessages,
+                paymentCompletedEventDomainEventPublisher, paymentFailedEventDomainEventPublisher);
+        persistEntities(payment, creditEntry, creditHistories, failureMessages);
         return paymentEvent;
     }
 
@@ -62,26 +67,15 @@ public class PaymentRequestHelper {
                     " could not be found!");
         }
         Payment payment = paymentOptional.get();
-        PaymentEvent paymentEvent = getEventFromDomainService(payment);
-        return paymentEvent;
-    }
-
-    private PaymentEvent getEventFromDomainService(Payment payment) {
         CreditEntry creditEntry = getCreditEntry(payment.getCustomerId());
         List<CreditHistory> creditHistories = getCreditHistories(payment.getCustomerId());
         List<String> failureMessages = new ArrayList<>();
-        PaymentEvent paymentEvent;
-        if (payment.getPaymentStatus() == null) {//todo check edilebilir doğru mu çalışıyor diye null ise initiate edilmelidir.
-            paymentEvent = paymentDomainService.validateAndInitiatePayment(payment, creditEntry, creditHistories, failureMessages,
-                    paymentCompletedEventDomainEventPublisher, paymentFailedEventDomainEventPublisher);
-        } else {
-            paymentEvent = paymentDomainService.validateAndCancelPayment(payment, creditEntry, creditHistories, failureMessages,
-                    paymentCancelledEventDomainEventPublisher, paymentFailedEventDomainEventPublisher);
-        }
+
+        PaymentEvent paymentEvent = paymentDomainService.validateAndCancelPayment(payment, creditEntry, creditHistories, failureMessages,
+                paymentCancelledEventDomainEventPublisher, paymentFailedEventDomainEventPublisher);
         persistEntities(payment, creditEntry, creditHistories, failureMessages);
         return paymentEvent;
     }
-
 
     private CreditEntry getCreditEntry(CustomerId customerId) {
         Optional<CreditEntry> creditEntryOptional = creditEntryRepository.findByCustomerId(customerId);

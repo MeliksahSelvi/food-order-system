@@ -29,7 +29,7 @@ public class PaymentEntity {
     private UUID orderId;
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private PaymentStatus paymentstatus;
     private ZonedDateTime createdAt;
 
     @Override
