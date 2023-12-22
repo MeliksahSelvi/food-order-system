@@ -22,6 +22,7 @@
 /common/common-dataaccess/target/
 /infrastructure/docker-compose
 /infrastructure/saga/target
+/infrastructure/outbox/target
 /infrastructure/kafka/kafka-config-data/target
 /infrastructure/kafka/kafka-model/target
 /infrastructure/kafka/kafka-producer/target
