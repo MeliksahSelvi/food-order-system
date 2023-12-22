@@ -2,10 +2,12 @@ package com.food.order.system.order.service.messaging.listener.kafka;
 
 import com.food.order.system.kafka.consumer.KafkaConsumer;
 import com.food.order.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
+import com.food.order.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.order.system.order.service.domain.ports.input.message.listener.restaurantapproval.RestaurantApprovalResponseMessageListener;
 import com.food.order.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -48,18 +50,25 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
                 offsets.toString());
 
         messages.forEach(responseAvroModel -> {
-            switch (responseAvroModel.getOrderApprovalStatus()) {
-                case APPROVED -> {
-                    log.info("Processing approved order for order id: {}", responseAvroModel.getOrderId());
-                    restaurantApprovalResponseMessageListener.orderApproved(
-                            orderMessagingDataMapper.approvalResponseAvroModelToRestaurantApprovalResponse(responseAvroModel));
+            try {
+                switch (responseAvroModel.getOrderApprovalStatus()) {
+                    case APPROVED -> {
+                        log.info("Processing approved order for order id: {}", responseAvroModel.getOrderId());
+                        restaurantApprovalResponseMessageListener.orderApproved(
+                                orderMessagingDataMapper.approvalResponseAvroModelToRestaurantApprovalResponse(responseAvroModel));
+                    }
+                    case REJECTED -> {
+                        log.info("Processing rejected order for order id: {}, with failure messages: {}", responseAvroModel.getOrderId(),
+                                String.join(FAILURE_MESSAGES_DELIMITER, responseAvroModel.getFailureMessages()));
+                        restaurantApprovalResponseMessageListener.orderRejected(
+                                orderMessagingDataMapper.approvalResponseAvroModelToRestaurantApprovalResponse(responseAvroModel));
+                    }
                 }
-                case REJECTED -> {
-                    log.info("Processing rejected order for order id: {}, with failure messages: {}", responseAvroModel.getOrderId(),
-                            String.join(FAILURE_MESSAGES_DELIMITER, responseAvroModel.getFailureMessages()));
-                    restaurantApprovalResponseMessageListener.orderRejected(
-                            orderMessagingDataMapper.approvalResponseAvroModelToRestaurantApprovalResponse(responseAvroModel));
-                }
+            } catch (OptimisticLockingFailureException e) {
+                log.error("Caught optimistic locking exception in RestaurantApprovalResponseKafkaListener for order id: {}",
+                        responseAvroModel.getOrderId());
+            } catch (OrderNotFoundException e) {
+                log.error("No order found for order id: {}", responseAvroModel.getOrderId());
             }
         });
     }
