@@ -18,7 +18,7 @@ import static com.food.order.system.order.service.domain.entity.Order.FAILURE_ME
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Validated//neden eklendi ve bu class neden order application service impl gibi package privacy değil
+@Validated//todo neden eklendi ve bu class neden order application service impl gibi package private değil
 /*
  * bu listener (primary adapter) restaurant  bounded context'i tarafından gönderilen eventi takip eden messaging yapısının
  * çağıracağı input portunun implementation'u
