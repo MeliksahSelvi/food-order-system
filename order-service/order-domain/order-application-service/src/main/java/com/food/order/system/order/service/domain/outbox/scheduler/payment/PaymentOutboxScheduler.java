@@ -55,7 +55,7 @@ public class PaymentOutboxScheduler implements OutboxScheduler {
         }
     }
 
-    /*
+    /*todo daha anlaşılır olması için bu void methodu biconsumer olarak düzenleyebiliriz.
     * PaymentRequestMessagePublisher çalıştığı zaman başarılı bir şekilde publish edildiği durumda
     * ilgili outbox message'sinin güncellenmesini sağlıyoruz.Eğer başarılı bir şekilde publish edilmezse
     * update yapmıyoruz.

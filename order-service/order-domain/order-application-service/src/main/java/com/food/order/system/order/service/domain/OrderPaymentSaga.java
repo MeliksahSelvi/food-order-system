@@ -45,7 +45,6 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
     private final ApprovalOutboxHelper approvalOutboxHelper;
     private final OrderSagaHelper orderSagaHelper;
 
-
     @Override
     @Transactional
     public void process(PaymentResponse paymentResponse) {
@@ -107,6 +106,10 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         Order order = rollbackPaymentForOrder(paymentResponse);
         SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(order.getOrderStatus());
 
+        /*
+         * bu save işleminde amacımız payment outbox kaydı STARTED veya COMPENSATED olarak güncelleniyor.
+         * ayrıca version arttırılır ve optimistic locking sağlanır.
+         * */
         paymentOutboxHelper.save(getUpdatedPaymentOutboxMessage(orderPaymentOutboxMessage, order.getOrderStatus(), sagaStatus));
 
 
