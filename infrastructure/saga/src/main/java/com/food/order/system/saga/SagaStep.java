@@ -7,7 +7,7 @@ import com.food.order.system.domain.event.DomainEvent;
  * @Created 21.12.2023
  */
 
-public interface SagaStep<T, S extends DomainEvent, U extends DomainEvent> {
-    S process(T data);
-    U rollback(T data);
+public interface SagaStep<T> {
+    void process(T data);
+    void rollback(T data);
 }
