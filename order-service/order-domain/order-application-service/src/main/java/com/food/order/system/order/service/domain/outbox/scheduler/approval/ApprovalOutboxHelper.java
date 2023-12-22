@@ -89,7 +89,7 @@ public class ApprovalOutboxHelper {
             return objectMapper.writeValueAsString(approvalEventPayload);
         } catch (JsonProcessingException e) {
             log.error("Could not create OrderApprovalEventPayload object for order id: {}", approvalEventPayload.getOrderId(), e);
-            throw new OrderDomainException("Couuld not create OrderApprovalEventPayload object for order id: " +
+            throw new OrderDomainException("Could not create OrderApprovalEventPayload object for order id: " +
                     approvalEventPayload.getOrderId(), e);
         }
     }
