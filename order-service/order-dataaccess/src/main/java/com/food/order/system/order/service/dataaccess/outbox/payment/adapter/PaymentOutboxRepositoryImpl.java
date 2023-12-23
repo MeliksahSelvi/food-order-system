@@ -46,7 +46,7 @@ public class PaymentOutboxRepositoryImpl implements PaymentOutBoxRepository {
                                                                                               OutboxStatus outboxStatus,
                                                                                               SagaStatus... sagaStatuses) {
 
-        return Optional.of(paymentOutboxJpaRepository.findByTypeAndOutbox_statusAndSaga_statusIn(type,
+        return Optional.of(paymentOutboxJpaRepository.findByTypeAndOutboxStatusAndSagaStatusIn(type,
                         outboxStatus, Arrays.asList(sagaStatuses))
                 .orElseThrow(() -> new PaymentOutboxNotFoundException("Payment outbox object " +
                         "could not be found for saga type " + type))
@@ -60,7 +60,7 @@ public class PaymentOutboxRepositoryImpl implements PaymentOutBoxRepository {
                                                                                   UUID sagaId,
                                                                                   SagaStatus... sagaStatuses) {
         return paymentOutboxJpaRepository.
-                findByTypeAndSagaIdaAndSaga_statusIn(type, sagaId, Arrays.asList(sagaStatuses))
+                findByTypeAndSagaIdAndSagaStatusIn(type, sagaId, Arrays.asList(sagaStatuses))
                 .map(paymentOutboxDataAccessMapper::paymentOutboxEntityToOrderPaymentOutboxMessage);
     }
 
@@ -69,6 +69,6 @@ public class PaymentOutboxRepositoryImpl implements PaymentOutBoxRepository {
                                                            OutboxStatus outboxStatus,
                                                            SagaStatus... sagaStatuses) {
 
-        paymentOutboxJpaRepository.deleteByTypeAndOutbox_statusAndSaga_statusIn(type, outboxStatus, Arrays.asList(sagaStatuses));
+        paymentOutboxJpaRepository.deleteBytypeAndOutboxStatusAndSagaStatusIn(type, outboxStatus, Arrays.asList(sagaStatuses));
     }
 }

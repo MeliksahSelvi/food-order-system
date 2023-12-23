@@ -19,9 +19,9 @@ public class PaymentOutboxDataAccessMapper {
                 .createdAt(orderPaymentOutboxMessage.getCreatedAt())
                 .type(orderPaymentOutboxMessage.getType())
                 .payload(orderPaymentOutboxMessage.getPayload())
-                .order_status(orderPaymentOutboxMessage.getOrderStatus())
-                .saga_status(orderPaymentOutboxMessage.getSagaStatus())
-                .outbox_status(orderPaymentOutboxMessage.getOutboxStatus())
+                .orderStatus(orderPaymentOutboxMessage.getOrderStatus())
+                .sagaStatus(orderPaymentOutboxMessage.getSagaStatus())
+                .outboxStatus(orderPaymentOutboxMessage.getOutboxStatus())
                 .version(orderPaymentOutboxMessage.getVersion())
                 .build();
     }
@@ -33,9 +33,9 @@ public class PaymentOutboxDataAccessMapper {
                 .createdAt(paymentOutboxEntity.getCreatedAt())
                 .type(paymentOutboxEntity.getType())
                 .payload(paymentOutboxEntity.getPayload())
-                .orderStatus(paymentOutboxEntity.getOrder_status())
-                .sagaStatus(paymentOutboxEntity.getSaga_status())
-                .outboxStatus(paymentOutboxEntity.getOutbox_status())
+                .orderStatus(paymentOutboxEntity.getOrderStatus())
+                .sagaStatus(paymentOutboxEntity.getSagaStatus())
+                .outboxStatus(paymentOutboxEntity.getOutboxStatus())
                 .version(paymentOutboxEntity.getVersion())
                 .build();
     }

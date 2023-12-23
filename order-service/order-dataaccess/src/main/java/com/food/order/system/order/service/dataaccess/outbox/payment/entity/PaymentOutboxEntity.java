@@ -32,11 +32,11 @@ public class PaymentOutboxEntity {
     private String type;
     private String payload;
     @Enumerated(EnumType.STRING)
-    private SagaStatus saga_status;
+    private SagaStatus sagaStatus;
     @Enumerated(EnumType.STRING)
-    private OrderStatus order_status;
+    private OrderStatus orderStatus;
     @Enumerated(EnumType.STRING)
-    private OutboxStatus outbox_status;
+    private OutboxStatus outboxStatus;
     @Version
     private int version;
 
