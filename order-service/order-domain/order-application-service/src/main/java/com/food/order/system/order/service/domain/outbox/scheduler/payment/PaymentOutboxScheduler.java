@@ -50,19 +50,9 @@ public class PaymentOutboxScheduler implements OutboxScheduler {
                     outboxMessages.stream().map(outboxMessage -> outboxMessage.getId().toString())
                             .collect(Collectors.joining(",")));
 
-            outboxMessages.forEach(outboxMessage -> paymentRequestMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
+            outboxMessages.forEach(outboxMessage -> paymentRequestMessagePublisher.publish(outboxMessage, paymentOutboxHelper::updateOutboxStatus));
             log.info("{} OrderPaymentOutboxMessage sent to message bus!", outboxMessages.size());
         }
     }
 
-    /*todo daha anlaşılır olması için bu void methodu biconsumer olarak düzenleyebiliriz.
-    * PaymentRequestMessagePublisher çalıştığı zaman başarılı bir şekilde publish edildiği durumda
-    * ilgili outbox message'sinin güncellenmesini sağlıyoruz.Eğer başarılı bir şekilde publish edilmezse
-    * update yapmıyoruz.
-    * */
-    private void updateOutboxStatus(OrderPaymentOutboxMessage orderPaymentOutboxMessage, OutboxStatus outboxStatus) {
-        orderPaymentOutboxMessage.setOutboxStatus(outboxStatus);
-        paymentOutboxHelper.save(orderPaymentOutboxMessage);
-        log.info("OrderPaymentOutboxMessage is updated with outbox status: {}", outboxStatus.name());
-    }
 }

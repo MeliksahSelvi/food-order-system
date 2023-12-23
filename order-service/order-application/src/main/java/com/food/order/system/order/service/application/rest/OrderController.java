@@ -7,6 +7,7 @@ import com.food.order.system.order.service.domain.dto.track.TrackOrderResponse;
 import com.food.order.system.order.service.domain.ports.input.service.OrderApplicationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class OrderController {
         log.info("Creating order for customer: {} at restaurant: {}", createOrderCommand.getCustomerId(), createOrderCommand.getRestaurantId());
         CreateOrderResponse createOrderResponse = orderApplicationService.createOrder(createOrderCommand);
         log.info("Order created with tracking id: {}", createOrderResponse.getOrderTrackingId());
-        return ResponseEntity.ok(createOrderResponse);//todo neden 201 dönmedik?
+        return ResponseEntity.status(HttpStatus.CREATED).body(createOrderResponse);
     }
 
     @GetMapping("/{trackingId}")

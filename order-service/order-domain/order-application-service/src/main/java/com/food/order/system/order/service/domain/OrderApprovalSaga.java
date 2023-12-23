@@ -30,9 +30,6 @@ import static com.food.order.system.domain.DomainConstants.UTC;
  * @Created 21.12.2023
  */
 
-/*
- * todo add description
- * */
 @Slf4j
 @Component
 @RequiredArgsConstructor

@@ -16,12 +16,9 @@ import org.springframework.validation.annotation.Validated;
  */
 
 @Slf4j
-@Validated//interface'deki valid annotation'larının çalışması için
+@Validated
 @Service
 @RequiredArgsConstructor
-/*
-* public yapmadık çünkü dışarının bu implementation'a erişmesini istemiyoruz. onlar input port ile iletişim kursalar onlara yeterli.
-* */
 class OrderApplicationServiceImpl implements OrderApplicationService {
 
     private final OrderCreateCommandHandler createCommandHandler;

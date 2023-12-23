@@ -29,7 +29,6 @@
             <groupId>com.food.order.system</groupId>
             <artifactId>kafka-consumer</artifactId>
         </dependency>
-<!--        todo postgresql neden eklendi paymentrequestkafkalistener catch bloğunda kullanılıyor -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

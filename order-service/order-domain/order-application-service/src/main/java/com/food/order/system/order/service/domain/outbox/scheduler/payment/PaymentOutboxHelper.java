@@ -84,13 +84,20 @@ public class PaymentOutboxHelper {
         paymentOutBoxRepository.deleteByTypeAndOutboxStatusAndSagaStatuses(ORDER_SAGA_NAME, outboxStatus, sagaStatuses);
     }
 
+    @Transactional
+    public void updateOutboxStatus(OrderPaymentOutboxMessage orderPaymentOutboxMessage, OutboxStatus outboxStatus) {
+        orderPaymentOutboxMessage.setOutboxStatus(outboxStatus);
+        save(orderPaymentOutboxMessage);
+        log.info("OrderPaymentOutboxMessage is updated with outbox status: {}", outboxStatus.name());
+    }
+
     private String createPayload(OrderPaymentEventPayload paymentEventPayload) {
         try {
             return objectMapper.writeValueAsString(paymentEventPayload);
         } catch (JsonProcessingException e) {
             log.error("Could not create OrderPaymentEventPayload object for order id: {}", paymentEventPayload.getOrderId(), e);
             throw new OrderDomainException("Could not create OrderPaymentEventPayload object for order id: " +
-                    paymentEventPayload.getOrderId(),e);
+                    paymentEventPayload.getOrderId(), e);
         }
     }
 }

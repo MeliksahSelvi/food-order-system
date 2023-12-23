@@ -17,13 +17,12 @@ import static com.food.order.system.order.service.domain.entity.Order.FAILURE_ME
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Validated//todo neden eklendi ve bu class neden order application service impl gibi package private değil
 /*
  * bu listener (primary adapter) payment  bounded context'i tarafından gönderilen eventi takip eden
  * ve siparişin ödenme durumuna göre restaurant-service'ye event publish ederek restaurant messaging yapısının
  * dinleme yapacağı primary adapter
  * */
-public class PaymentResponseMessageListenerImpl implements PaymentResponseMessageListener {
+class PaymentResponseMessageListenerImpl implements PaymentResponseMessageListener {
 
     private final OrderPaymentSaga orderPaymentSaga;
 

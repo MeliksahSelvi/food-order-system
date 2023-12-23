@@ -16,7 +16,7 @@ import com.food.order.system.payment.service.domain.valueobject.CreditEntryId;
 public class CreditEntry extends BaseEntity<CreditEntryId> {
 
     private final CustomerId customerId;
-    private Money totalCreditAmount;//todo initialize değeri nerede?
+    private Money totalCreditAmount;
 
     public void addCreditAmount(Money amount){
         totalCreditAmount=totalCreditAmount.add(amount);

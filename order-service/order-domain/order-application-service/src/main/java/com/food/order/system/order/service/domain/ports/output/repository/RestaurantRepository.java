@@ -14,6 +14,5 @@ import java.util.Optional;
  * */
 public interface RestaurantRepository {
 
-    //todo belki parametre olarak restaurant'ın unique spesific bir field'ı geçilebilir mi?Mesela CustomerRepo'daki findCustomer methodu?
     Optional<Restaurant> findRestaurantInformation(Restaurant restaurant);
 }

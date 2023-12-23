@@ -84,7 +84,6 @@ public class Order extends AggregateRoot<OrderId> {
         }
     }
 
-    //todo bu methoda niye failureMessages beklemiyoruz?
     public void pay() {
         if (orderStatus != OrderStatus.PENDING) {
             throw new OrderDomainException("Order is not correct state for pay operation!");
@@ -92,7 +91,6 @@ public class Order extends AggregateRoot<OrderId> {
         orderStatus = OrderStatus.PAID;
     }
 
-    //todo bu methoda niye failureMessages beklemiyoruz?
     public void approve() {
         if (orderStatus != OrderStatus.PAID) {
             throw new OrderDomainException("Order is not correct state for approve operation!");
