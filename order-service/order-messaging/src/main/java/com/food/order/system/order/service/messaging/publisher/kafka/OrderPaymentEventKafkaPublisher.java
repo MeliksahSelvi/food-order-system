@@ -56,7 +56,7 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
                                     message,
                                     orderPaymentOutboxMessage,
                                     outboxCallback,
-                                    orderPaymentEventPayload.getOrderId(), "PaymentRequestAvroModel"));
+                                    orderPaymentEventPayload.getOrderId()));
 
             log.info("OrderPaymentEventPayload sent to Kafka for order id: {} and saga id: {}",
                     orderPaymentEventPayload.getOrderId(), sagaId);
