@@ -19,9 +19,9 @@ public class ApprovalOutboxDataAccessMapper {
                 .createdAt(orderApprovalOutboxMessage.getCreatedAt())
                 .type(orderApprovalOutboxMessage.getType())
                 .payload(orderApprovalOutboxMessage.getPayload())
-                .order_status(orderApprovalOutboxMessage.getOrderStatus())
-                .saga_status(orderApprovalOutboxMessage.getSagaStatus())
-                .outbox_status(orderApprovalOutboxMessage.getOutboxStatus())
+                .orderStatus(orderApprovalOutboxMessage.getOrderStatus())
+                .sagaStatus(orderApprovalOutboxMessage.getSagaStatus())
+                .outboxStatus(orderApprovalOutboxMessage.getOutboxStatus())
                 .version(orderApprovalOutboxMessage.getVersion())
                 .build();
     }
@@ -33,9 +33,9 @@ public class ApprovalOutboxDataAccessMapper {
                 .createdAt(approvalOutboxEntity.getCreatedAt())
                 .type(approvalOutboxEntity.getType())
                 .payload(approvalOutboxEntity.getPayload())
-                .orderStatus(approvalOutboxEntity.getOrder_status())
-                .sagaStatus(approvalOutboxEntity.getSaga_status())
-                .outboxStatus(approvalOutboxEntity.getOutbox_status())
+                .orderStatus(approvalOutboxEntity.getOrderStatus())
+                .sagaStatus(approvalOutboxEntity.getSagaStatus())
+                .outboxStatus(approvalOutboxEntity.getOutboxStatus())
                 .version(approvalOutboxEntity.getVersion())
                 .build();
     }

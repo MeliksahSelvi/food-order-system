@@ -46,7 +46,7 @@ public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
                                                                                                OutboxStatus outboxStatus,
                                                                                                SagaStatus... sagaStatuses) {
 
-        return Optional.of(approvalOutboxJpaRepository.findByTypeAndOutbox_statusAndSaga_statusIn(type,
+        return Optional.of(approvalOutboxJpaRepository.findByTypeAndOutboxStatusAndSagaStatusIn(type,
                         outboxStatus, Arrays.asList(sagaStatuses))
                 .orElseThrow(() -> new ApprovalOutboxNotFoundException("Approval outbox object " +
                         "could not be found for saga type " + type))
@@ -60,7 +60,7 @@ public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
                                                                                    UUID sagaId,
                                                                                    SagaStatus... sagaStatuses) {
         return approvalOutboxJpaRepository.
-                findByTypeAndSagaIdaAndSaga_statusIn(type, sagaId, Arrays.asList(sagaStatuses))
+                findByTypeAndSagaIdAndSagaStatusIn(type, sagaId, Arrays.asList(sagaStatuses))
                 .map(approvalOutboxDataAccessMapper::approvalOutboxEntityToOrderApprovalOutboxMessage);
     }
 
@@ -69,6 +69,6 @@ public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
                                                            OutboxStatus outboxStatus,
                                                            SagaStatus... sagaStatuses) {
 
-        approvalOutboxJpaRepository.deleteByTypeAndOutbox_statusAndSaga_statusIn(type, outboxStatus, Arrays.asList(sagaStatuses));
+        approvalOutboxJpaRepository.deleteByTypeAndOutboxStatusAndSagaStatusIn(type, outboxStatus, Arrays.asList(sagaStatuses));
     }
 }

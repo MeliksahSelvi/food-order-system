@@ -62,8 +62,8 @@ public class ApprovalOutboxHelper {
     }
 
     @Transactional
-    public void saveApprovalOutboxMessage(OrderApprovalEventPayload approvalEventPayload, OrderStatus orderStatus,
-                                          SagaStatus sagaStatus, OutboxStatus outboxStatus, UUID sagaId) {
+    public void persistApprovalOutboxMessage(OrderApprovalEventPayload approvalEventPayload, OrderStatus orderStatus,
+                                             SagaStatus sagaStatus, OutboxStatus outboxStatus, UUID sagaId) {
 
         save(OrderApprovalOutboxMessage.builder()
                 .id(UUID.randomUUID())
