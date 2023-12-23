@@ -33,10 +33,15 @@ public class KafkaMessageHelper {
         }
     }
 
+    /*
+    * Kafka ya veriler başarılı bir şekilde gönderilirse callback methodunda çalışması için Outboxstatus Completed olarak işlenecek.
+    * Outbox status güncelleme işlemini manuel değil de callback şeklinde yapmamızın sebebi kafkaya gönderilen isteklerin asenkron çalıştığıdır.
+    * başarılı ve fail olarak gönderilmesini manuel kontrol edemiyoruz.
+    * */
     public <T, U> BiConsumer<SendResult<String, T>, Throwable>
-    getKafkaCallback(String responseTopicName, T message, U outboxMessage,
+    getKafkaCallback(String responseTopicName, T avroModel, U outboxMessage,
                      BiConsumer<U, OutboxStatus> outboxCallback,
-                     String orderId, String avroModelName) {
+                     String orderId) {
         return (result, ex) -> {
             if (ex == null) {
                 RecordMetadata metadata = result.getRecordMetadata();
@@ -50,7 +55,7 @@ public class KafkaMessageHelper {
                 outboxCallback.accept(outboxMessage, OutboxStatus.COMPLETED);
             } else {
                 log.error("Error while sending {} with message: {} and outbox type: {} to topic {}",
-                        avroModelName, message.toString(), outboxMessage.getClass().getName(), responseTopicName, ex);
+                        avroModel.getClass().getSimpleName(), avroModel, outboxMessage.getClass().getName(), responseTopicName, ex);
                 outboxCallback.accept(outboxMessage, OutboxStatus.FAILED);
             }
         };

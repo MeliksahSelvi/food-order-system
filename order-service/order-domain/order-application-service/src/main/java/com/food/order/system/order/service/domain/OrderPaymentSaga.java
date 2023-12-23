@@ -66,20 +66,21 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
 
         OrderPaymentOutboxMessage orderPaymentOutboxMessage = orderPaymentOutboxMessagesResponse.get();
         OrderPaidEvent orderPaidEvent = completePaymentForOrder(paymentResponse);
-        SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(orderPaidEvent.getOrder().getOrderStatus());
+        OrderStatus orderStatus = orderPaidEvent.getOrder().getOrderStatus();
+        SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(orderStatus);
 
         /*
         * bu save işleminde amacımız payment outbox kaydı processing olarak güncelleniyor.
-        * ayrıca version arttırılır ve optimistic locking sağlanır.
+        * ayrıca bu save işlemi ile version arttırılır ve optimistic locking sağlanır.
+        * bu lock sayesinde bu methoda giren 2.thread, methodun başındaki if clause'ye takılması sağlanır.
         * */
-        paymentOutboxHelper.save(getUpdatedPaymentOutboxMessage(orderPaymentOutboxMessage,
-                orderPaidEvent.getOrder().getOrderStatus(), sagaStatus));
+        paymentOutboxHelper.save(getUpdatedPaymentOutboxMessage(orderPaymentOutboxMessage, orderStatus, sagaStatus));
         /* bu save işleminde ise amacımız restaurant service'yi tetikleyecek outbox kaydı oluşturmak
          * ayrıca; type,sagaid ve saga status üzerinde oluşturulan unique index sayesinde
          * aynı anda 2 işlemin aynı kaydı oluşturmasını engellemiş olacağız
          * */
-        approvalOutboxHelper.saveApprovalOutboxMessage(orderDataMapper.orderPaidEventToOrderApprovalEventPayload(orderPaidEvent),
-                orderPaidEvent.getOrder().getOrderStatus(),
+        approvalOutboxHelper.persistApprovalOutboxMessage(orderDataMapper.orderPaidEventToOrderApprovalEventPayload(orderPaidEvent),
+                orderStatus,
                 sagaStatus,
                 OutboxStatus.STARTED,
                 UUID.fromString(paymentResponse.getSagaId()));
