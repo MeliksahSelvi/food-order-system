@@ -31,7 +31,7 @@ public class OrderOutboxEntity {
     private String type;
     private String payload;
     @Enumerated(EnumType.STRING)
-    private OrderApprovalStatus orderApprovalStatus;
+    private OrderApprovalStatus approvalStatus;
     @Enumerated(EnumType.STRING)
     private OutboxStatus outboxStatus;
     @Version

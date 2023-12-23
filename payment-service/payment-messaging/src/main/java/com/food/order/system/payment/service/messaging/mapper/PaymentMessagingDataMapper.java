@@ -18,29 +18,29 @@ import java.util.UUID;
 @Component
 public class PaymentMessagingDataMapper {
 
-    public PaymentRequest paymentRequestAvroModelToPaymentRequest(PaymentRequestAvroModel paymentRequestAvroModel) {
+    public PaymentRequest paymentRequestAvroModelToPaymentRequest(PaymentRequestAvroModel avroModel) {
         return PaymentRequest.builder()
                 .id(UUID.randomUUID().toString())
-                .sagaId("")
-                .customerId(paymentRequestAvroModel.getCustomerId())
-                .orderId(paymentRequestAvroModel.getOrderId())
-                .price(paymentRequestAvroModel.getPrice())
-                .createdAt(paymentRequestAvroModel.getCreatedAt())
-                .paymentOrderStatus(PaymentOrderStatus.valueOf(paymentRequestAvroModel.getPaymentOrderStatus().name()))
+                .sagaId(avroModel.getSagaId())
+                .customerId(avroModel.getCustomerId())
+                .orderId(avroModel.getOrderId())
+                .price(avroModel.getPrice())
+                .createdAt(avroModel.getCreatedAt())
+                .paymentOrderStatus(PaymentOrderStatus.valueOf(avroModel.getPaymentOrderStatus().name()))
                 .build();
     }
 
-    public PaymentResponseAvroModel orderEventPayloadToPaymentResponseAvroModel(String sagaId, OrderEventPayload orderEventPayload) {
+    public PaymentResponseAvroModel orderEventPayloadToPaymentResponseAvroModel(String sagaId, OrderEventPayload payload) {
         return PaymentResponseAvroModel.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setSagaId(sagaId)
-                .setPaymentId(orderEventPayload.getPaymentId())
-                .setCustomerId(orderEventPayload.getCustomerId())
-                .setOrderId(orderEventPayload.getOrderId())
-                .setPrice(orderEventPayload.getPrice())
-                .setCreatedAt(orderEventPayload.getCreatedAt().toInstant())
-                .setPaymentStatus(PaymentStatus.valueOf(orderEventPayload.getPaymentStatus()))
-                .setFailureMessages(orderEventPayload.getFailureMessages())
+                .setPaymentId(payload.getPaymentId())
+                .setCustomerId(payload.getCustomerId())
+                .setOrderId(payload.getOrderId())
+                .setPrice(payload.getPrice())
+                .setCreatedAt(payload.getCreatedAt().toInstant())
+                .setPaymentStatus(PaymentStatus.valueOf(payload.getPaymentStatus()))
+                .setFailureMessages(payload.getFailureMessages())
                 .build();
     }
 }
