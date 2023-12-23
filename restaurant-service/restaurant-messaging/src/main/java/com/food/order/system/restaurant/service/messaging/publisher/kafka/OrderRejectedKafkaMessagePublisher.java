@@ -46,7 +46,7 @@ public class OrderRejectedKafkaMessagePublisher implements OrderRejectedMessageP
                             restaurantServiceConfigData.getRestaurantApprovalResponseTopicName(),
                             message,
                             orderId,
-                            "RestaurantApprovalResponseAvroModel"));
+                            "RestaurantApprovalResponseAvroModel"));//todo make message.getclass.getname
 
             log.info("RestaurantApprovalResponseAvroModel sent to Kafka at: {}", System.nanoTime());
 
