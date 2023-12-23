@@ -46,7 +46,7 @@ public class OrderOutboxScheduler implements OutboxScheduler {
                             .collect(Collectors.joining(",")));
 
             outboxMessages.forEach(outboxMessage -> paymentResponseMessagePublisher.publish(outboxMessage, orderOutboxHelper::updateOutboxStatus));
-            log.info("{} OrderPaymentOutboxMessage sent to message bus!", outboxMessages.size());
+            log.info("{} OrderOutboxMessage sent to message bus!", outboxMessages.size());
         }
     }
 

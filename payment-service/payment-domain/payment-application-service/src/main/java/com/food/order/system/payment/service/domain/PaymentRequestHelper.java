@@ -60,7 +60,7 @@ public class PaymentRequestHelper {
         PaymentEvent paymentEvent = paymentDomainService.validateAndInitiatePayment(payment, creditEntry, creditHistories, failureMessages);
         persistEntities(payment, creditEntry, creditHistories, failureMessages);
 
-        orderOutboxHelper.saveOrderOutboxMessage(paymentDataMapper.paymentEventToOrderEventPayload(paymentEvent),
+        orderOutboxHelper.persistOrderOutboxMessage(paymentDataMapper.paymentEventToOrderEventPayload(paymentEvent),
                 paymentEvent.getPayment().getPaymentstatus(),
                 OutboxStatus.STARTED,
                 UUID.fromString(paymentRequest.getSagaId()));
@@ -87,7 +87,7 @@ public class PaymentRequestHelper {
         PaymentEvent paymentEvent = paymentDomainService.validateAndCancelPayment(payment, creditEntry, creditHistories, failureMessages);
         persistEntities(payment, creditEntry, creditHistories, failureMessages);
 
-        orderOutboxHelper.saveOrderOutboxMessage(paymentDataMapper.paymentEventToOrderEventPayload(paymentEvent),
+        orderOutboxHelper.persistOrderOutboxMessage(paymentDataMapper.paymentEventToOrderEventPayload(paymentEvent),
                 paymentEvent.getPayment().getPaymentstatus(),
                 OutboxStatus.STARTED,
                 UUID.fromString(paymentRequest.getSagaId()));

@@ -15,6 +15,5 @@ import java.util.function.BiConsumer;
  * */
 public interface PaymentResponseMessagePublisher {
 
-    void publish(OrderOutboxMessage orderOutboxMessage,
-                 BiConsumer<OrderOutboxMessage, OutboxStatus> outboxCallback);
+    void publish(OrderOutboxMessage orderOutboxMessage, BiConsumer<OrderOutboxMessage, OutboxStatus> outboxCallback);
 }

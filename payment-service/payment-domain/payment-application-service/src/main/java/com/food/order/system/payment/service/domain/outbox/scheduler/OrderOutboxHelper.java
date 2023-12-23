@@ -62,10 +62,10 @@ public class OrderOutboxHelper {
     }
 
     @Transactional
-    public void saveOrderOutboxMessage(OrderEventPayload orderEventPayload,
-                                       PaymentStatus paymentStatus,
-                                       OutboxStatus outboxStatus,
-                                       UUID sagaId) {
+    public void persistOrderOutboxMessage(OrderEventPayload orderEventPayload,
+                                          PaymentStatus paymentStatus,
+                                          OutboxStatus outboxStatus,
+                                          UUID sagaId) {
 
         save(OrderOutboxMessage.builder()
                 .id(UUID.randomUUID())
