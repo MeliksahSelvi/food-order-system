@@ -67,9 +67,9 @@ ALTER TABLE restaurant.restaurant_products
 DROP TYPE IF EXISTS outbox_status;
 CREATE TYPE outbox_status AS ENUM ('STARTED', 'COMPLETED', 'FAILED');
 
-DROP TABLE IF EXISTS restaurant.order_outbox CASCADE;
+DROP TABLE IF EXISTS "restaurant".order_outbox CASCADE;
 
-CREATE TABLE restaurant.order_outbox
+CREATE TABLE "restaurant".order_outbox
 (
     id uuid NOT NULL,
     saga_id uuid NOT NULL,
