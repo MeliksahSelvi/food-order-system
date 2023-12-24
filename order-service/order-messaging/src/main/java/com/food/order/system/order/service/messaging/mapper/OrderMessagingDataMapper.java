@@ -3,14 +3,19 @@ package com.food.order.system.order.service.messaging.mapper;
 import com.food.order.system.domain.valueobject.OrderApprovalStatus;
 import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.kafka.order.avro.model.*;
+import com.food.order.system.order.service.domain.dto.message.CustomerModel;
 import com.food.order.system.order.service.domain.dto.message.PaymentResponse;
 import com.food.order.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import com.food.order.system.order.service.domain.outbox.model.approval.OrderApprovalEventPayload;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static com.food.order.system.domain.DomainConstants.UTC;
 
 /**
  * @Author mselvi
@@ -77,6 +82,16 @@ public class OrderMessagingDataMapper {
                         collect(Collectors.toList()))
                 .setPrice(payload.getPrice())
                 .setCreatedAt(payload.getCreatedAt().toInstant())
+                .build();
+    }
+
+    public CustomerModel customerAvroModelToCustomerModel(CustomerAvroModel customerAvroModel) {
+        return CustomerModel.builder()
+                .id(customerAvroModel.getId())
+                .username(customerAvroModel.getUsername())
+                .firstName(customerAvroModel.getFirstName())
+                .lastName(customerAvroModel.getLastName())
+                .createdAt(ZonedDateTime.ofInstant(customerAvroModel.getCreatedAt(), ZoneId.of(UTC)))
                 .build();
     }
 }

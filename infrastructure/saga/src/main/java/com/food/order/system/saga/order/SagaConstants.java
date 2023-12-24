@@ -11,4 +11,5 @@ public final class SagaConstants {
     }
 
     public static final String ORDER_SAGA_NAME = "OrderProcessingSaga";
+    public static final String CUSTOMER_SAGA_NAME = "CustomerCreateSaga";
 }
