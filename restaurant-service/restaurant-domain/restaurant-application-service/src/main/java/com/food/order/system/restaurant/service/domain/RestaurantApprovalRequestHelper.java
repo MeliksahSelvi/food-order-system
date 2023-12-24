@@ -82,7 +82,7 @@ public class RestaurantApprovalRequestHelper {
 
     private boolean publishIfOutboxMessageProcessedForPayment(RestaurantApprovalRequest restaurantApprovalRequest) {
         Optional<OrderOutboxMessage> orderOutboxMessage =
-                orderOutboxHelper.getCompletedOrderOutboxMessageBySagaIdAndOrderApprovalStatusAndOutboxStatus(
+                orderOutboxHelper.getCompletedOrderOutboxMessageBySagaIdAndOutboxStatus(
                         UUID.fromString(restaurantApprovalRequest.getSagaId()),
                         OutboxStatus.COMPLETED);
         if (orderOutboxMessage.isPresent()) {
