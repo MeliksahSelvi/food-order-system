@@ -1,8 +1,10 @@
 server:
   port: 8184
 
-#customer-service:
-#  customer-topic-name: customer
+customer-service:
+  customer-request-topic-name: customer
+  outbox-scheduler-fixed-rate: 10000
+  outbox-scheduler-initial-delay: 10000
 
 spring:
   jpa:
@@ -13,7 +15,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=customer&binaryTransfer=true&reWriteBatchedInserts=true
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=customer&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
     #todo username password encrypt edilebilir.
     username: postgres
     password: 1234
@@ -23,7 +25,6 @@ spring:
       mode: ALWAYS
       schema-locations: classpath:init-schema.sql
       platform: postgres
-      data-locations: classpath:init-data.sql
 
 kafka-config:
   bootstrap-servers: localhost:19092, localhost:29092, localhost:39092
