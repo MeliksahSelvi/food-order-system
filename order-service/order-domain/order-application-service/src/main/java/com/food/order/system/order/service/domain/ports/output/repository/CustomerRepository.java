@@ -11,9 +11,11 @@ import java.util.UUID;
  */
 
 /*
-* Customer Aggregate Root'unun output portu
-* */
+ * Customer Aggregate Root'unun output portu
+ * */
 public interface CustomerRepository {
 
     Optional<Customer> findCustomer(UUID customerId);
+
+    Customer save(Customer customer);
 }

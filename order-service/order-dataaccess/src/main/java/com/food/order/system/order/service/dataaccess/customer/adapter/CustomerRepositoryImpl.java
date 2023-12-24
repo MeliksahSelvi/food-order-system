@@ -7,6 +7,7 @@ import com.food.order.system.order.service.domain.entity.Customer;
 import com.food.order.system.order.service.domain.ports.output.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -31,5 +32,13 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     public Optional<Customer> findCustomer(UUID customerId) {
         Optional<CustomerEntity> customerEntityOptional = customerJpaRepository.findById(customerId);
         return customerEntityOptional.map(customerDataAccessMapper::customerEntityToCustomer);
+    }
+
+    @Transactional
+    @Override
+    public Customer save(Customer customer) {
+        CustomerEntity customerEntity = customerDataAccessMapper.customerToCustomerEntity(customer);
+        customerEntity = customerJpaRepository.save(customerEntity);
+        return customerDataAccessMapper.customerEntityToCustomer(customerEntity);
     }
 }

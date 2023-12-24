@@ -4,11 +4,9 @@ import com.food.order.system.domain.valueobject.*;
 import com.food.order.system.order.service.domain.dto.create.CreateOrderCommand;
 import com.food.order.system.order.service.domain.dto.create.CreateOrderResponse;
 import com.food.order.system.order.service.domain.dto.create.OrderAddress;
+import com.food.order.system.order.service.domain.dto.message.CustomerModel;
 import com.food.order.system.order.service.domain.dto.track.TrackOrderResponse;
-import com.food.order.system.order.service.domain.entity.Order;
-import com.food.order.system.order.service.domain.entity.OrderItem;
-import com.food.order.system.order.service.domain.entity.Product;
-import com.food.order.system.order.service.domain.entity.Restaurant;
+import com.food.order.system.order.service.domain.entity.*;
 import com.food.order.system.order.service.domain.event.OrderCancelledEvent;
 import com.food.order.system.order.service.domain.event.OrderCreatedEvent;
 import com.food.order.system.order.service.domain.event.OrderPaidEvent;
@@ -16,6 +14,7 @@ import com.food.order.system.order.service.domain.outbox.model.approval.OrderApp
 import com.food.order.system.order.service.domain.outbox.model.approval.OrderApprovalEventProduct;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import com.food.order.system.order.service.domain.valueobject.StreetAddress;
+import com.food.order.system.outbox.customer.model.CustomerEventPayload;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -99,6 +98,25 @@ public class OrderDataMapper {
                                 .build()).collect(Collectors.toList()))
                 .price(orderPaidEvent.getOrder().getPrice().getAmount())
                 .createdAt(orderPaidEvent.getCreatedAt())
+                .build();
+    }
+
+    public Customer customerModelToCustomer(CustomerModel customerModel) {
+        return Customer.builder()
+                .customerId(new CustomerId(UUID.fromString(customerModel.getId())))
+                .username(customerModel.getUsername())
+                .firstName(customerModel.getFirstName())
+                .lastName(customerModel.getLastName())
+                .build();
+    }
+
+    public CustomerEventPayload customerToCustomerEventPayload(CustomerModel model) {
+        return CustomerEventPayload.builder()
+                .customerId(model.getId())
+                .username(model.getUsername())
+                .firstName(model.getFirstName())
+                .lastName(model.getLastName())
+                .createdAt(model.getCreatedAt())
                 .build();
     }
 
