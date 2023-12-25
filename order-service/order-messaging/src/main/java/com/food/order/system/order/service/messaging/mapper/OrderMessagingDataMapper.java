@@ -4,10 +4,10 @@ import com.food.order.system.domain.event.payload.PaymentOrderEventPayload;
 import com.food.order.system.domain.event.payload.RestaurantOrderEventPayload;
 import com.food.order.system.domain.valueobject.OrderApprovalStatus;
 import com.food.order.system.domain.valueobject.PaymentStatus;
-import com.food.order.system.kafka.order.avro.model.CustomerAvroModel;
 import com.food.order.system.order.service.domain.dto.message.CustomerModel;
 import com.food.order.system.order.service.domain.dto.message.PaymentResponse;
 import com.food.order.system.order.service.domain.dto.message.RestaurantApprovalResponse;
+import com.food.order.system.outbox.customer.model.CustomerEventPayload;
 import debezium.payment.order_outbox.Value;
 import org.springframework.stereotype.Component;
 
@@ -53,13 +53,14 @@ public class OrderMessagingDataMapper {
                 .build();
     }
 
-    public CustomerModel customerAvroModelToCustomerModel(CustomerAvroModel customerAvroModel) {
+    public CustomerModel customerAvroModelToCustomerModel(CustomerEventPayload customerEventPayload,
+                                                          debezium.customer.customer_outbox.Value customerAvroModel) {
         return CustomerModel.builder()
-                .id(customerAvroModel.getId())
-                .username(customerAvroModel.getUsername())
-                .firstName(customerAvroModel.getFirstName())
-                .lastName(customerAvroModel.getLastName())
-                .createdAt(ZonedDateTime.ofInstant(customerAvroModel.getCreatedAt(), ZoneId.of(UTC)))
+                .id(customerEventPayload.getCustomerId())
+                .username(customerEventPayload.getUsername())
+                .firstName(customerEventPayload.getFirstName())
+                .lastName(customerEventPayload.getLastName())
+                .createdAt(ZonedDateTime.ofInstant(Instant.parse(customerAvroModel.getCreatedAt()), ZoneId.of(UTC)))
                 .build();
     }
 }

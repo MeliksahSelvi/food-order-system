@@ -3,7 +3,7 @@ package com.food.order.system.payment.service.messaging.mapper;
 import com.food.order.system.domain.event.payload.OrderPaymentEventPayload;
 import com.food.order.system.domain.valueobject.PaymentOrderStatus;
 import com.food.order.system.payment.service.domain.dto.PaymentRequest;
-import debezium.payment.order_outbox.Value;
+import debezium.order.payment_outbox.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

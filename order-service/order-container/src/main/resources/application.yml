@@ -12,7 +12,7 @@ order-service:
   payment-response-topic-name: debezium.payment.order_outbox
   restaurant-approval-request-topic-name: debezium.order.restaurant_approval_outbox
   restaurant-approval-response-topic-name: debezium.restaurant.order_outbox
-  customer-response-topic-name: debezium.order.customer_outbox
+  customer-response-topic-name: debezium.customer.customer_outbox
 
 spring:
   jpa:

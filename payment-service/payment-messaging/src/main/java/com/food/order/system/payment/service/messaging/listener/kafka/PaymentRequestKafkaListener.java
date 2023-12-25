@@ -9,8 +9,8 @@ import com.food.order.system.payment.service.domain.exception.PaymentApplication
 import com.food.order.system.payment.service.domain.exception.PaymentNotFoundException;
 import com.food.order.system.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
 import com.food.order.system.payment.service.messaging.mapper.PaymentMessagingDataMapper;
-import debezium.payment.order_outbox.Envelope;
-import debezium.payment.order_outbox.Value;
+import debezium.order.payment_outbox.Envelope;
+import debezium.order.payment_outbox.Value;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PSQLState;
@@ -61,14 +61,14 @@ public class PaymentRequestKafkaListener implements KafkaSingleItemConsumer<Enve
             OrderPaymentEventPayload orderPaymentEventPayload = kafkaMessageHelper.
                     getOrderEventPayload(paymentRequestAvroModel.getPayload(), OrderPaymentEventPayload.class);
             try {
-                if (PaymentOrderStatus.PENDING.name().equals(paymentRequestAvroModel.getPaymentStatus())) {
+                if (PaymentOrderStatus.PENDING.name().equals(orderPaymentEventPayload.getPaymentOrderStatus())) {
                     log.info("Processing payment for order id: {}", orderPaymentEventPayload.getOrderId());
                     paymentRequestMessageListener.completePayment(paymentMessagingDataMapper
-                            .paymentRequestAvroModelToPaymentRequest(orderPaymentEventPayload,paymentRequestAvroModel));
-                } else if (PaymentOrderStatus.CANCELLED.name().equals(paymentRequestAvroModel.getPaymentStatus())) {
+                            .paymentRequestAvroModelToPaymentRequest(orderPaymentEventPayload, paymentRequestAvroModel));
+                } else if (PaymentOrderStatus.CANCELLED.name().equals(orderPaymentEventPayload.getPaymentOrderStatus())) {
                     log.info("Cancelling payment for order id: {}", orderPaymentEventPayload.getOrderId());
                     paymentRequestMessageListener.cancelPayment(paymentMessagingDataMapper
-                            .paymentRequestAvroModelToPaymentRequest(orderPaymentEventPayload,paymentRequestAvroModel));
+                            .paymentRequestAvroModelToPaymentRequest(orderPaymentEventPayload, paymentRequestAvroModel));
                 }
             } catch (DataAccessException e) {
                 /*
