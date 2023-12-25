@@ -11,7 +11,6 @@ import com.food.order.system.domain.valueobject.CustomerId;
 /*
  * Customer aggregate'sinin root'u olarak Customer entity'sini seçtik.
  * */
-//todo add initialization and validation business logic method
 public class Customer extends AggregateRoot<CustomerId> {
     private final String username;
     private final String firstName;

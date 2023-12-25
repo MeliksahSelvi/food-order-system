@@ -44,16 +44,4 @@ public class RestaurantMessagingDataMapper {
                 .createdAt(Instant.parse(requestAvroModel.getCreatedAt()))
                 .build();
     }
-
-    public RestaurantApprovalResponseAvroModel orderEventPayloadToApprovalResponseAvroModel(String sagaId, OrderEventPayload payload) {
-        return RestaurantApprovalResponseAvroModel.newBuilder()
-                .setId(UUID.randomUUID().toString())
-                .setSagaId(sagaId)
-                .setOrderId(payload.getOrderId())
-                .setRestaurantId(payload.getRestaurantId())
-                .setCreatedAt(payload.getCreatedAt().toInstant())
-                .setOrderApprovalStatus(OrderApprovalStatus.valueOf(payload.getOrderApprovalStatus()))
-                .setFailureMessages(payload.getFailureMessages())
-                .build();
-    }
 }

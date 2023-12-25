@@ -1,10 +1,6 @@
 server:
   port: 8184
 
-#todo komple silinebilir.
-#customer-service:
-#  customer-response-topic-name: customer-response
-
 spring:
   jpa:
     open-in-view: false
