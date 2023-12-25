@@ -17,6 +17,7 @@
         <module>common-application</module>
         <module>common-dataaccess</module>
         <module>common-outbox</module>
+        <module>common-messaging</module>
     </modules>
 
 </project>

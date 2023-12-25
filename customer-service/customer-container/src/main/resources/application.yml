@@ -1,10 +1,9 @@
 server:
   port: 8184
 
-customer-service:
-  customer-request-topic-name: customer
-  outbox-scheduler-fixed-rate: 10000
-  outbox-scheduler-initial-delay: 10000
+#todo komple silinebilir.
+#customer-service:
+#  customer-response-topic-name: customer-response
 
 spring:
   jpa:

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @Created 24.12.2023
  */
 
+//todo komple silinebilir.
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "customer-service")

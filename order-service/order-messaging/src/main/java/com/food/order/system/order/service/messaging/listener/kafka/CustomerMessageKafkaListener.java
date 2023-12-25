@@ -29,7 +29,7 @@ public class CustomerMessageKafkaListener implements KafkaConsumer<CustomerAvroM
 
     @Override
     @KafkaListener(id = "${kafka-consumer-config.customer-group-id}",
-            topics = "${order-service.customer-request-topic-name}")
+            topics = "${order-service.customer-response-topic-name}")
     public void receive(@Payload List<CustomerAvroModel> messages,
                         @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,
                         @Header(KafkaHeaders.RECEIVED_PARTITION) List<Integer> partitions,

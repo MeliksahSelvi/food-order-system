@@ -13,7 +13,6 @@ import com.food.order.system.payment.service.domain.exception.PaymentNotFoundExc
 import com.food.order.system.payment.service.domain.mapper.PaymentDataMapper;
 import com.food.order.system.payment.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.payment.service.domain.outbox.scheduler.OrderOutboxHelper;
-import com.food.order.system.payment.service.domain.ports.output.message.publisher.PaymentResponseMessagePublisher;
 import com.food.order.system.payment.service.domain.ports.output.repository.CreditEntryRepository;
 import com.food.order.system.payment.service.domain.ports.output.repository.CreditHistoryRepository;
 import com.food.order.system.payment.service.domain.ports.output.repository.PaymentRepository;
@@ -43,11 +42,10 @@ public class PaymentRequestHelper {
     private final CreditEntryRepository creditEntryRepository;
     private final CreditHistoryRepository creditHistoryRepository;
     private final OrderOutboxHelper orderOutboxHelper;
-    private final PaymentResponseMessagePublisher paymentResponseMessagePublisher;
 
     @Transactional
     public void persistPayment(PaymentRequest paymentRequest) {
-        if (publishIfOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.COMPLETED)) {
+        if (ifOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.COMPLETED)) {
             log.info("An outbox message with saga id: {} is already saved to database!",
                     paymentRequest.getSagaId());
             return;
@@ -68,7 +66,7 @@ public class PaymentRequestHelper {
 
     @Transactional
     public void persistCancelPayment(PaymentRequest paymentRequest) {
-        if (publishIfOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.CANCELLED)) {
+        if (ifOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.CANCELLED)) {
             log.info("An outbox message with saga id: {} is already saved to database!",
                     paymentRequest.getSagaId());
             return;
@@ -127,14 +125,13 @@ public class PaymentRequestHelper {
      * order service consume etmeye başladığı zaman bir problem olursa order service aynı sagaId'ye sahip olan
      * başka bir event consume etmek isteyebilir.Biz de aslında DB'ye kaydedilmiş mesajı tekrar DB'ye kaydetmeden tekrar publish ediyoruz.
      * */
-    private boolean publishIfOutboxMessageProcessedForPayment(PaymentRequest paymentRequest,
-                                                              PaymentStatus paymentStatus) {
+    private boolean ifOutboxMessageProcessedForPayment(PaymentRequest paymentRequest,
+                                                       PaymentStatus paymentStatus) {
         Optional<OrderOutboxMessage> orderOutboxMessage =
                 orderOutboxHelper.getCompletedOrderOutboxMessageBySagaIdAndPaymentStatus(
                         UUID.fromString(paymentRequest.getSagaId()),
                         paymentStatus);
         if (orderOutboxMessage.isPresent()) {
-            paymentResponseMessagePublisher.publish(orderOutboxMessage.get(), orderOutboxHelper::updateOutboxStatus);
             return true;
         }
         return false;
