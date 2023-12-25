@@ -4,6 +4,7 @@
 /common/common-dataaccess/target
 /common/common-domain/target
 /common/common-outbox/target
+/common/common-messaging/target
 /infrastructure/docker-compose/volumes/
 /infrastructure/kafka/kafka-config-data/target
 /infrastructure/kafka/kafka-model/target
