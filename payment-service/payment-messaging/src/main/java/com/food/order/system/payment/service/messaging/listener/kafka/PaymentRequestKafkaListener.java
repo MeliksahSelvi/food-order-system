@@ -1,16 +1,11 @@
 package com.food.order.system.payment.service.messaging.listener.kafka;
 
-import com.food.order.system.domain.event.payload.OrderPaymentEventPayload;
-import com.food.order.system.kafka.consumer.KafkaSingleItemConsumer;
-import com.food.order.system.kafka.order.avro.model.PaymentOrderStatus;
-import com.food.order.system.kafka.producer.KafkaMessageHelper;
-import com.food.order.system.messaging.DebeziumOp;
+import com.food.order.system.kafka.consumer.KafkaConsumer;
+import com.food.order.system.kafka.order.avro.model.PaymentRequestAvroModel;
 import com.food.order.system.payment.service.domain.exception.PaymentApplicationServiceException;
 import com.food.order.system.payment.service.domain.exception.PaymentNotFoundException;
 import com.food.order.system.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
 import com.food.order.system.payment.service.messaging.mapper.PaymentMessagingDataMapper;
-import debezium.order.payment_outbox.Envelope;
-import debezium.order.payment_outbox.Value;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PSQLState;
@@ -22,6 +17,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @Author mselvi
@@ -35,40 +31,40 @@ import java.sql.SQLException;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class PaymentRequestKafkaListener implements KafkaSingleItemConsumer<Envelope> {
+public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequestAvroModel> {
 
     private final PaymentRequestMessageListener paymentRequestMessageListener;
     private final PaymentMessagingDataMapper paymentMessagingDataMapper;
-    private final KafkaMessageHelper kafkaMessageHelper;
 
-    /*
-     * List olarak messageleri alıp optimistic lock yapmak yerine tek bir message alıp pessimistic lock yaptık.
-     * */
+
     @Override
     @KafkaListener(id = "${kafka-consumer-config.payment-consumer-group-id}",
             topics = "${payment-service.payment-request-topic-name}")
-    public void receive(@Payload Envelope message,
-                        @Header(KafkaHeaders.RECEIVED_KEY) String key,
-                        @Header(KafkaHeaders.RECEIVED_PARTITION) Integer partition,
-                        @Header(KafkaHeaders.OFFSET) Long offset) {
+    public void receive(@Payload List<PaymentRequestAvroModel> messages,
+                        @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,
+                        @Header(KafkaHeaders.RECEIVED_PARTITION) List<Integer> partitions,
+                        @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
+
+        log.info("{} number of payment requests received with keys:{}, partitions:{} and offsets:{}",
+                messages.size(),
+                keys.toString(),
+                partitions.toString(),
+                offsets.toString());
 
 
-        if (message.getBefore() == null && DebeziumOp.CREATE.getValue().equals(message.getOp())) {
-            log.info("Incoming message in PaymentRequestKafkaListener: {} with key:{}, partition:{} and offset:{}",
-                    message, key, partition, offset);
-
-            Value paymentRequestAvroModel = message.getAfter();
-            OrderPaymentEventPayload orderPaymentEventPayload = kafkaMessageHelper.
-                    getOrderEventPayload(paymentRequestAvroModel.getPayload(), OrderPaymentEventPayload.class);
+        messages.forEach(paymentRequestAvroModel -> {
             try {
-                if (PaymentOrderStatus.PENDING.name().equals(orderPaymentEventPayload.getPaymentOrderStatus())) {
-                    log.info("Processing payment for order id: {}", orderPaymentEventPayload.getOrderId());
-                    paymentRequestMessageListener.completePayment(paymentMessagingDataMapper
-                            .paymentRequestAvroModelToPaymentRequest(orderPaymentEventPayload, paymentRequestAvroModel));
-                } else if (PaymentOrderStatus.CANCELLED.name().equals(orderPaymentEventPayload.getPaymentOrderStatus())) {
-                    log.info("Cancelling payment for order id: {}", orderPaymentEventPayload.getOrderId());
-                    paymentRequestMessageListener.cancelPayment(paymentMessagingDataMapper
-                            .paymentRequestAvroModelToPaymentRequest(orderPaymentEventPayload, paymentRequestAvroModel));
+                switch (paymentRequestAvroModel.getPaymentOrderStatus()) {
+                    case PENDING -> {
+                        log.info("Processing payment for order id: {}", paymentRequestAvroModel.getOrderId());
+                        paymentRequestMessageListener.completePayment(paymentMessagingDataMapper
+                                .paymentRequestAvroModelToPaymentRequest(paymentRequestAvroModel));
+                    }
+                    case CANCELLED -> {
+                        log.info("Cancelling payment for order id: {}", paymentRequestAvroModel.getOrderId());
+                        paymentRequestMessageListener.cancelPayment(paymentMessagingDataMapper
+                                .paymentRequestAvroModelToPaymentRequest(paymentRequestAvroModel));
+                    }
                 }
             } catch (DataAccessException e) {
                 /*
@@ -81,15 +77,15 @@ public class PaymentRequestKafkaListener implements KafkaSingleItemConsumer<Enve
 
                     log.error("Caught unique constraint exception with sql state: {} " +
                                     " in PaymentRequestKafkaListener for order id: {}",
-                            sqlException.getSQLState(), orderPaymentEventPayload.getOrderId());
+                            sqlException.getSQLState(), paymentRequestAvroModel.getOrderId());
                 } else {
                     throw new PaymentApplicationServiceException("Throwing DataAccessException in" +
                             " PaymentRequestKafkaListener: " + e.getMessage(), e);
                 }
-            } catch (PaymentNotFoundException e) {
-                log.error("No payment found for order id: {}", orderPaymentEventPayload.getOrderId());
+            }catch (PaymentNotFoundException e){
+                log.error("No payment found for order id: {}",paymentRequestAvroModel.getOrderId());
             }
-        }
+        });
 
     }
 }

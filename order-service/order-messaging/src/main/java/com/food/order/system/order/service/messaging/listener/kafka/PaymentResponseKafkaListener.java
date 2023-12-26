@@ -1,19 +1,12 @@
 package com.food.order.system.order.service.messaging.listener.kafka;
 
-import com.food.order.system.domain.event.payload.PaymentOrderEventPayload;
-import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.kafka.consumer.KafkaConsumer;
-import com.food.order.system.kafka.producer.KafkaMessageHelper;
-import com.food.order.system.messaging.DebeziumOp;
+import com.food.order.system.kafka.order.avro.model.PaymentResponseAvroModel;
 import com.food.order.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.order.system.order.service.domain.ports.input.message.listener.payment.PaymentResponseMessageListener;
 import com.food.order.system.order.service.messaging.mapper.OrderMessagingDataMapper;
-import debezium.payment.order_outbox.Envelope;
-import debezium.payment.order_outbox.Value;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.postgresql.util.PSQLState;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -21,7 +14,6 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -36,71 +28,54 @@ import java.util.List;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class PaymentResponseKafkaListener implements KafkaConsumer<Envelope> {
+public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentResponseAvroModel> {
 
     private final PaymentResponseMessageListener paymentResponseMessageListener;
     private final OrderMessagingDataMapper orderMessagingDataMapper;
-    private final KafkaMessageHelper kafkaMessageHelper;
 
-    /*
-     * Burada list yerine tek tek de message okuyabiliriz. Fakat hata şansımız az ise list kullanmak daha verimli.
-     * */
     @Override
     @KafkaListener(id = "${kafka-consumer-config.payment-consumer-group-id}",
             topics = "${order-service.payment-response-topic-name}")
-    public void receive(@Payload List<Envelope> messages,
+    public void receive(@Payload List<PaymentResponseAvroModel> messages,
                         @Header(KafkaHeaders.RECEIVED_KEY) List<String> keys,
                         @Header(KafkaHeaders.RECEIVED_PARTITION) List<Integer> partitions,
                         @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
 
-        log.info("{} number of payment responses received!",
-                messages.stream().filter(message -> message.getBefore() == null &&
-                        DebeziumOp.CREATE.getValue().equals(message.getOp())).toList());
+        log.info("{} number of payment responses received with keys: {}, partitions: {} and offsets: {}",
+                messages.size(),
+                keys.toString(),
+                partitions.toString(),
+                offsets.toString());
 
-        messages.forEach(avroModel -> {
-            if (avroModel.getBefore() == null && DebeziumOp.CREATE.getValue().equals(avroModel.getOp())) {
-                log.info("Incoming message in PaymentResponseKafkaListener: {}", avroModel);
-                Value paymentResponseAvroModel = avroModel.getAfter();
-                PaymentOrderEventPayload paymentOrderEventPayload = kafkaMessageHelper.
-                        getOrderEventPayload(paymentResponseAvroModel.getPayload(), PaymentOrderEventPayload.class);
-                try {
-                    if (PaymentStatus.COMPLETED.name().equals(paymentOrderEventPayload.getPaymentStatus())) {
-                        log.info("Processing successful payment for order id: {}", paymentOrderEventPayload.getOrderId());
+        messages.forEach(paymentResponseAvroModel -> {
+            try {
+                switch (paymentResponseAvroModel.getPaymentStatus()) {
+                    case COMPLETED -> {
+                        log.info("Processing successful payment for order id: {}", paymentResponseAvroModel.getOrderId());
                         paymentResponseMessageListener.paymentCompleted(
-                                orderMessagingDataMapper.paymentResponseAvroModelToPaymentResponse(paymentOrderEventPayload, paymentResponseAvroModel));
-                    } else if (PaymentStatus.CANCELLED.name().equals(paymentOrderEventPayload.getPaymentStatus()) &&
-                            PaymentStatus.FAILED.name().equals(paymentOrderEventPayload.getPaymentStatus())) {
-                        log.info("Processing unsuccessful payment for order id: {}", paymentOrderEventPayload.getOrderId());
-                        paymentResponseMessageListener.paymentCancelled(
-                                orderMessagingDataMapper.paymentResponseAvroModelToPaymentResponse(paymentOrderEventPayload, paymentResponseAvroModel));
+                                orderMessagingDataMapper.paymentResponseAvroModelToPaymentResponse(paymentResponseAvroModel));
                     }
-
-                    /*
-                     * optimisticlock exception şundan dolayı çıkabilir. Eğer PaymentResponseMessageListener input portu içinde
-                     * işlemler yapılırken başka bir thread payment veya approval outbox işlemlerine müdahale etmeye çalışırsa
-                     * bu hata alınır.Bunu version annotation'u sayesinde tutarsızlığın önüne geçeriz.
-                     * */
-                } catch (OptimisticLockingFailureException e) {
-                    log.error("Caught optimistic locking exception in PaymentResponseKafkaListener for order id: {}",
-                            paymentOrderEventPayload.getOrderId());
-                } catch (OrderNotFoundException e) {
-                    log.error("No order found for order id: {}", paymentOrderEventPayload.getOrderId());
-                } catch (DataAccessException e) {
-                    SQLException sqlException = (SQLException) e.getRootCause();
-                    if (sqlException != null && sqlException.getSQLState() != null &&
-                            PSQLState.UNIQUE_VIOLATION.getState().equals(sqlException.getSQLState())) {
-
-                        log.error("Caught unique constraint exception with sql state: {} " +
-                                        " in PaymentResponseKafkaListener for order id: {}",
-                                sqlException.getSQLState(), paymentOrderEventPayload.getOrderId());
+                    case CANCELLED, FAILED -> {
+                        log.info("Processing unsuccessful payment for order id: {}", paymentResponseAvroModel.getOrderId());
+                        paymentResponseMessageListener.paymentCancelled(
+                                orderMessagingDataMapper.paymentResponseAvroModelToPaymentResponse(paymentResponseAvroModel));
                     }
                 }
                 /*
-                 * Bu 2 error'u şundan dolayı handle ettik.Bu mesajların tekrar kafkadan okunmasını istemiyoruz.
-                 * Handle etmediğimiz hatalar fırlatıldığı zaman bu consumer kafka'dan verileri tekrar okumaya çalışacaktır.
-                 * 3 verimiz olduğunu düşünelim. 3.de bu hatalar alınırsa ilk 2 veri tekrar okunmasın diye bu kontrol işimize yaradı.
+                 * optimisticlock exception şundan dolayı çıkabilir. Eğer PaymentResponseMessageListener input portu içinde
+                 * işlemler yapılırken başka bir thread payment veya approval outbox işlemlerine müdahale etmeye çalışırsa
+                 * bu hata alınır.Bunu version annotation'u sayesinde tutarsızlığın önüne geçeriz.
                  * */
+            } catch (OptimisticLockingFailureException e) {
+                log.error("Caught optimistic locking exception in PaymentResponseKafkaListener for order id: {}",
+                        paymentResponseAvroModel.getOrderId());
+            } catch (OrderNotFoundException e) {
+                log.error("No order found for order id: {}", paymentResponseAvroModel.getOrderId());
             }
+            /*
+             * Bu 2 error'u şundan dolayı handle ettik.Bu mesajların tekrar kafkadan okunmasını istemiyoruz.
+             * Handle etmediğimiz hatalar fırlatıldığı zaman bu consumer kafka'dan verileri tekrar okumaya çalışacaktır.
+             * */
         });
     }
 }
