@@ -18,7 +18,6 @@ import static com.food.order.system.domain.DomainConstants.UTC;
 public class CustomerDomainServiceImpl implements CustomerDomainService {
     @Override
     public CustomerCreatedEvent validateAndInitiate(Customer customer) {
-        //todo add initialize and validate business logic methods
         log.info("Customer with id: {} is initiated", customer.getId().getValue());
         return new CustomerCreatedEvent(customer, ZonedDateTime.now(ZoneId.of(UTC)));
     }

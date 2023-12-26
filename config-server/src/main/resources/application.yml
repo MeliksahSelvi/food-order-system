@@ -1,0 +1,21 @@
+server:
+  port: 8888
+
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.cloud.config: DEBUG
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      fail-fast: true
+      server:
+        default-label: main
+        git:
+          uri: https://github.com/MeliksahSelvi/food-config
+          username: MeliksahSelvi
+          password: ENC(oVUWREzR2EGRmqI274W2D2XAsyRt+Z/qbcEO2WeUyCmxnUQEDo24v7EODnwxGEb+UlVeohzMbTuD7R+ruDOv2rGHYDHkp14eXzK7tAfKll4=)
+          clone-on-start: true

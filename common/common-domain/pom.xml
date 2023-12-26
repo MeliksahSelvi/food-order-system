@@ -11,4 +11,10 @@
     <!--    bu modül tüm domain core için ortak olabilecek marker interface ve base class'ları barındırması için oluşturuldu.-->
     <artifactId>common-domain</artifactId>
 
+<dependencies>
+    <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+    </dependency>
+</dependencies>
 </project>
