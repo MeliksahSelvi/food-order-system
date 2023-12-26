@@ -10,6 +10,7 @@
         <module>customer-service</module>
         <module>payment-service</module>
         <module>restaurant-service</module>
+        <module>config-server</module>
     </modules>
 
     <parent>
@@ -32,6 +33,7 @@
         <kafka-avro-serializers.version>7.4.0</kafka-avro-serializers.version>
         <avro.version>1.11.0</avro.version>
         <jasypt-spring.version>3.0.5</jasypt-spring.version>
+        <spring-cloud.version>4.0.3</spring-cloud.version>
     </properties>
 
     <dependencyManagement>
@@ -200,6 +202,16 @@
                 <groupId>com.github.ulisesbocchio</groupId>
                 <artifactId>jasypt-spring-boot-starter</artifactId>
                 <version>${jasypt-spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-config</artifactId>
+                <version>${spring-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-config-server</artifactId>
+                <version>${spring-cloud.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
