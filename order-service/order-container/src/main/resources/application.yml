@@ -31,9 +31,8 @@ spring:
     #Toplu kayıtlarda birden çok ekleme yerine birden çok değere sahip tek bir ekleme ifadesi çalışacak.
     #UUID kullanıyoruz ve postgre'de UUID türünü kontrol eden özellikleri devre dışı bırakmak için string ifadeleri type olmadan DB'ye gönderecek
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=order&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
-    #todo username password encrypt edilebilir.
     username: postgres
-    password: 1234
+    password: ENC(AcGnCqtKPOCM3Z5/EplW3igwX6RK+YuNWFsCNutP2MwPiyx4WJ6Fe1peGAPZs/v3)
     driver-class-name: org.postgresql.Driver
   sql:
     init:

@@ -31,6 +31,7 @@
         <spring-kafka.version>3.0.12</spring-kafka.version>
         <kafka-avro-serializers.version>7.4.0</kafka-avro-serializers.version>
         <avro.version>1.11.0</avro.version>
+        <jasypt-spring.version>3.0.5</jasypt-spring.version>
     </properties>
 
     <dependencyManagement>
@@ -194,6 +195,11 @@
                 <artifactId>mockito-core</artifactId>
                 <version>${mockito.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${jasypt-spring.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

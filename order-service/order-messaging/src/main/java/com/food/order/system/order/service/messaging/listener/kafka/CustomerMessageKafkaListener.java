@@ -40,6 +40,9 @@ public class CustomerMessageKafkaListener implements KafkaConsumer<Envelope> {
                         @Header(KafkaHeaders.RECEIVED_PARTITION) List<Integer> partitions,
                         @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
 
+        /*
+        * Sadece save işlemlerini alıyoruz.update almıyoruz.
+        * */
         log.info("{} number of payment responses received!",
                 messages.stream().filter(message -> message.getBefore() == null &&
                         DebeziumOp.CREATE.getValue().equals(message.getOp())).toList());

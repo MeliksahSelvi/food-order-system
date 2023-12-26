@@ -19,9 +19,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=payment&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
-    #todo encrypt
     username: postgres
-    password: 1234
+    password: ENC(AcGnCqtKPOCM3Z5/EplW3igwX6RK+YuNWFsCNutP2MwPiyx4WJ6Fe1peGAPZs/v3)
     driver-class-name: org.postgresql.Driver
   sql:
     init:
