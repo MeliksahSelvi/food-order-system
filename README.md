@@ -28,7 +28,10 @@ Kafka 7.0.1
 <ul>
 <li>Security Authentication for Whole Microservices</li>
 <li>Api Gateway Pattern</li>
+<li>Service Discovery Pattern</li>
+<li>Cache Mechanism</li>
 <li>Tests</li>
+<li>Adding Java and Spring Boot version features</li>
 </ul>
 
 
