@@ -1,5 +1,9 @@
 package com.food.order.system.payment.service.dataaccess.creditentry.entity;
 
+import com.food.order.system.domain.valueobject.CustomerId;
+import com.food.order.system.domain.valueobject.Money;
+import com.food.order.system.payment.service.domain.entity.CreditEntry;
+import com.food.order.system.payment.service.domain.valueobject.CreditEntryId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -27,6 +31,14 @@ public class CreditEntryEntity {
     private UUID id;
     private UUID customerId;
     private BigDecimal totalCreditAmount;
+
+    public CreditEntry toModel() {
+        return CreditEntry.builder()
+                .creditEntryId(new CreditEntryId(id))
+                .customerId(new CustomerId(customerId))
+                .totalCreditAmount(new Money(totalCreditAmount))
+                .build();
+    }
 
     @Override
     public boolean equals(Object o) {

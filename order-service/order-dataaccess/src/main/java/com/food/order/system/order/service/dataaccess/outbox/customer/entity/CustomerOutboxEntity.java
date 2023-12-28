@@ -1,5 +1,6 @@
-package com.food.order.system.dataaccess.customer.entity;
+package com.food.order.system.order.service.dataaccess.outbox.customer.entity;
 
+import com.food.order.system.order.service.domain.outbox.model.customer.CustomerOutboxMessage;
 import com.food.order.system.outbox.OutboxStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 /**
  * @Author mselvi
- * @Created 24.12.2023
+ * @Created 28.12.2023
  */
 
 @Entity
@@ -33,6 +34,19 @@ public class CustomerOutboxEntity {
     private OutboxStatus outboxStatus;
     @Version
     private int version;
+
+    public CustomerOutboxMessage toModel() {
+        return CustomerOutboxMessage.builder()
+                .id(id)
+                .sagaId(sagaId)
+                .type(type)
+                .payload(payload)
+                .createdAt(createdAt)
+                .processedAt(processedAt)
+                .outboxStatus(outboxStatus)
+                .version(version)
+                .build();
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,4 +1,4 @@
-package com.food.order.system.dataaccess.restaurant.entity;
+package com.food.order.system.restaurant.service.dataaccess.restaurant.entity;
 
 import lombok.*;
 
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /**
  * @Author mselvi
- * @Created 18.12.2023
+ * @Created 28.12.2023
  */
 
 @Getter

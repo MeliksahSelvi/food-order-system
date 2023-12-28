@@ -1,6 +1,11 @@
 package com.food.order.system.payment.service.dataaccess.payment.entity;
 
+import com.food.order.system.domain.valueobject.CustomerId;
+import com.food.order.system.domain.valueobject.Money;
+import com.food.order.system.domain.valueobject.OrderId;
 import com.food.order.system.domain.valueobject.PaymentStatus;
+import com.food.order.system.payment.service.domain.entity.Payment;
+import com.food.order.system.payment.service.domain.valueobject.PaymentId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +36,16 @@ public class PaymentEntity {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentstatus;
     private ZonedDateTime createdAt;
+
+    public Payment toModel() {
+        return Payment.builder()
+                .paymentId(new PaymentId(id))
+                .customerId(new CustomerId(customerId))
+                .orderId(new OrderId(orderId))
+                .createdAt(createdAt)
+                .price(new Money(price))
+                .build();
+    }
 
     @Override
     public boolean equals(Object o) {

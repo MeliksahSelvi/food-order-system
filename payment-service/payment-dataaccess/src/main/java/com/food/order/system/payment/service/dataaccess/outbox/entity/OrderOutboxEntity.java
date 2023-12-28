@@ -2,6 +2,7 @@ package com.food.order.system.payment.service.dataaccess.outbox.entity;
 
 import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.outbox.OutboxStatus;
+import com.food.order.system.payment.service.domain.outbox.model.OrderOutboxMessage;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +37,20 @@ public class OrderOutboxEntity {
     private OutboxStatus outboxStatus;
     @Version
     private int version;
+
+    public OrderOutboxMessage toModel() {
+        return OrderOutboxMessage.builder()
+                .id(id)
+                .sagaId(sagaId)
+                .createdAt(createdAt)
+                .processedAt(processedAt)
+                .type(type)
+                .payload(payload)
+                .outboxStatus(outboxStatus)
+                .paymentStatus(paymentStatus)
+                .version(version)
+                .build();
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,10 @@
 package com.food.order.system.order.service.dataaccess.order.entity;
 
+import com.food.order.system.domain.valueobject.Money;
+import com.food.order.system.domain.valueobject.ProductId;
+import com.food.order.system.order.service.domain.entity.OrderItem;
+import com.food.order.system.order.service.domain.entity.Product;
+import com.food.order.system.order.service.domain.valueobject.OrderItemId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -37,7 +42,15 @@ public class OrderItemEntity {
     private Integer quantity;
     private BigDecimal subTotal;
 
-
+    public OrderItem toModel(){
+        return OrderItem.builder()
+                .orderItemId(new OrderItemId(id))
+                .price(new Money(price))
+                .quantity(quantity)
+                .subTotal(new Money(subTotal))
+                .product(new Product(new ProductId(productId)))
+                .build();
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

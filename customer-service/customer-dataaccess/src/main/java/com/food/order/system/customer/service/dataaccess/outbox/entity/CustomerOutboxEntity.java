@@ -1,9 +1,7 @@
-package com.food.order.system.order.service.dataaccess.outbox.payment.entity;
+package com.food.order.system.customer.service.dataaccess.outbox.entity;
 
-import com.food.order.system.domain.valueobject.OrderStatus;
-import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
+import com.food.order.system.customer.service.domain.outbox.model.CustomerOutboxMessage;
 import com.food.order.system.outbox.OutboxStatus;
-import com.food.order.system.saga.SagaStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +11,7 @@ import java.util.UUID;
 
 /**
  * @Author mselvi
- * @Created 22.12.2023
+ * @Created 28.12.2023
  */
 
 @Entity
@@ -22,8 +20,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "payment_outbox")
-public class PaymentOutboxEntity {
+@Table(name = "customer_outbox")
+public class CustomerOutboxEntity {
 
     @Id
     private UUID id;
@@ -33,24 +31,18 @@ public class PaymentOutboxEntity {
     private String type;
     private String payload;
     @Enumerated(EnumType.STRING)
-    private SagaStatus sagaStatus;
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
-    @Enumerated(EnumType.STRING)
     private OutboxStatus outboxStatus;
     @Version
     private int version;
 
-    public OrderPaymentOutboxMessage toModel() {
-        return OrderPaymentOutboxMessage.builder()
+    public CustomerOutboxMessage toModel() {
+        return CustomerOutboxMessage.builder()
                 .id(id)
                 .sagaId(sagaId)
-                .createdAt(createdAt)
-                .processedAt(processedAt)
                 .type(type)
                 .payload(payload)
-                .orderStatus(orderStatus)
-                .sagaStatus(sagaStatus)
+                .createdAt(createdAt)
+                .processedAt(processedAt)
                 .outboxStatus(outboxStatus)
                 .version(version)
                 .build();
@@ -60,7 +52,7 @@ public class PaymentOutboxEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PaymentOutboxEntity that = (PaymentOutboxEntity) o;
+        CustomerOutboxEntity that = (CustomerOutboxEntity) o;
         return id.equals(that.id);
     }
 

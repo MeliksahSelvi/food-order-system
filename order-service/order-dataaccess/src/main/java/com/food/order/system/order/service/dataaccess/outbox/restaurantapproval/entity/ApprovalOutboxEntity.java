@@ -1,6 +1,7 @@
 package com.food.order.system.order.service.dataaccess.outbox.restaurantapproval.entity;
 
 import com.food.order.system.domain.valueobject.OrderStatus;
+import com.food.order.system.order.service.domain.outbox.model.approval.OrderApprovalOutboxMessage;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.saga.SagaStatus;
 import jakarta.persistence.*;
@@ -39,6 +40,21 @@ public class ApprovalOutboxEntity {
     private OutboxStatus outboxStatus;
     @Version
     private int version;
+
+    public OrderApprovalOutboxMessage toModel() {
+        return OrderApprovalOutboxMessage.builder()
+                .id(id)
+                .sagaId(sagaId)
+                .createdAt(createdAt)
+                .processedAt(processedAt)
+                .type(type)
+                .payload(payload)
+                .orderStatus(orderStatus)
+                .sagaStatus(sagaStatus)
+                .outboxStatus(outboxStatus)
+                .version(version)
+                .build();
+    }
 
     @Override
     public boolean equals(Object o) {

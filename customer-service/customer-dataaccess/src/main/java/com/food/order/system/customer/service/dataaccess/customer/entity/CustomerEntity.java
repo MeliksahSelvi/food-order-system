@@ -1,5 +1,7 @@
 package com.food.order.system.customer.service.dataaccess.customer.entity;
 
+import com.food.order.system.customer.service.domain.entity.Customer;
+import com.food.order.system.domain.valueobject.CustomerId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -27,6 +29,15 @@ public class CustomerEntity {
     private String username;
     private String firstName;
     private String lastName;
+
+    public Customer toModel(){
+        return Customer.builder()
+                .customerId(new CustomerId(id))
+                .username(username)
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
+    }
 
     @Override
     public boolean equals(Object o) {

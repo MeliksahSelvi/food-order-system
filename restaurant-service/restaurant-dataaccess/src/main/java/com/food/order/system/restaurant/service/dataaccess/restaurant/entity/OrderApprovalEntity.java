@@ -1,9 +1,14 @@
 package com.food.order.system.restaurant.service.dataaccess.restaurant.entity;
 
 import com.food.order.system.domain.valueobject.OrderApprovalStatus;
+import com.food.order.system.domain.valueobject.OrderId;
+import com.food.order.system.domain.valueobject.RestaurantId;
+import com.food.order.system.restaurant.service.domain.entity.OrderApproval;
+import com.food.order.system.restaurant.service.domain.valueobject.OrderApprovalId;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -17,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "order_approval",schema = "restaurant")
+@Table(name = "order_approval", schema = "restaurant")
 public class OrderApprovalEntity {
 
     @Id
@@ -26,4 +31,26 @@ public class OrderApprovalEntity {
     private UUID orderId;
     @Enumerated(EnumType.STRING)
     private OrderApprovalStatus status;
+
+    public OrderApproval toModel() {
+        return OrderApproval.builder()
+                .orderApprovalId(new OrderApprovalId(id))
+                .restaurantId(new RestaurantId(restaurantId))
+                .orderId(new OrderId(orderId))
+                .approvalStatus(status)
+                .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderApprovalEntity that = (OrderApprovalEntity) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
