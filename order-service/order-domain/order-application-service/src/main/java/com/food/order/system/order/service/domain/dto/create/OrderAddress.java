@@ -1,10 +1,13 @@
 package com.food.order.system.order.service.domain.dto.create;
 
+import com.food.order.system.order.service.domain.valueobject.StreetAddress;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.UUID;
 
 /**
  * @Author mselvi
@@ -24,4 +27,8 @@ public class OrderAddress {
     @NotNull
     @Max(value = 50)
     private final String city;
+
+    public StreetAddress toObject() {
+        return new StreetAddress(UUID.randomUUID(), street, postalCode, city);
+    }
 }

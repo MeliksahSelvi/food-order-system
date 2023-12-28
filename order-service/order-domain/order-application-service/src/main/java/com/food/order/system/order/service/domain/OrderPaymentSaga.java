@@ -2,11 +2,13 @@ package com.food.order.system.order.service.domain;
 
 import com.food.order.system.domain.valueobject.OrderStatus;
 import com.food.order.system.domain.valueobject.PaymentStatus;
+import com.food.order.system.domain.valueobject.RestaurantOrderStatus;
 import com.food.order.system.order.service.domain.dto.message.PaymentResponse;
 import com.food.order.system.order.service.domain.entity.Order;
 import com.food.order.system.order.service.domain.event.OrderPaidEvent;
 import com.food.order.system.order.service.domain.exception.OrderDomainException;
-import com.food.order.system.order.service.domain.mapper.OrderDataMapper;
+import com.food.order.system.order.service.domain.outbox.model.approval.OrderApprovalEventPayload;
+import com.food.order.system.order.service.domain.outbox.model.approval.OrderApprovalEventProduct;
 import com.food.order.system.order.service.domain.outbox.model.approval.OrderApprovalOutboxMessage;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
 import com.food.order.system.order.service.domain.outbox.scheduler.approval.ApprovalOutboxHelper;
@@ -23,6 +25,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.food.order.system.domain.DomainConstants.UTC;
 
@@ -40,7 +43,6 @@ import static com.food.order.system.domain.DomainConstants.UTC;
 public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
 
     private final OrderDomainService orderDomainService;
-    private final OrderDataMapper orderDataMapper;
     private final PaymentOutboxHelper paymentOutboxHelper;
     private final ApprovalOutboxHelper approvalOutboxHelper;
     private final OrderSagaHelper orderSagaHelper;
@@ -79,7 +81,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
          * ayrıca; type,sagaid ve saga status üzerinde oluşturulan unique index sayesinde
          * aynı anda 2 işlemin aynı kaydı oluşturmasını engellemiş olacağız
          * */
-        approvalOutboxHelper.persistApprovalOutboxMessage(orderDataMapper.orderPaidEventToOrderApprovalEventPayload(orderPaidEvent),
+        approvalOutboxHelper.persistApprovalOutboxMessage(createOrderApprovalEventPayload(orderPaidEvent),
                 orderStatus,
                 sagaStatus,
                 OutboxStatus.STARTED,
@@ -181,5 +183,20 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         orderApprovalOutboxMessage.setSagaStatus(sagaStatus);
 
         return orderApprovalOutboxMessage;
+    }
+
+    private OrderApprovalEventPayload createOrderApprovalEventPayload(OrderPaidEvent orderPaidEvent) {
+        return OrderApprovalEventPayload.builder()
+                .orderId(orderPaidEvent.getOrder().getId().getValue().toString())
+                .restaurantId(orderPaidEvent.getOrder().getRestaurantId().getValue().toString())
+                .restaurantOrderStatus(RestaurantOrderStatus.PAID.name())
+                .products(orderPaidEvent.getOrder().getItems().stream().map(orderItem ->
+                        OrderApprovalEventProduct.builder()
+                                .id(orderItem.getProduct().getId().getValue().toString())
+                                .quantity(orderItem.getQuantity())
+                                .build()).collect(Collectors.toList()))
+                .price(orderPaidEvent.getOrder().getPrice().getAmount())
+                .createdAt(orderPaidEvent.getCreatedAt())
+                .build();
     }
 }

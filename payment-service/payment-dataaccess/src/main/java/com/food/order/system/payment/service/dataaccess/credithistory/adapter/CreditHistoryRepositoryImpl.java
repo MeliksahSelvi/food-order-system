@@ -2,7 +2,6 @@ package com.food.order.system.payment.service.dataaccess.credithistory.adapter;
 
 import com.food.order.system.domain.valueobject.CustomerId;
 import com.food.order.system.payment.service.dataaccess.credithistory.entity.CreditHistoryEntity;
-import com.food.order.system.payment.service.dataaccess.credithistory.mapper.CreditHistoryDataAccessMapper;
 import com.food.order.system.payment.service.dataaccess.credithistory.repository.CreditHistoryJpaRepository;
 import com.food.order.system.payment.service.domain.entity.CreditHistory;
 import com.food.order.system.payment.service.domain.ports.output.repository.CreditHistoryRepository;
@@ -26,21 +25,24 @@ import java.util.stream.Collectors;
 public class CreditHistoryRepositoryImpl implements CreditHistoryRepository {
 
     private final CreditHistoryJpaRepository creditHistoryJpaRepository;
-    private final CreditHistoryDataAccessMapper creditHistoryDataAccessMapper;
 
     @Override
     public CreditHistory save(CreditHistory creditHistory) {
-        CreditHistoryEntity creditHistoryEntity = creditHistoryDataAccessMapper.creditHistoryToCreditHistoryEntity(creditHistory);
-        creditHistoryEntity = creditHistoryJpaRepository.save(creditHistoryEntity);
-        return creditHistoryDataAccessMapper.creditHistoryEntityToCreditHistory(creditHistoryEntity);
+        CreditHistoryEntity creditHistoryEntity = CreditHistoryEntity.builder()
+                .id(creditHistory.getId().getValue())
+                .customerId(creditHistory.getCustomerId().getValue())
+                .amount(creditHistory.getAmount().getAmount())
+                .transactionType(creditHistory.getTransactionType())
+                .build();
+        return creditHistoryJpaRepository.save(creditHistoryEntity).toModel();
     }
 
     @Override
     public Optional<List<CreditHistory>> findByCustomerId(CustomerId customerId) {
-        Optional<List<CreditHistoryEntity>> historyOptional = creditHistoryJpaRepository.findByCustomerId(customerId.getValue());
-        return historyOptional.map(creditHistoryEntities ->
+        return creditHistoryJpaRepository.findByCustomerId(customerId.getValue())
+                .map(creditHistoryEntities ->
                 creditHistoryEntities.stream()
-                        .map(creditHistoryDataAccessMapper::creditHistoryEntityToCreditHistory)
+                        .map(CreditHistoryEntity::toModel)
                         .collect(Collectors.toList()));
     }
 }

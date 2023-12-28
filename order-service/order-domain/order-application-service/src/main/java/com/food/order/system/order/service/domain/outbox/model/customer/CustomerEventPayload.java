@@ -1,4 +1,4 @@
-package com.food.order.system.outbox.customer.model;
+package com.food.order.system.order.service.domain.outbox.model.customer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -9,7 +9,7 @@ import java.time.ZonedDateTime;
 
 /**
  * @Author mselvi
- * @Created 24.12.2023
+ * @Created 28.12.2023
  */
 
 /*

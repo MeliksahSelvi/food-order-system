@@ -3,7 +3,6 @@ package com.food.order.system.restaurant.service.dataaccess.outbox.adapter;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.restaurant.service.dataaccess.outbox.entity.OrderOutboxEntity;
 import com.food.order.system.restaurant.service.dataaccess.outbox.exception.OrderOutboxNotFoundException;
-import com.food.order.system.restaurant.service.dataaccess.outbox.mapper.OrderOutboxDataAccessMapper;
 import com.food.order.system.restaurant.service.dataaccess.outbox.repository.OrderOutboxJpaRepository;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.restaurant.service.domain.ports.output.repository.OrderOutboxRepository;
@@ -28,14 +27,21 @@ import java.util.stream.Collectors;
 public class OrderOutboxRepositoryImpl implements OrderOutboxRepository {
 
     private final OrderOutboxJpaRepository orderOutboxJpaRepository;
-    private final OrderOutboxDataAccessMapper orderOutboxDataAccessMapper;
 
     @Override
     public OrderOutboxMessage save(OrderOutboxMessage orderOutboxMessage) {
-        OrderOutboxEntity orderOutboxEntity = orderOutboxDataAccessMapper.
-                orderOutBoxMessageToOrderOutBoxEntity(orderOutboxMessage);
-        orderOutboxEntity = orderOutboxJpaRepository.save(orderOutboxEntity);
-        return orderOutboxDataAccessMapper.orderOutboxEntityToOrderOutboxMessage(orderOutboxEntity);
+        OrderOutboxEntity orderOutboxEntity = OrderOutboxEntity.builder()
+                .id(orderOutboxMessage.getId())
+                .sagaId(orderOutboxMessage.getSagaId())
+                .type(orderOutboxMessage.getType())
+                .payload(orderOutboxMessage.getPayload())
+                .approvalStatus(orderOutboxMessage.getOrderApprovalStatus())
+                .outboxStatus(orderOutboxMessage.getOutboxStatus())
+                .createdAt(orderOutboxMessage.getCreatedAt())
+                .processedAt(orderOutboxMessage.getProcessedAt())
+                .version(orderOutboxMessage.getVersion())
+                .build();
+        return orderOutboxJpaRepository.save(orderOutboxEntity).toModel();
     }
 
     @Override
@@ -44,7 +50,7 @@ public class OrderOutboxRepositoryImpl implements OrderOutboxRepository {
                 .orElseThrow(() -> new OrderOutboxNotFoundException("Approval outbox object " +
                         "cannot be found for saga type " + type))
                 .stream()
-                .map(orderOutboxDataAccessMapper::orderOutboxEntityToOrderOutboxMessage)
+                .map(OrderOutboxEntity::toModel)
                 .collect(Collectors.toList()));
     }
 
@@ -52,10 +58,8 @@ public class OrderOutboxRepositoryImpl implements OrderOutboxRepository {
     public Optional<OrderOutboxMessage> findByTypeAndSagaIdAndOutboxStatus(String type,
                                                                            UUID sagaId,
                                                                            OutboxStatus outboxStatus) {
-        Optional<OrderOutboxEntity> orderOutboxEntity = orderOutboxJpaRepository.
-                findByTypeAndSagaIdAndOutboxStatus(type, sagaId, outboxStatus);
-
-        return orderOutboxEntity.map(orderOutboxDataAccessMapper::orderOutboxEntityToOrderOutboxMessage);
+        return orderOutboxJpaRepository.
+                findByTypeAndSagaIdAndOutboxStatus(type, sagaId, outboxStatus).map(OrderOutboxEntity::toModel);
     }
 
     @Override

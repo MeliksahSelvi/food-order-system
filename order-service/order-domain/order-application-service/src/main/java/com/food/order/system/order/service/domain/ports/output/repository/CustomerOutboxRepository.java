@@ -1,7 +1,7 @@
 package com.food.order.system.order.service.domain.ports.output.repository;
 
+import com.food.order.system.order.service.domain.outbox.model.customer.CustomerOutboxMessage;
 import com.food.order.system.outbox.OutboxStatus;
-import com.food.order.system.outbox.customer.model.CustomerOutboxMessage;
 
 import java.util.List;
 import java.util.Optional;

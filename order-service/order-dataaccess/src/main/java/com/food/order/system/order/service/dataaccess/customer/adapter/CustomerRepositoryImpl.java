@@ -1,7 +1,6 @@
 package com.food.order.system.order.service.dataaccess.customer.adapter;
 
 import com.food.order.system.order.service.dataaccess.customer.entity.CustomerEntity;
-import com.food.order.system.order.service.dataaccess.customer.mapper.CustomerDataAccessMapper;
 import com.food.order.system.order.service.dataaccess.customer.repository.CustomerJpaRepository;
 import com.food.order.system.order.service.domain.entity.Customer;
 import com.food.order.system.order.service.domain.ports.output.repository.CustomerRepository;
@@ -25,20 +24,22 @@ import java.util.UUID;
 public class CustomerRepositoryImpl implements CustomerRepository {
 
     private final CustomerJpaRepository customerJpaRepository;
-    private final CustomerDataAccessMapper customerDataAccessMapper;
-
 
     @Override
     public Optional<Customer> findCustomer(UUID customerId) {
         Optional<CustomerEntity> customerEntityOptional = customerJpaRepository.findById(customerId);
-        return customerEntityOptional.map(customerDataAccessMapper::customerEntityToCustomer);
+        return customerEntityOptional.map(CustomerEntity::toModel);
     }
 
     @Transactional
     @Override
     public Customer save(Customer customer) {
-        CustomerEntity customerEntity = customerDataAccessMapper.customerToCustomerEntity(customer);
-        customerEntity = customerJpaRepository.save(customerEntity);
-        return customerDataAccessMapper.customerEntityToCustomer(customerEntity);
+        CustomerEntity customerEntity = CustomerEntity.builder()
+                .id(customer.getId().getValue())
+                .username(customer.getUsername())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .build();
+        return customerJpaRepository.save(customerEntity).toModel();
     }
 }

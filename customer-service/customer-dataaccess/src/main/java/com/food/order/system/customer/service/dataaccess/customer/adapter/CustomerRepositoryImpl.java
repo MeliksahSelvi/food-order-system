@@ -1,7 +1,6 @@
 package com.food.order.system.customer.service.dataaccess.customer.adapter;
 
 import com.food.order.system.customer.service.dataaccess.customer.entity.CustomerEntity;
-import com.food.order.system.customer.service.dataaccess.customer.mapper.CustomerDataAccessMapper;
 import com.food.order.system.customer.service.dataaccess.customer.repository.CustomerJpaRepository;
 import com.food.order.system.customer.service.domain.entity.Customer;
 import com.food.order.system.customer.service.domain.ports.output.repository.CustomerRepository;
@@ -21,12 +20,16 @@ import org.springframework.stereotype.Component;
 public class CustomerRepositoryImpl implements CustomerRepository {
 
     private final CustomerJpaRepository customerJpaRepository;
-    private final CustomerDataAccessMapper customerDataAccessMapper;
 
     @Override
     public Customer createCustomer(Customer customer) {
-        CustomerEntity customerEntity = customerDataAccessMapper.customerToCustomerEntity(customer);
-        customerEntity = customerJpaRepository.save(customerEntity);
-        return customerDataAccessMapper.customerEntityToCustomer(customerEntity);
+        CustomerEntity customerEntity = CustomerEntity.builder()
+                .id(customer.getId().getValue())
+                .username(customer.getUsername())
+                .firstName(customer.getFirstName())
+                .lastName(customer.getLastName())
+                .build();
+
+        return customerJpaRepository.save(customerEntity).toModel();
     }
 }

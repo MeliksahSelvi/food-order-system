@@ -12,7 +12,6 @@ import com.food.order.system.order.service.domain.entity.Order;
 import com.food.order.system.order.service.domain.entity.Product;
 import com.food.order.system.order.service.domain.entity.Restaurant;
 import com.food.order.system.order.service.domain.exception.OrderDomainException;
-import com.food.order.system.order.service.domain.mapper.OrderDataMapper;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
 import com.food.order.system.order.service.domain.ports.input.service.OrderApplicationService;
@@ -33,6 +32,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.food.order.system.saga.order.SagaConstants.ORDER_SAGA_NAME;
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,9 +50,6 @@ public class OrderApplicationServiceTest {
 
     @Autowired
     private OrderApplicationService orderApplicationService;
-
-    @Autowired
-    private OrderDataMapper orderDataMapper;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -81,74 +78,11 @@ public class OrderApplicationServiceTest {
 
     @BeforeAll
     public void init() {
-        createOrderCommand = CreateOrderCommand.builder()
-                .customerId(CUSTOMER_ID)
-                .restaurantId(RESTAURANT_ID)
-                .address(OrderAddress.builder()
-                        .street("street-1")
-                        .postalCode("34000")
-                        .city("istanbul")
-                        .build())
-                .price(PRICE)
-                .items(List.of(OrderItem.builder()
-                                .productId(PRODUCT_ID)
-                                .quantity(1)
-                                .price(new BigDecimal("50.00"))
-                                .subTotal(new BigDecimal("50.00"))
-                                .build(),
-                        OrderItem.builder()
-                                .productId(PRODUCT_ID)
-                                .quantity(3)
-                                .price(new BigDecimal("50.00"))
-                                .subTotal(new BigDecimal("150.00"))
-                                .build()))
-                .build();
+        createOrderCommand = buildOrderCommand(PRICE, "50.00");
 
-        createOrderCommandWrongPrice = CreateOrderCommand.builder()
-                .customerId(CUSTOMER_ID)
-                .restaurantId(RESTAURANT_ID)
-                .address(OrderAddress.builder()
-                        .street("street-1")
-                        .postalCode("34000")
-                        .city("istanbul")
-                        .build())
-                .price(new BigDecimal("250.00"))//yanlış 200 olması gerek
-                .items(List.of(OrderItem.builder()
-                                .productId(PRODUCT_ID)
-                                .quantity(1)
-                                .price(new BigDecimal("50.00"))
-                                .subTotal(new BigDecimal("50.00"))
-                                .build(),
-                        OrderItem.builder()
-                                .productId(PRODUCT_ID)
-                                .quantity(3)
-                                .price(new BigDecimal("50.00"))
-                                .subTotal(new BigDecimal("150.00"))
-                                .build()))
-                .build();
+        createOrderCommandWrongPrice = buildOrderCommand(new BigDecimal("250.00"), "50.00");
 
-        createOrderCommandWrongProductPrice = CreateOrderCommand.builder()
-                .customerId(CUSTOMER_ID)
-                .restaurantId(RESTAURANT_ID)
-                .address(OrderAddress.builder()
-                        .street("street-1")
-                        .postalCode("34000")
-                        .city("istanbul")
-                        .build())
-                .price(new BigDecimal("210.00"))
-                .items(List.of(OrderItem.builder()
-                                .productId(PRODUCT_ID)
-                                .quantity(1)
-                                .price(new BigDecimal("60.00"))
-                                .subTotal(new BigDecimal("60.00"))
-                                .build(),
-                        OrderItem.builder()
-                                .productId(PRODUCT_ID)
-                                .quantity(3)
-                                .price(new BigDecimal("50.00"))
-                                .subTotal(new BigDecimal("150.00"))
-                                .build()))
-                .build();
+        createOrderCommandWrongProductPrice = buildOrderCommand(new BigDecimal("210.00"), "60.00");
 
         Customer customer = Customer.builder()
                 .customerId(new CustomerId(CUSTOMER_ID))
@@ -161,11 +95,11 @@ public class OrderApplicationServiceTest {
                 .active(true)
                 .build();
 
-        Order order = orderDataMapper.createOrderCommandToOrder(createOrderCommand);
+        Order order = createOrder(createOrderCommand);
         order.setId(new OrderId(ORDER_ID));
 
         when(customerRepository.findCustomer(CUSTOMER_ID)).thenReturn(Optional.of(customer));
-        when(restaurantRepository.findRestaurantInformation(orderDataMapper.createOrderCommandToRestaurant(createOrderCommand)))
+        when(restaurantRepository.findRestaurantInformation(createRestaurant(createOrderCommand)))
                 .thenReturn(Optional.of(restaurantResponse));
         when(orderRepository.save(any(Order.class))).thenReturn(order);
         when(paymentOutBoxRepository.save(any(OrderPaymentOutboxMessage.class))).thenReturn(getOrderPaymentOutboxMessage());
@@ -202,7 +136,7 @@ public class OrderApplicationServiceTest {
                 .active(false)
                 .build();
 
-        when(restaurantRepository.findRestaurantInformation(orderDataMapper.createOrderCommandToRestaurant(createOrderCommand)))
+        when(restaurantRepository.findRestaurantInformation(createRestaurant(createOrderCommand)))
                 .thenReturn(Optional.of(restaurantResponse));
 
         OrderDomainException orderDomainException = assertThrows(OrderDomainException.class,
@@ -211,8 +145,33 @@ public class OrderApplicationServiceTest {
                 " is currently not active!", orderDomainException.getMessage());
     }
 
+    private CreateOrderCommand buildOrderCommand(BigDecimal PRICE, String val) {
+        return CreateOrderCommand.builder()
+                .customerId(CUSTOMER_ID)
+                .restaurantId(RESTAURANT_ID)
+                .address(OrderAddress.builder()
+                        .street("street-1")
+                        .postalCode("34000")
+                        .city("istanbul")
+                        .build())
+                .price(PRICE)
+                .items(List.of(OrderItem.builder()
+                                .productId(PRODUCT_ID)
+                                .quantity(1)
+                                .price(new BigDecimal(val))
+                                .subTotal(new BigDecimal(val))
+                                .build(),
+                        OrderItem.builder()
+                                .productId(PRODUCT_ID)
+                                .quantity(3)
+                                .price(new BigDecimal("50.00"))
+                                .subTotal(new BigDecimal("150.00"))
+                                .build()))
+                .build();
+    }
+
     private OrderPaymentOutboxMessage getOrderPaymentOutboxMessage() {
-        OrderPaymentEventPayload orderPaymentEventPayload=OrderPaymentEventPayload.builder()
+        OrderPaymentEventPayload orderPaymentEventPayload = OrderPaymentEventPayload.builder()
                 .orderId(ORDER_ID.toString())
                 .customerId(CUSTOMER_ID.toString())
                 .price(PRICE)
@@ -239,5 +198,26 @@ public class OrderApplicationServiceTest {
         } catch (JsonProcessingException e) {
             throw new OrderDomainException("Cannot create OrderPaymentEventPayload object!");
         }
+    }
+
+    private Order createOrder(CreateOrderCommand createOrderCommand) {
+        return Order.builder()
+                .customerId(new CustomerId(createOrderCommand.getCustomerId()))
+                .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
+                .price(new Money(createOrderCommand.getPrice()))
+                .deliveryAddress(createOrderCommand.getAddress().toObject())
+                .price(new Money(createOrderCommand.getPrice()))
+                .items(createOrderCommand.getItems().stream().map(OrderItem::toModel).toList())
+                .build();
+    }
+
+    private Restaurant createRestaurant(CreateOrderCommand createOrderCommand) {
+        return Restaurant.builder()
+                .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
+                .products(createOrderCommand.getItems().stream().map(orderItem ->
+                                new Product(new ProductId(orderItem.getProductId())))
+                        .collect(Collectors.toList())
+                )
+                .build();
     }
 }

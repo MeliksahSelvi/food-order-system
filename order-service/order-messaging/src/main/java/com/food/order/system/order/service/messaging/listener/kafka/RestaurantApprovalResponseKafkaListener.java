@@ -1,10 +1,11 @@
 package com.food.order.system.order.service.messaging.listener.kafka;
 
+import com.food.order.system.domain.valueobject.OrderApprovalStatus;
 import com.food.order.system.kafka.consumer.KafkaConsumer;
 import com.food.order.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
+import com.food.order.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import com.food.order.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.order.system.order.service.domain.ports.input.message.listener.restaurantapproval.RestaurantApprovalResponseMessageListener;
-import com.food.order.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -33,7 +34,6 @@ import static com.food.order.system.order.service.domain.entity.Order.FAILURE_ME
 public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<RestaurantApprovalResponseAvroModel> {
 
     private final RestaurantApprovalResponseMessageListener restaurantApprovalResponseMessageListener;
-    private final OrderMessagingDataMapper orderMessagingDataMapper;
 
     @Override
     @KafkaListener(id = "${kafka-consumer-config.restaurant-approval-consumer-group-id}",
@@ -54,14 +54,12 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
                 switch (responseAvroModel.getOrderApprovalStatus()) {
                     case APPROVED -> {
                         log.info("Processing approved order for order id: {}", responseAvroModel.getOrderId());
-                        restaurantApprovalResponseMessageListener.orderApproved(
-                                orderMessagingDataMapper.approvalResponseAvroModelToRestaurantApprovalResponse(responseAvroModel));
+                        restaurantApprovalResponseMessageListener.orderApproved(createRestaurantApprovalResponse(responseAvroModel));
                     }
                     case REJECTED -> {
                         log.info("Processing rejected order for order id: {}, with failure messages: {}", responseAvroModel.getOrderId(),
                                 String.join(FAILURE_MESSAGES_DELIMITER, responseAvroModel.getFailureMessages()));
-                        restaurantApprovalResponseMessageListener.orderRejected(
-                                orderMessagingDataMapper.approvalResponseAvroModelToRestaurantApprovalResponse(responseAvroModel));
+                        restaurantApprovalResponseMessageListener.orderRejected(createRestaurantApprovalResponse(responseAvroModel));
                     }
                 }
             } catch (OptimisticLockingFailureException e) {
@@ -71,5 +69,17 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
                 log.error("No order found for order id: {}", responseAvroModel.getOrderId());
             }
         });
+    }
+
+    private RestaurantApprovalResponse createRestaurantApprovalResponse(RestaurantApprovalResponseAvroModel avroModel) {
+        return RestaurantApprovalResponse.builder()
+                .id(avroModel.getId())
+                .sagaId(avroModel.getSagaId())
+                .restaurantId(avroModel.getRestaurantId())
+                .orderId(avroModel.getOrderId())
+                .createdAt(avroModel.getCreatedAt())
+                .orderApprovalStatus(OrderApprovalStatus.valueOf(avroModel.getOrderApprovalStatus().name()))
+                .failureMessages(avroModel.getFailureMessages())
+                .build();
     }
 }

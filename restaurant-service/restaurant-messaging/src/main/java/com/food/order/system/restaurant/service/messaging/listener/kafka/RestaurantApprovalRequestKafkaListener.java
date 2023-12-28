@@ -1,11 +1,14 @@
 package com.food.order.system.restaurant.service.messaging.listener.kafka;
 
+import com.food.order.system.domain.valueobject.ProductId;
+import com.food.order.system.domain.valueobject.RestaurantOrderStatus;
 import com.food.order.system.kafka.consumer.KafkaConsumer;
 import com.food.order.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel;
+import com.food.order.system.restaurant.service.domain.dto.RestaurantApprovalRequest;
+import com.food.order.system.restaurant.service.domain.entity.Product;
 import com.food.order.system.restaurant.service.domain.exception.RestaurantApplicationServiceException;
 import com.food.order.system.restaurant.service.domain.exception.RestaurantNotFoundException;
 import com.food.order.system.restaurant.service.domain.ports.input.message.listener.RestaurantApprovalRequestMessageListener;
-import com.food.order.system.restaurant.service.messaging.mapper.RestaurantMessagingDataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PSQLState;
@@ -18,6 +21,8 @@ import org.springframework.stereotype.Component;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @Author mselvi
@@ -33,7 +38,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<RestaurantApprovalRequestAvroModel> {
 
-    private final RestaurantMessagingDataMapper restaurantMessagingDataMapper;
     private final RestaurantApprovalRequestMessageListener restaurantApprovalRequestMessageListener;
 
     @Override
@@ -54,8 +58,7 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
         messages.forEach(restaurantApprovalRequestAvroModel -> {
             try {
                 log.info("Processing order approval event at: {}", System.nanoTime());
-                restaurantApprovalRequestMessageListener.approveOrder(restaurantMessagingDataMapper
-                        .restaurantApprovalRequestAvroModelToRestaurantApproval(restaurantApprovalRequestAvroModel));
+                restaurantApprovalRequestMessageListener.approveOrder(createRestaurantApprovalRequest(restaurantApprovalRequestAvroModel));
             } catch (DataAccessException e) {
                 SQLException sqlException = (SQLException) e.getRootCause();
                 if (sqlException != null && sqlException.getSQLState() != null &&
@@ -75,5 +78,26 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
             }
 
         });
+    }
+
+    private RestaurantApprovalRequest createRestaurantApprovalRequest(
+            RestaurantApprovalRequestAvroModel requestAvroModel) {
+
+        return RestaurantApprovalRequest.builder()
+                .id(requestAvroModel.getId())
+                .sagaId(requestAvroModel.getSagaId())
+                .restaurantId(requestAvroModel.getRestaurantId())
+                .orderId(requestAvroModel.getOrderId())
+                .restaurantOrderStatus(RestaurantOrderStatus.valueOf(requestAvroModel.getRestaurantOrderStatus().name()))
+                .products(requestAvroModel.getProducts().stream()
+                        .map(avroModel ->
+                                Product.builder()
+                                        .productId(new ProductId(UUID.fromString(avroModel.getId())))
+                                        .quantity(avroModel.getQuantity())
+                                        .build())
+                        .collect(Collectors.toList()))
+                .price(requestAvroModel.getPrice())
+                .createdAt(requestAvroModel.getCreatedAt())
+                .build();
     }
 }

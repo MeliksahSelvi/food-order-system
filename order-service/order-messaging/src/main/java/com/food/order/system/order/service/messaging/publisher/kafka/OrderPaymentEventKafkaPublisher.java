@@ -1,5 +1,6 @@
 package com.food.order.system.order.service.messaging.publisher.kafka;
 
+import com.food.order.system.kafka.order.avro.model.PaymentOrderStatus;
 import com.food.order.system.kafka.order.avro.model.PaymentRequestAvroModel;
 import com.food.order.system.kafka.producer.KafkaMessageHelper;
 import com.food.order.system.kafka.producer.service.KafkaProducer;
@@ -7,12 +8,12 @@ import com.food.order.system.order.service.domain.config.OrderServiceConfigData;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
 import com.food.order.system.order.service.domain.ports.output.message.publisher.payment.PaymentRequestMessagePublisher;
-import com.food.order.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import com.food.order.system.outbox.OutboxStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
 import java.util.function.BiConsumer;
 
 /**
@@ -30,7 +31,6 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
 
     private final OrderServiceConfigData orderServiceConfigData;
     private final KafkaMessageHelper kafkaMessageHelper;
-    private final OrderMessagingDataMapper orderMessagingDataMapper;
     private final KafkaProducer<String, PaymentRequestAvroModel> kafkaProducer;
 
     @Override
@@ -45,8 +45,7 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
                 orderPaymentEventPayload.getOrderId(), sagaId);
 
         try {
-            PaymentRequestAvroModel message = orderMessagingDataMapper
-                    .orderPaymentEventToPaymentRequestAvroModel(sagaId, orderPaymentEventPayload);
+            PaymentRequestAvroModel message = createPaymentRequestAvroModel(sagaId, orderPaymentEventPayload);
 
             kafkaProducer.send(orderServiceConfigData.getPaymentRequestTopicName(),
                     sagaId,
@@ -65,5 +64,18 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
                             " to kafka with order id: {} and saga id: {} error: {}",
                     orderPaymentEventPayload.getOrderId(), sagaId, e.getMessage());
         }
+    }
+
+    private PaymentRequestAvroModel createPaymentRequestAvroModel(String sagaId, OrderPaymentEventPayload payload) {
+
+        return PaymentRequestAvroModel.newBuilder()
+                .setId(UUID.randomUUID().toString())
+                .setSagaId(sagaId)
+                .setCustomerId(payload.getCustomerId())
+                .setOrderId(payload.getOrderId())
+                .setPrice(payload.getPrice())
+                .setCreatedAt(payload.getCreatedAt().toInstant())
+                .setPaymentOrderStatus(PaymentOrderStatus.valueOf(payload.getPaymentOrderStatus()))
+                .build();
     }
 }

@@ -1,6 +1,6 @@
-package com.food.order.system.dataaccess.customer.repository;
+package com.food.order.system.customer.service.dataaccess.outbox.repository;
 
-import com.food.order.system.dataaccess.customer.entity.CustomerOutboxEntity;
+import com.food.order.system.customer.service.dataaccess.outbox.entity.CustomerOutboxEntity;
 import com.food.order.system.outbox.OutboxStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 /**
  * @Author mselvi
- * @Created 24.12.2023
+ * @Created 28.12.2023
  */
 
 @Repository

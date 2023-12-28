@@ -2,8 +2,8 @@ package com.food.order.system.order.service.messaging.listener.kafka;
 
 import com.food.order.system.kafka.consumer.KafkaConsumer;
 import com.food.order.system.kafka.order.avro.model.CustomerAvroModel;
+import com.food.order.system.order.service.domain.dto.message.CustomerModel;
 import com.food.order.system.order.service.domain.ports.input.message.listener.customer.CustomerMessageListener;
-import com.food.order.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,7 +12,11 @@ import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
+
+import static com.food.order.system.domain.DomainConstants.UTC;
 
 /**
  * @Author mselvi
@@ -25,7 +29,6 @@ import java.util.List;
 public class CustomerMessageKafkaListener implements KafkaConsumer<CustomerAvroModel> {
 
     private final CustomerMessageListener customerMessageListener;
-    private final OrderMessagingDataMapper orderMessagingDataMapper;
 
     @Override
     @KafkaListener(id = "${kafka-consumer-config.customer-group-id}",
@@ -42,7 +45,12 @@ public class CustomerMessageKafkaListener implements KafkaConsumer<CustomerAvroM
                 offsets.toString());
 
         messages.forEach(customerAvroModel ->
-                customerMessageListener.customerCreated(orderMessagingDataMapper.
-                        customerAvroModelToCustomerModel(customerAvroModel)));
+                customerMessageListener.customerCreated(CustomerModel.builder()
+                        .id(customerAvroModel.getId())
+                        .username(customerAvroModel.getUsername())
+                        .firstName(customerAvroModel.getFirstName())
+                        .lastName(customerAvroModel.getLastName())
+                        .createdAt(ZonedDateTime.ofInstant(customerAvroModel.getCreatedAt(), ZoneId.of(UTC)))
+                        .build()));
     }
 }

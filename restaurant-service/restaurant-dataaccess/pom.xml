@@ -15,10 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>com.food.order.system</groupId>
-            <artifactId>outbox</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.food.order.system</groupId>
             <artifactId>restaurant-application-service</artifactId>
         </dependency>
         <dependency>
@@ -28,10 +24,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.food.order.system</groupId>
-            <artifactId>common-dataaccess</artifactId>
         </dependency>
         <dependency>
             <groupId>com.food.order.system</groupId>

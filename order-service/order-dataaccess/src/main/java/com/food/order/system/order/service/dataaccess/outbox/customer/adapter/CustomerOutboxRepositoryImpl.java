@@ -1,12 +1,11 @@
 package com.food.order.system.order.service.dataaccess.outbox.customer.adapter;
 
-import com.food.order.system.dataaccess.customer.entity.CustomerOutboxEntity;
-import com.food.order.system.dataaccess.customer.exception.CustomerOutboxNotFoundException;
-import com.food.order.system.dataaccess.customer.mapper.CustomerOutboxDataAccessMapper;
-import com.food.order.system.dataaccess.customer.repository.CustomerOutboxJpaRepository;
+import com.food.order.system.order.service.dataaccess.outbox.customer.entity.CustomerOutboxEntity;
+import com.food.order.system.order.service.dataaccess.outbox.customer.exception.CustomerOutboxNotFoundException;
+import com.food.order.system.order.service.dataaccess.outbox.customer.repository.CustomerOutboxJpaRepository;
+import com.food.order.system.order.service.domain.outbox.model.customer.CustomerOutboxMessage;
 import com.food.order.system.order.service.domain.ports.output.repository.CustomerOutboxRepository;
 import com.food.order.system.outbox.OutboxStatus;
-import com.food.order.system.outbox.customer.model.CustomerOutboxMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,15 +25,20 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerOutboxRepositoryImpl implements CustomerOutboxRepository {
     private final CustomerOutboxJpaRepository customerOutboxJpaRepository;
-    private final CustomerOutboxDataAccessMapper customerOutboxDataAccessMapper;
 
     @Override
     public CustomerOutboxMessage save(CustomerOutboxMessage orderOutboxMessage) {
-
-        CustomerOutboxEntity customerOutboxEntity = customerOutboxDataAccessMapper.
-                customerOutboxMessageToCustomerOutboxEntity(orderOutboxMessage);
-        customerOutboxEntity = customerOutboxJpaRepository.save(customerOutboxEntity);
-        return customerOutboxDataAccessMapper.customerOutboxEntityToCustomerOutboxMessage(customerOutboxEntity);
+        CustomerOutboxEntity customerOutboxEntity = CustomerOutboxEntity.builder()
+                .id(orderOutboxMessage.getId())
+                .sagaId(orderOutboxMessage.getSagaId())
+                .type(orderOutboxMessage.getType())
+                .payload(orderOutboxMessage.getPayload())
+                .createdAt(orderOutboxMessage.getCreatedAt())
+                .processedAt(orderOutboxMessage.getProcessedAt())
+                .outboxStatus(orderOutboxMessage.getOutboxStatus())
+                .version(orderOutboxMessage.getVersion())
+                .build();
+        return customerOutboxJpaRepository.save(customerOutboxEntity).toModel();
     }
 
     @Override
@@ -43,7 +47,7 @@ public class CustomerOutboxRepositoryImpl implements CustomerOutboxRepository {
                 .orElseThrow(() -> new CustomerOutboxNotFoundException("Customer outbox object " +
                         "cannot be found for saga type " + type))
                 .stream()
-                .map(customerOutboxDataAccessMapper::customerOutboxEntityToCustomerOutboxMessage)
+                .map(CustomerOutboxEntity::toModel)
                 .collect(Collectors.toList()));
     }
 

@@ -1,7 +1,6 @@
 package com.food.order.system.restaurant.service.dataaccess.restaurant.adapter;
 
 import com.food.order.system.restaurant.service.dataaccess.restaurant.entity.OrderApprovalEntity;
-import com.food.order.system.restaurant.service.dataaccess.restaurant.mapper.RestaurantDataAccessMapper;
 import com.food.order.system.restaurant.service.dataaccess.restaurant.repository.OrderApprovalJpaRepository;
 import com.food.order.system.restaurant.service.domain.entity.OrderApproval;
 import com.food.order.system.restaurant.service.domain.ports.output.repository.OrderApprovalRepository;
@@ -21,12 +20,15 @@ import org.springframework.stereotype.Component;
 public class OrderApprovalRepositoryImpl implements OrderApprovalRepository {
 
     private final OrderApprovalJpaRepository orderApprovalJpaRepository;
-    private final RestaurantDataAccessMapper restaurantDataAccessMapper;
 
     @Override
     public OrderApproval save(OrderApproval orderApproval) {
-        OrderApprovalEntity orderApprovalEntity = restaurantDataAccessMapper.orderApprovalToOrderApprovalEntity(orderApproval);
-        orderApprovalEntity = orderApprovalJpaRepository.save(orderApprovalEntity);
-        return restaurantDataAccessMapper.orderApprovalEntityToOrderApproval(orderApprovalEntity);
+        OrderApprovalEntity orderApprovalEntity = OrderApprovalEntity.builder()
+                .id(orderApproval.getId().getValue())
+                .restaurantId(orderApproval.getRestaurantId().getValue())
+                .orderId(orderApproval.getOrderId().getValue())
+                .status(orderApproval.getApprovalStatus())
+                .build();
+        return orderApprovalJpaRepository.save(orderApprovalEntity).toModel();
     }
 }

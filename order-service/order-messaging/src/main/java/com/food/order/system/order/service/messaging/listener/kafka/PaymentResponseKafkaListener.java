@@ -1,10 +1,11 @@
 package com.food.order.system.order.service.messaging.listener.kafka;
 
+import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.kafka.consumer.KafkaConsumer;
 import com.food.order.system.kafka.order.avro.model.PaymentResponseAvroModel;
+import com.food.order.system.order.service.domain.dto.message.PaymentResponse;
 import com.food.order.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.order.system.order.service.domain.ports.input.message.listener.payment.PaymentResponseMessageListener;
-import com.food.order.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -31,7 +32,6 @@ import java.util.List;
 public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentResponseAvroModel> {
 
     private final PaymentResponseMessageListener paymentResponseMessageListener;
-    private final OrderMessagingDataMapper orderMessagingDataMapper;
 
     @Override
     @KafkaListener(id = "${kafka-consumer-config.payment-consumer-group-id}",
@@ -52,13 +52,11 @@ public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentRespon
                 switch (paymentResponseAvroModel.getPaymentStatus()) {
                     case COMPLETED -> {
                         log.info("Processing successful payment for order id: {}", paymentResponseAvroModel.getOrderId());
-                        paymentResponseMessageListener.paymentCompleted(
-                                orderMessagingDataMapper.paymentResponseAvroModelToPaymentResponse(paymentResponseAvroModel));
+                        paymentResponseMessageListener.paymentCompleted(createPaymentResponse(paymentResponseAvroModel));
                     }
                     case CANCELLED, FAILED -> {
                         log.info("Processing unsuccessful payment for order id: {}", paymentResponseAvroModel.getOrderId());
-                        paymentResponseMessageListener.paymentCancelled(
-                                orderMessagingDataMapper.paymentResponseAvroModelToPaymentResponse(paymentResponseAvroModel));
+                        paymentResponseMessageListener.paymentCancelled(createPaymentResponse(paymentResponseAvroModel));
                     }
                 }
                 /*
@@ -77,5 +75,19 @@ public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentRespon
              * Handle etmediğimiz hatalar fırlatıldığı zaman bu consumer kafka'dan verileri tekrar okumaya çalışacaktır.
              * */
         });
+    }
+
+    private PaymentResponse createPaymentResponse(PaymentResponseAvroModel paymentResponseAvroModel) {
+        return PaymentResponse.builder()
+                .id(paymentResponseAvroModel.getId())
+                .sagaId(paymentResponseAvroModel.getSagaId())
+                .paymentId(paymentResponseAvroModel.getPaymentId())
+                .customerId(paymentResponseAvroModel.getCustomerId())
+                .orderId(paymentResponseAvroModel.getOrderId())
+                .price(paymentResponseAvroModel.getPrice())
+                .createdAt(paymentResponseAvroModel.getCreatedAt())
+                .paymentStatus(PaymentStatus.valueOf(paymentResponseAvroModel.getPaymentStatus().name()))
+                .failureMessages(paymentResponseAvroModel.getFailureMessages())
+                .build();
     }
 }

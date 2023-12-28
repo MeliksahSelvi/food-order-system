@@ -2,7 +2,6 @@ package com.food.order.system.payment.service.dataaccess.creditentry.adapter;
 
 import com.food.order.system.domain.valueobject.CustomerId;
 import com.food.order.system.payment.service.dataaccess.creditentry.entity.CreditEntryEntity;
-import com.food.order.system.payment.service.dataaccess.creditentry.mapper.CreditEntryDataAccessMapper;
 import com.food.order.system.payment.service.dataaccess.creditentry.repository.CreditEntryJpaRepository;
 import com.food.order.system.payment.service.domain.entity.CreditEntry;
 import com.food.order.system.payment.service.domain.ports.output.repository.CreditEntryRepository;
@@ -24,19 +23,19 @@ import java.util.Optional;
 public class CreditEntryRepositoryImpl implements CreditEntryRepository {
 
     private final CreditEntryJpaRepository creditEntryJpaRepository;
-    private final CreditEntryDataAccessMapper creditEntryDataAccessMapper;
-
 
     @Override
     public CreditEntry save(CreditEntry creditEntry) {
-        CreditEntryEntity creditEntryEntity = creditEntryDataAccessMapper.creditEntryToCreditEntryEntity(creditEntry);
-        creditEntryEntity=creditEntryJpaRepository.save(creditEntryEntity);
-        return creditEntryDataAccessMapper.creditEntryEntityToCreditEntry(creditEntryEntity);
+        CreditEntryEntity creditEntryEntity = CreditEntryEntity.builder()
+                .id(creditEntry.getId().getValue())
+                .customerId(creditEntry.getCustomerId().getValue())
+                .totalCreditAmount(creditEntry.getTotalCreditAmount().getAmount())
+                .build();
+        return creditEntryJpaRepository.save(creditEntryEntity).toModel();
     }
 
     @Override
     public Optional<CreditEntry> findByCustomerId(CustomerId customerId) {
-        Optional<CreditEntryEntity> creditEntryEntityOptional = creditEntryJpaRepository.findByCustomerId(customerId.getValue());
-        return creditEntryEntityOptional.map(creditEntryDataAccessMapper::creditEntryEntityToCreditEntry);
+        return creditEntryJpaRepository.findByCustomerId(customerId.getValue()).map(CreditEntryEntity::toModel);
     }
 }

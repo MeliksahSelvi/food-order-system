@@ -4,13 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.food.order.system.customer.service.domain.config.CustomerServiceConfigData;
 import com.food.order.system.customer.service.domain.exception.CustomerDomainException;
+import com.food.order.system.customer.service.domain.outbox.model.CustomerEventPayload;
+import com.food.order.system.customer.service.domain.outbox.model.CustomerOutboxMessage;
 import com.food.order.system.customer.service.domain.ports.output.message.publisher.CustomerMessagePublisher;
-import com.food.order.system.customer.service.messaging.mapper.CustomerMessagingDataMapper;
 import com.food.order.system.kafka.order.avro.model.CustomerAvroModel;
 import com.food.order.system.kafka.producer.service.KafkaProducer;
 import com.food.order.system.outbox.OutboxStatus;
-import com.food.order.system.outbox.customer.model.CustomerEventPayload;
-import com.food.order.system.outbox.customer.model.CustomerOutboxMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -30,7 +29,6 @@ import java.util.function.BiConsumer;
 public class CustomerMessageKafkaPublisher implements CustomerMessagePublisher {
 
     private final CustomerServiceConfigData customerServiceConfigData;
-    private final CustomerMessagingDataMapper customerMessagingDataMapper;
     private final KafkaProducer<String, CustomerAvroModel> kafkaProducer;
     private final ObjectMapper objectMapper;
 
@@ -43,8 +41,7 @@ public class CustomerMessageKafkaPublisher implements CustomerMessagePublisher {
                 customerEventPayload.getCustomerId(), sagaId);
 
         try {
-            CustomerAvroModel message = customerMessagingDataMapper.
-                    customerEventPayloadToCustomerAvroModel(sagaId, customerEventPayload);
+            CustomerAvroModel message = createCustomerAvroModel(sagaId, customerEventPayload);
 
             String topicName = customerServiceConfigData.getCustomerRequestTopicName();
 
@@ -89,5 +86,16 @@ public class CustomerMessageKafkaPublisher implements CustomerMessagePublisher {
                 outboxCallback.accept(outboxMessage, OutboxStatus.FAILED);
             }
         };
+    }
+
+    private CustomerAvroModel createCustomerAvroModel(String sagaId, CustomerEventPayload payload) {
+        return CustomerAvroModel.newBuilder()
+                .setId(payload.getCustomerId())
+                .setSagaId(sagaId)
+                .setUsername(payload.getUsername())
+                .setFirstName(payload.getFirstName())
+                .setLastName(payload.getLastName())
+                .setCreatedAt(payload.getCreatedAt().toInstant())
+                .build();
     }
 }

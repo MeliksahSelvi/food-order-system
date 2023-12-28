@@ -1,4 +1,4 @@
-package com.food.order.system.outbox.customer.model;
+package com.food.order.system.customer.service.domain.outbox.model;
 
 import com.food.order.system.outbox.OutboxStatus;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 /**
  * @Author mselvi
- * @Created 24.12.2023
+ * @Created 28.12.2023
  */
 
 /*

@@ -22,10 +22,6 @@
         </dependency>
         <dependency>
             <groupId>com.food.order.system</groupId>
-            <artifactId>common-outbox</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.food.order.system</groupId>
             <artifactId>saga</artifactId>
         </dependency>
         <dependency>

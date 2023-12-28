@@ -1,12 +1,17 @@
 package com.food.order.system.restaurant.service.domain;
 
+import com.food.order.system.domain.valueobject.Money;
 import com.food.order.system.domain.valueobject.OrderId;
+import com.food.order.system.domain.valueobject.OrderStatus;
+import com.food.order.system.domain.valueobject.RestaurantId;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.restaurant.service.domain.dto.RestaurantApprovalRequest;
+import com.food.order.system.restaurant.service.domain.entity.OrderDetail;
+import com.food.order.system.restaurant.service.domain.entity.Product;
 import com.food.order.system.restaurant.service.domain.entity.Restaurant;
 import com.food.order.system.restaurant.service.domain.event.OrderApprovalEvent;
 import com.food.order.system.restaurant.service.domain.exception.RestaurantNotFoundException;
-import com.food.order.system.restaurant.service.domain.mapper.RestaurantDataMapper;
+import com.food.order.system.restaurant.service.domain.outbox.model.OrderEventPayload;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.restaurant.service.domain.outbox.scheduler.OrderOutboxHelper;
 import com.food.order.system.restaurant.service.domain.ports.output.message.publisher.RestaurantApprovalResponseMessagePublisher;
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @Author mselvi
@@ -33,7 +39,6 @@ import java.util.UUID;
 public class RestaurantApprovalRequestHelper {
 
     private final RestaurantDomainService restaurantDomainService;
-    private final RestaurantDataMapper restaurantDataMapper;
     private final RestaurantRepository restaurantRepository;
     private final OrderApprovalRepository orderApprovalRepository;
     private final OrderOutboxHelper orderOutboxHelper;
@@ -52,15 +57,14 @@ public class RestaurantApprovalRequestHelper {
         OrderApprovalEvent orderApprovalEvent = restaurantDomainService.validateOrder(restaurant, failureMessages);
         orderApprovalRepository.save(restaurant.getOrderApproval());
 
-        orderOutboxHelper.persistOrderOutboxMessage(
-                restaurantDataMapper.orderApprovalEventToOrderEventPayload(orderApprovalEvent),
+        orderOutboxHelper.persistOrderOutboxMessage(createOrderEventPayload(orderApprovalEvent),
                 orderApprovalEvent.getOrderApproval().getApprovalStatus(),
                 OutboxStatus.STARTED,
                 UUID.fromString(restaurantApprovalRequest.getSagaId()));
     }
 
     private Restaurant findRestaurant(RestaurantApprovalRequest restaurantApprovalRequest) {
-        Restaurant restaurant = restaurantDataMapper.restaurantApprovalRequestToRestaurant(restaurantApprovalRequest);
+        Restaurant restaurant = createRestaurant(restaurantApprovalRequest);
         Optional<Restaurant> restaurantInformation = restaurantRepository.findRestaurantInformation(restaurant);
         if (restaurantInformation.isEmpty()) {
             log.error("Restaurant with id {} not found", restaurant.getId().getValue());
@@ -91,6 +95,33 @@ public class RestaurantApprovalRequestHelper {
             return true;
         }
         return false;
+    }
+
+    private Restaurant createRestaurant(RestaurantApprovalRequest restaurantApprovalRequest) {
+        return Restaurant.builder()
+                .restaurantId(new RestaurantId(UUID.fromString(restaurantApprovalRequest.getRestaurantId())))
+                .orderDetail(OrderDetail.builder()
+                        .orderId(new OrderId(UUID.fromString(restaurantApprovalRequest.getOrderId())))
+                        .products(restaurantApprovalRequest.getProducts().stream().map(
+                                        product -> Product.builder()
+                                                .productId(product.getId())
+                                                .quantity(product.getQuantity())
+                                                .build())
+                                .collect(Collectors.toList()))
+                        .totalAmount(new Money(restaurantApprovalRequest.getPrice()))
+                        .orderStatus(OrderStatus.valueOf(restaurantApprovalRequest.getRestaurantOrderStatus().name()))
+                        .build())
+                .build();
+    }
+
+    private OrderEventPayload createOrderEventPayload(OrderApprovalEvent orderApprovalEvent) {
+        return OrderEventPayload.builder()
+                .orderId(orderApprovalEvent.getOrderApproval().getOrderId().getValue().toString())
+                .restaurantId(orderApprovalEvent.getRestaurantId().getValue().toString())
+                .orderApprovalStatus(orderApprovalEvent.getOrderApproval().getApprovalStatus().name())
+                .createdAt(orderApprovalEvent.getCreatedAt())
+                .failureMessages(orderApprovalEvent.getFailureMessages())
+                .build();
     }
 
 }

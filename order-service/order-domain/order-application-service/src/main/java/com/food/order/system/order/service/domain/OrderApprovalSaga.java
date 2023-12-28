@@ -1,12 +1,13 @@
 package com.food.order.system.order.service.domain;
 
 import com.food.order.system.domain.valueobject.OrderStatus;
+import com.food.order.system.domain.valueobject.PaymentOrderStatus;
 import com.food.order.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import com.food.order.system.order.service.domain.entity.Order;
 import com.food.order.system.order.service.domain.event.OrderCancelledEvent;
 import com.food.order.system.order.service.domain.exception.OrderDomainException;
-import com.food.order.system.order.service.domain.mapper.OrderDataMapper;
 import com.food.order.system.order.service.domain.outbox.model.approval.OrderApprovalOutboxMessage;
+import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
 import com.food.order.system.order.service.domain.outbox.scheduler.approval.ApprovalOutboxHelper;
 import com.food.order.system.order.service.domain.outbox.scheduler.payment.PaymentOutboxHelper;
@@ -36,7 +37,6 @@ import static com.food.order.system.domain.DomainConstants.UTC;
 public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
 
     private final OrderDomainService orderDomainService;
-    private final OrderDataMapper orderDataMapper;
     private final OrderSagaHelper orderSagaHelper;
     private final PaymentOutboxHelper paymentOutboxHelper;
     private final ApprovalOutboxHelper approvalOutboxHelper;
@@ -94,8 +94,7 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
                 orderStatus, sagaStatus));
 
         //payment işlemi iptal edilmesi için yeni payment outbox kaydı
-        paymentOutboxHelper.savePaymentOutboxMessage(orderDataMapper.
-                        orderCancelledEventToOrderPaymentEventPayload(orderCancelledEvent),
+        paymentOutboxHelper.savePaymentOutboxMessage(createOrderPaymentEventPayload(orderCancelledEvent),
                 orderStatus,
                 sagaStatus,
                 OutboxStatus.STARTED,
@@ -145,5 +144,15 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
         OrderCancelledEvent orderCancelledEvent = orderDomainService.cancelOrderPayment(order, restaurantApprovalResponse.getFailureMessages());
         orderSagaHelper.saveOrder(order);
         return orderCancelledEvent;
+    }
+
+    private OrderPaymentEventPayload createOrderPaymentEventPayload(OrderCancelledEvent orderCancelledEvent) {
+        return OrderPaymentEventPayload.builder()
+                .customerId(orderCancelledEvent.getOrder().getCustomerId().getValue().toString())
+                .orderId(orderCancelledEvent.getOrder().getId().getValue().toString())
+                .price(orderCancelledEvent.getOrder().getPrice().getAmount())
+                .createdAt(orderCancelledEvent.getCreatedAt())
+                .paymentOrderStatus(PaymentOrderStatus.CANCELLED.name())
+                .build();
     }
 }

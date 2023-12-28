@@ -1,5 +1,6 @@
 package com.food.order.system.order.service.dataaccess.order.entity;
 
+import com.food.order.system.order.service.domain.valueobject.StreetAddress;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,10 @@ public class OrderAddressEntity {
     private String street;
     private String postalCode;
     private String city;
+
+    public StreetAddress toObject() {
+        return new StreetAddress(id, street, postalCode, city);
+    }
 
     @Override
     public boolean equals(Object o) {

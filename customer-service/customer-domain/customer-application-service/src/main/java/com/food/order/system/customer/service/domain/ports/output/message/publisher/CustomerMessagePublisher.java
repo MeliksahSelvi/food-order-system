@@ -1,7 +1,7 @@
 package com.food.order.system.customer.service.domain.ports.output.message.publisher;
 
+import com.food.order.system.customer.service.domain.outbox.model.CustomerOutboxMessage;
 import com.food.order.system.outbox.OutboxStatus;
-import com.food.order.system.outbox.customer.model.CustomerOutboxMessage;
 
 import java.util.function.BiConsumer;
 

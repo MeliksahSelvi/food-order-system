@@ -1,9 +1,9 @@
 package com.food.order.system.customer.service.domain.outbox.scheduler;
 
+import com.food.order.system.customer.service.domain.outbox.model.CustomerOutboxMessage;
 import com.food.order.system.customer.service.domain.ports.output.message.publisher.CustomerMessagePublisher;
 import com.food.order.system.outbox.OutboxScheduler;
 import com.food.order.system.outbox.OutboxStatus;
-import com.food.order.system.outbox.customer.model.CustomerOutboxMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

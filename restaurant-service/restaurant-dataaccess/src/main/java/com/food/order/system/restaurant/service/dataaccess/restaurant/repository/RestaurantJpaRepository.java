@@ -1,7 +1,7 @@
-package com.food.order.system.dataaccess.restaurant.repository;
+package com.food.order.system.restaurant.service.dataaccess.restaurant.repository;
 
-import com.food.order.system.dataaccess.restaurant.entity.RestaurantEntity;
-import com.food.order.system.dataaccess.restaurant.entity.RestaurantEntityId;
+import com.food.order.system.restaurant.service.dataaccess.restaurant.entity.RestaurantEntity;
+import com.food.order.system.restaurant.service.dataaccess.restaurant.entity.RestaurantEntityId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 /**
  * @Author mselvi
- * @Created 18.12.2023
+ * @Created 28.12.2023
  */
 
 @Repository

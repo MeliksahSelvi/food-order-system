@@ -1,8 +1,8 @@
-package com.food.order.system.dataaccess.customer.exception;
+package com.food.order.system.customer.service.dataaccess.outbox.exception;
 
 /**
  * @Author mselvi
- * @Created 24.12.2023
+ * @Created 28.12.2023
  */
 
 public class CustomerOutboxNotFoundException extends RuntimeException{

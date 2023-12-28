@@ -2,7 +2,6 @@ package com.food.order.system.order.service.dataaccess.outbox.payment.adapter;
 
 import com.food.order.system.order.service.dataaccess.outbox.payment.entity.PaymentOutboxEntity;
 import com.food.order.system.order.service.dataaccess.outbox.payment.exception.PaymentOutboxNotFoundException;
-import com.food.order.system.order.service.dataaccess.outbox.payment.mapper.PaymentOutboxDataAccessMapper;
 import com.food.order.system.order.service.dataaccess.outbox.payment.repository.PaymentOutboxJpaRepository;
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
 import com.food.order.system.order.service.domain.ports.output.repository.PaymentOutBoxRepository;
@@ -30,15 +29,22 @@ import java.util.stream.Collectors;
 public class PaymentOutboxRepositoryImpl implements PaymentOutBoxRepository {
 
     private final PaymentOutboxJpaRepository paymentOutboxJpaRepository;
-    private final PaymentOutboxDataAccessMapper paymentOutboxDataAccessMapper;
 
     @Override
     public OrderPaymentOutboxMessage save(OrderPaymentOutboxMessage orderPaymentOutboxMessage) {
-        PaymentOutboxEntity paymentOutboxEntity = paymentOutboxDataAccessMapper.
-                orderPaymentOutboxMessageToPaymentOutboxEntity(orderPaymentOutboxMessage);
+        PaymentOutboxEntity paymentOutboxEntity = PaymentOutboxEntity.builder()
+                .id(orderPaymentOutboxMessage.getId())
+                .sagaId(orderPaymentOutboxMessage.getSagaId())
+                .createdAt(orderPaymentOutboxMessage.getCreatedAt())
+                .type(orderPaymentOutboxMessage.getType())
+                .payload(orderPaymentOutboxMessage.getPayload())
+                .orderStatus(orderPaymentOutboxMessage.getOrderStatus())
+                .sagaStatus(orderPaymentOutboxMessage.getSagaStatus())
+                .outboxStatus(orderPaymentOutboxMessage.getOutboxStatus())
+                .version(orderPaymentOutboxMessage.getVersion())
+                .build();
 
-        paymentOutboxEntity = paymentOutboxJpaRepository.save(paymentOutboxEntity);
-        return paymentOutboxDataAccessMapper.paymentOutboxEntityToOrderPaymentOutboxMessage(paymentOutboxEntity);
+        return paymentOutboxJpaRepository.save(paymentOutboxEntity).toModel();
     }
 
     @Override
@@ -51,7 +57,7 @@ public class PaymentOutboxRepositoryImpl implements PaymentOutBoxRepository {
                 .orElseThrow(() -> new PaymentOutboxNotFoundException("Payment outbox object " +
                         "could not be found for saga type " + type))
                 .stream()
-                .map(paymentOutboxDataAccessMapper::paymentOutboxEntityToOrderPaymentOutboxMessage)
+                .map(PaymentOutboxEntity::toModel)
                 .collect(Collectors.toList()));
     }
 
@@ -61,7 +67,7 @@ public class PaymentOutboxRepositoryImpl implements PaymentOutBoxRepository {
                                                                                   SagaStatus... sagaStatuses) {
         return paymentOutboxJpaRepository.
                 findByTypeAndSagaIdAndSagaStatusIn(type, sagaId, Arrays.asList(sagaStatuses))
-                .map(paymentOutboxDataAccessMapper::paymentOutboxEntityToOrderPaymentOutboxMessage);
+                .map(PaymentOutboxEntity::toModel);
     }
 
     @Override
