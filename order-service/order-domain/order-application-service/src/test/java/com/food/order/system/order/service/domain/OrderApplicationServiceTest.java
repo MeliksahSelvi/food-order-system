@@ -6,7 +6,7 @@ import com.food.order.system.domain.valueobject.*;
 import com.food.order.system.order.service.domain.dto.create.CreateOrderCommand;
 import com.food.order.system.order.service.domain.dto.create.CreateOrderResponse;
 import com.food.order.system.order.service.domain.dto.create.OrderAddress;
-import com.food.order.system.order.service.domain.dto.create.OrderItem;
+import com.food.order.system.order.service.domain.dto.create.OrderItemModel;
 import com.food.order.system.order.service.domain.entity.Customer;
 import com.food.order.system.order.service.domain.entity.Order;
 import com.food.order.system.order.service.domain.entity.Product;
@@ -155,13 +155,13 @@ public class OrderApplicationServiceTest {
                         .city("istanbul")
                         .build())
                 .price(PRICE)
-                .items(List.of(OrderItem.builder()
+                .items(List.of(OrderItemModel.builder()
                                 .productId(PRODUCT_ID)
                                 .quantity(1)
                                 .price(new BigDecimal(val))
                                 .subTotal(new BigDecimal(val))
                                 .build(),
-                        OrderItem.builder()
+                        OrderItemModel.builder()
                                 .productId(PRODUCT_ID)
                                 .quantity(3)
                                 .price(new BigDecimal("50.00"))
@@ -207,15 +207,15 @@ public class OrderApplicationServiceTest {
                 .price(new Money(createOrderCommand.getPrice()))
                 .deliveryAddress(createOrderCommand.getAddress().toObject())
                 .price(new Money(createOrderCommand.getPrice()))
-                .items(createOrderCommand.getItems().stream().map(OrderItem::toModel).toList())
+                .items(createOrderCommand.getItems().stream().map(OrderItemModel::toModel).toList())
                 .build();
     }
 
     private Restaurant createRestaurant(CreateOrderCommand createOrderCommand) {
         return Restaurant.builder()
                 .restaurantId(new RestaurantId(createOrderCommand.getRestaurantId()))
-                .products(createOrderCommand.getItems().stream().map(orderItem ->
-                                new Product(new ProductId(orderItem.getProductId())))
+                .products(createOrderCommand.getItems().stream().map(orderItemModel ->
+                                new Product(new ProductId(orderItemModel.getProductId())))
                         .collect(Collectors.toList())
                 )
                 .build();

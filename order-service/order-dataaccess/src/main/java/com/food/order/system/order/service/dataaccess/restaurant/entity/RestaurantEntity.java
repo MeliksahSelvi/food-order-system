@@ -1,5 +1,8 @@
-package com.food.order.system.dataaccess.restaurant.entity;
+package com.food.order.system.order.service.dataaccess.restaurant.entity;
 
+import com.food.order.system.domain.valueobject.RestaurantId;
+import com.food.order.system.order.service.domain.entity.Product;
+import com.food.order.system.order.service.domain.entity.Restaurant;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -7,12 +10,13 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 /**
  * @Author mselvi
- * @Created 18.12.2023
+ * @Created 28.12.2023
  */
 
 @Entity
@@ -34,6 +38,14 @@ public class RestaurantEntity {
     private BigDecimal productPrice;
     private Boolean restaurantActive;
     private Boolean productAvailable;
+
+    public Restaurant toModel(List<Product> restaurantProducts) {
+        return Restaurant.builder()
+                .restaurantId(new RestaurantId(restaurantId))
+                .products(restaurantProducts)
+                .active(restaurantActive)
+                .build();
+    }
 
     @Override
     public boolean equals(Object o) {
