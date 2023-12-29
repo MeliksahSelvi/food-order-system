@@ -4,10 +4,12 @@ This project created to be used by guide on topics as Clean & Hexagonal Architec
 
 ## Technology Stack used in this project:
 
-Java 17
-Spring Boot 3.1.6
-Spring Cloud 4.0.3
-Kafka 7.0.1
+<ul>
+<li>Java 17</li>
+<li>Spring Boot 3.1.6</li>
+<li>Spring Cloud 4.0.3</li>
+<li>Kafka 7.0.1</li>
+</ul>
 
 ## The Principles and Patterns tried implemented:
 
