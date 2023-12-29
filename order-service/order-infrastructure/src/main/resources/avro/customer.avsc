@@ -1,0 +1,44 @@
+{
+  "namespace": "com.food.order.system.order.service.common.messaging.kafka.model",
+  "type": "record",
+  "name": "CustomerAvroModel",
+  "fields": [
+    {
+      "name": "id",
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "sagaId",
+       "type": {
+         "type": "string"
+       }
+     },
+    {
+      "name": "username",
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "firstName",
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "lastName",
+      "type": {
+        "type": "string"
+      }
+    },
+    {
+      "name": "createdAt",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      }
+    }
+  ]
+}
