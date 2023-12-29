@@ -1,13 +1,12 @@
-package com.food.order.system.customer.service.domain;
+package com.food.order.system.customer.service;
 
-import com.food.order.system.customer.service.domain.entity.Customer;
-import com.food.order.system.customer.service.domain.event.CustomerCreatedEvent;
+import com.food.order.system.customer.service.constants.DomainConstants;
+import com.food.order.system.customer.service.entity.Customer;
+import com.food.order.system.customer.service.event.CustomerCreatedEvent;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
-import static com.food.order.system.customer.service.domain.constants.DomainConstants.UTC;
 
 
 /**
@@ -20,6 +19,6 @@ public class CustomerDomainServiceImpl implements CustomerDomainService {
     @Override
     public CustomerCreatedEvent validateAndInitiate(Customer customer) {
         log.info("Customer with id: {} is initiated", customer.getId().getValue());
-        return new CustomerCreatedEvent(customer, ZonedDateTime.now(ZoneId.of(UTC)));
+        return new CustomerCreatedEvent(customer, ZonedDateTime.now(ZoneId.of(DomainConstants.UTC)));
     }
 }

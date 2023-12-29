@@ -1,4 +1,4 @@
-package com.food.order.system.customer.service.domain.constants;
+package com.food.order.system.customer.service.constants;
 
 /**
  * @Author mselvi
@@ -11,4 +11,5 @@ public class DomainConstants {
     }
 
     public static final String UTC = "UTC";
+    public static final String CUSTOMER_SAGA_NAME = "CustomerCreateSaga";
 }

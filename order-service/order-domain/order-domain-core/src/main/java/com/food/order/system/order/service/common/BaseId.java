@@ -1,4 +1,4 @@
-package com.food.order.system.customer.service.domain.common;
+package com.food.order.system.order.service.common;
 
 import java.util.Objects;
 

@@ -1,7 +1,7 @@
-package com.food.order.system.customer.service.domain.entity;
+package com.food.order.system.customer.service.entity;
 
-import com.food.order.system.customer.service.domain.common.AggregateRoot;
-import com.food.order.system.customer.service.domain.valueobject.CustomerId;
+import com.food.order.system.customer.service.common.AggregateRoot;
+import com.food.order.system.customer.service.valueobject.CustomerId;
 
 /**
  * @Author mselvi

@@ -1,4 +1,4 @@
-package com.food.order.system.customer.service.domain.exception;
+package com.food.order.system.customer.service.exception;
 
 /**
  * @Author mselvi
