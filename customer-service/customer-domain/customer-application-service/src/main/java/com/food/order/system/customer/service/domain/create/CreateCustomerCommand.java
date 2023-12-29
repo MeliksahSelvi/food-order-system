@@ -1,7 +1,7 @@
 package com.food.order.system.customer.service.domain.create;
 
 import com.food.order.system.customer.service.domain.entity.Customer;
-import com.food.order.system.domain.valueobject.CustomerId;
+import com.food.order.system.customer.service.domain.valueobject.CustomerId;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

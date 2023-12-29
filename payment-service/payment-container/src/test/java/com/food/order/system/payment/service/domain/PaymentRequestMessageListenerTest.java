@@ -1,12 +1,12 @@
 package com.food.order.system.payment.service.domain;
 
-import com.food.order.system.domain.valueobject.PaymentOrderStatus;
-import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.payment.service.dataaccess.outbox.entity.OrderOutboxEntity;
 import com.food.order.system.payment.service.dataaccess.outbox.repository.OrderOutboxJpaRepository;
 import com.food.order.system.payment.service.domain.dto.PaymentRequest;
 import com.food.order.system.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
+import com.food.order.system.payment.service.domain.valueobject.PaymentOrderStatus;
+import com.food.order.system.payment.service.domain.valueobject.PaymentStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.postgresql.util.PSQLException;

@@ -1,8 +1,8 @@
 package com.food.order.system.payment.service.messaging.listener.kafka;
 
-import com.food.order.system.domain.valueobject.PaymentOrderStatus;
 import com.food.order.system.kafka.consumer.KafkaConsumer;
 import com.food.order.system.kafka.order.avro.model.PaymentRequestAvroModel;
+import com.food.order.system.payment.service.domain.valueobject.PaymentOrderStatus;
 import com.food.order.system.payment.service.domain.dto.PaymentRequest;
 import com.food.order.system.payment.service.domain.exception.PaymentApplicationServiceException;
 import com.food.order.system.payment.service.domain.exception.PaymentNotFoundException;
@@ -81,8 +81,8 @@ public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequest
                     throw new PaymentApplicationServiceException("Throwing DataAccessException in" +
                             " PaymentRequestKafkaListener: " + e.getMessage(), e);
                 }
-            }catch (PaymentNotFoundException e){
-                log.error("No payment found for order id: {}",paymentRequestAvroModel.getOrderId());
+            } catch (PaymentNotFoundException e) {
+                log.error("No payment found for order id: {}", paymentRequestAvroModel.getOrderId());
             }
         });
 

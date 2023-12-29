@@ -1,10 +1,10 @@
 package com.food.order.system.payment.service.dataaccess.credithistory.adapter;
 
-import com.food.order.system.domain.valueobject.CustomerId;
 import com.food.order.system.payment.service.dataaccess.credithistory.entity.CreditHistoryEntity;
 import com.food.order.system.payment.service.dataaccess.credithistory.repository.CreditHistoryJpaRepository;
 import com.food.order.system.payment.service.domain.entity.CreditHistory;
 import com.food.order.system.payment.service.domain.ports.output.repository.CreditHistoryRepository;
+import com.food.order.system.payment.service.domain.valueobject.CustomerId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -41,8 +41,8 @@ public class CreditHistoryRepositoryImpl implements CreditHistoryRepository {
     public Optional<List<CreditHistory>> findByCustomerId(CustomerId customerId) {
         return creditHistoryJpaRepository.findByCustomerId(customerId.getValue())
                 .map(creditHistoryEntities ->
-                creditHistoryEntities.stream()
-                        .map(CreditHistoryEntity::toModel)
-                        .collect(Collectors.toList()));
+                        creditHistoryEntities.stream()
+                                .map(CreditHistoryEntity::toModel)
+                                .collect(Collectors.toList()));
     }
 }

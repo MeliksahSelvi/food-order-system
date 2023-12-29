@@ -1,9 +1,9 @@
 package com.food.order.system.restaurant.service.domain.entity;
 
-import com.food.order.system.domain.entity.BaseEntity;
-import com.food.order.system.domain.valueobject.Money;
-import com.food.order.system.domain.valueobject.OrderId;
-import com.food.order.system.domain.valueobject.OrderStatus;
+import com.food.order.system.restaurant.service.domain.common.BaseEntity;
+import com.food.order.system.restaurant.service.domain.valueobject.Money;
+import com.food.order.system.restaurant.service.domain.valueobject.OrderId;
+import com.food.order.system.restaurant.service.domain.valueobject.OrderStatus;
 
 import java.util.List;
 
@@ -23,12 +23,12 @@ public class OrderDetail extends BaseEntity<OrderId> {
 
     private OrderDetail(Builder builder) {
         setId(builder.orderId);
-        orderStatus=builder.orderStatus;
-        totalAmount=builder.totalAmount;
-        products=builder.products;
+        orderStatus = builder.orderStatus;
+        totalAmount = builder.totalAmount;
+        products = builder.products;
     }
 
-    public static Builder builder(){
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -45,7 +45,7 @@ public class OrderDetail extends BaseEntity<OrderId> {
         return products;
     }
 
-    public static final class Builder{
+    public static final class Builder {
         private OrderId orderId;
         private OrderStatus orderStatus;
         private Money totalAmount;
@@ -54,27 +54,27 @@ public class OrderDetail extends BaseEntity<OrderId> {
         private Builder() {
         }
 
-        public Builder orderId(OrderId val){
-            orderId=val;
+        public Builder orderId(OrderId val) {
+            orderId = val;
             return this;
         }
 
-        public Builder orderStatus(OrderStatus val){
-            orderStatus=val;
+        public Builder orderStatus(OrderStatus val) {
+            orderStatus = val;
             return this;
         }
 
-        public Builder totalAmount(Money val){
-            totalAmount=val;
+        public Builder totalAmount(Money val) {
+            totalAmount = val;
             return this;
         }
 
-        public Builder products(List<Product> val){
-            products=val;
+        public Builder products(List<Product> val) {
+            products = val;
             return this;
         }
 
-        public OrderDetail build(){
+        public OrderDetail build() {
             return new OrderDetail(this);
         }
     }

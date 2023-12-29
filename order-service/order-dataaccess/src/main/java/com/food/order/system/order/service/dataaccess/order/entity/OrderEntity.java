@@ -1,8 +1,7 @@
 package com.food.order.system.order.service.dataaccess.order.entity;
 
-import com.food.order.system.domain.valueobject.*;
 import com.food.order.system.order.service.domain.entity.Order;
-import com.food.order.system.order.service.domain.valueobject.TrackingId;
+import com.food.order.system.order.service.domain.valueobject.*;
 import jakarta.persistence.*;
 import lombok.*;
 

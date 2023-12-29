@@ -1,9 +1,9 @@
 package com.food.order.system.payment.service.domain.entity;
 
-import com.food.order.system.domain.entity.BaseEntity;
-import com.food.order.system.domain.valueobject.CustomerId;
-import com.food.order.system.domain.valueobject.Money;
+import com.food.order.system.payment.service.domain.common.BaseEntity;
 import com.food.order.system.payment.service.domain.valueobject.CreditEntryId;
+import com.food.order.system.payment.service.domain.valueobject.CustomerId;
+import com.food.order.system.payment.service.domain.valueobject.Money;
 
 /**
  * @Author mselvi
@@ -11,29 +11,29 @@ import com.food.order.system.payment.service.domain.valueobject.CreditEntryId;
  */
 
 /*
-* Aggregate root olabilirdi bu sefer rest api açmamız gerekirdi.biz değerleri init sql data olarak vereceğiz.
-* */
+ * Aggregate root olabilirdi bu sefer rest api açmamız gerekirdi.biz değerleri init sql data olarak vereceğiz.
+ * */
 public class CreditEntry extends BaseEntity<CreditEntryId> {
 
     private final CustomerId customerId;
     private Money totalCreditAmount;
 
-    public void addCreditAmount(Money amount){
-        totalCreditAmount=totalCreditAmount.add(amount);
+    public void addCreditAmount(Money amount) {
+        totalCreditAmount = totalCreditAmount.add(amount);
     }
 
-    public void substractCreditAmount(Money amount){
-        totalCreditAmount=totalCreditAmount.substract(amount);
+    public void substractCreditAmount(Money amount) {
+        totalCreditAmount = totalCreditAmount.substract(amount);
     }
 
 
     private CreditEntry(Builder builder) {
         setId(builder.creditEntryId);
-        this.customerId=builder.customerId;
-        this.totalCreditAmount=builder.totalCreditAmount;
+        this.customerId = builder.customerId;
+        this.totalCreditAmount = builder.totalCreditAmount;
     }
 
-    public static Builder builder(){
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -45,7 +45,7 @@ public class CreditEntry extends BaseEntity<CreditEntryId> {
         return totalCreditAmount;
     }
 
-    public static final class Builder{
+    public static final class Builder {
         private CreditEntryId creditEntryId;
         private CustomerId customerId;
         private Money totalCreditAmount;
@@ -53,22 +53,22 @@ public class CreditEntry extends BaseEntity<CreditEntryId> {
         private Builder() {
         }
 
-        public Builder creditEntryId(CreditEntryId val){
-            this.creditEntryId=val;
+        public Builder creditEntryId(CreditEntryId val) {
+            this.creditEntryId = val;
             return this;
         }
 
-        public Builder customerId(CustomerId val){
-            this.customerId=val;
+        public Builder customerId(CustomerId val) {
+            this.customerId = val;
             return this;
         }
 
-        public Builder totalCreditAmount(Money val){
-            this.totalCreditAmount=val;
+        public Builder totalCreditAmount(Money val) {
+            this.totalCreditAmount = val;
             return this;
         }
 
-        public CreditEntry build(){
+        public CreditEntry build() {
             return new CreditEntry(this);
         }
 

@@ -7,7 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import static com.food.order.system.domain.DomainConstants.UTC;
+import static com.food.order.system.customer.service.domain.constants.DomainConstants.UTC;
+
 
 /**
  * @Author mselvi

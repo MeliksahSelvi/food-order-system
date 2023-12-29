@@ -1,7 +1,5 @@
 package com.food.order.system.order.service.domain;
 
-import com.food.order.system.domain.valueobject.OrderStatus;
-import com.food.order.system.domain.valueobject.PaymentOrderStatus;
 import com.food.order.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import com.food.order.system.order.service.domain.entity.Order;
 import com.food.order.system.order.service.domain.event.OrderCancelledEvent;
@@ -11,6 +9,8 @@ import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaym
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
 import com.food.order.system.order.service.domain.outbox.scheduler.approval.ApprovalOutboxHelper;
 import com.food.order.system.order.service.domain.outbox.scheduler.payment.PaymentOutboxHelper;
+import com.food.order.system.order.service.domain.valueobject.OrderStatus;
+import com.food.order.system.order.service.domain.valueobject.PaymentOrderStatus;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.saga.SagaStatus;
 import com.food.order.system.saga.SagaStep;
@@ -24,7 +24,7 @@ import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.food.order.system.domain.DomainConstants.UTC;
+import static com.food.order.system.order.service.domain.constants.DomainConstants.UTC;
 
 /**
  * @Author mselvi

@@ -1,8 +1,8 @@
 package com.food.order.system.order.service.domain.entity;
 
-import com.food.order.system.domain.entity.BaseEntity;
-import com.food.order.system.domain.valueobject.Money;
-import com.food.order.system.domain.valueobject.OrderId;
+import com.food.order.system.order.service.domain.common.BaseEntity;
+import com.food.order.system.order.service.domain.valueobject.Money;
+import com.food.order.system.order.service.domain.valueobject.OrderId;
 import com.food.order.system.order.service.domain.valueobject.OrderItemId;
 
 /**
@@ -11,8 +11,8 @@ import com.food.order.system.order.service.domain.valueobject.OrderItemId;
  */
 
 /*
-* orderId değeri değişebileceği için immutable yapmadık.
-* */
+ * orderId değeri değişebileceği için immutable yapmadık.
+ * */
 public class OrderItem extends BaseEntity<OrderItemId> {
     private OrderId orderId;
     private final Product product;
@@ -20,26 +20,26 @@ public class OrderItem extends BaseEntity<OrderItemId> {
     private final Money price;
     private final Money subTotal;
 
-    void initializeOrderItem(OrderId orderId,OrderItemId orderItemId){
+    void initializeOrderItem(OrderId orderId, OrderItemId orderItemId) {
         setId(orderItemId);
-        this.orderId=orderId;
+        this.orderId = orderId;
     }
 
-    boolean isPriceValid(){
+    boolean isPriceValid() {
         return price.isGreaterThanZero() &&
-                price.equals(product.getPrice())&&
+                price.equals(product.getPrice()) &&
                 price.multiply(quantity).equals(subTotal);
     }
 
-    private OrderItem(Builder builder){
+    private OrderItem(Builder builder) {
         setId(builder.orderItemId);
-        this.product=builder.product;
-        this.quantity=builder.quantity;
-        this.price=builder.price;
-        this.subTotal=builder.subTotal;
+        this.product = builder.product;
+        this.quantity = builder.quantity;
+        this.price = builder.price;
+        this.subTotal = builder.subTotal;
     }
 
-    public static Builder builder(){
+    public static Builder builder() {
         return new Builder();
     }
 

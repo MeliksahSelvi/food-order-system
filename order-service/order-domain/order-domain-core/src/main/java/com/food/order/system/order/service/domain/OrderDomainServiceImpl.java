@@ -1,6 +1,5 @@
 package com.food.order.system.order.service.domain;
 
-import com.food.order.system.domain.event.publisher.DomainEventPublisher;
 import com.food.order.system.order.service.domain.entity.Order;
 import com.food.order.system.order.service.domain.entity.Product;
 import com.food.order.system.order.service.domain.entity.Restaurant;
@@ -14,7 +13,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.food.order.system.domain.DomainConstants.UTC;
+import static com.food.order.system.order.service.domain.constants.DomainConstants.UTC;
 
 /**
  * @Author mselvi

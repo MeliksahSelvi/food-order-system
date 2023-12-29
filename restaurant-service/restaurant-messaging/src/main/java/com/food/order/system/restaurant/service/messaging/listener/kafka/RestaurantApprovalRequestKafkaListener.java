@@ -1,7 +1,5 @@
 package com.food.order.system.restaurant.service.messaging.listener.kafka;
 
-import com.food.order.system.domain.valueobject.ProductId;
-import com.food.order.system.domain.valueobject.RestaurantOrderStatus;
 import com.food.order.system.kafka.consumer.KafkaConsumer;
 import com.food.order.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel;
 import com.food.order.system.restaurant.service.domain.dto.RestaurantApprovalRequest;
@@ -9,6 +7,8 @@ import com.food.order.system.restaurant.service.domain.entity.Product;
 import com.food.order.system.restaurant.service.domain.exception.RestaurantApplicationServiceException;
 import com.food.order.system.restaurant.service.domain.exception.RestaurantNotFoundException;
 import com.food.order.system.restaurant.service.domain.ports.input.message.listener.RestaurantApprovalRequestMessageListener;
+import com.food.order.system.restaurant.service.domain.valueobject.ProductId;
+import com.food.order.system.restaurant.service.domain.valueobject.RestaurantOrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PSQLState;

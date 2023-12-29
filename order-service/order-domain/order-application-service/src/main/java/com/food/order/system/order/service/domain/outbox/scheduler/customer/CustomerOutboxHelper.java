@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.food.order.system.domain.DomainConstants.UTC;
+import static com.food.order.system.order.service.domain.constants.DomainConstants.UTC;
 import static com.food.order.system.saga.order.SagaConstants.CUSTOMER_SAGA_NAME;
 
 /**
@@ -67,13 +67,6 @@ public class CustomerOutboxHelper {
     @Transactional
     public void deleteByOutboxStatus(OutboxStatus outboxStatus) {
         customerOutboxRepository.deleteByTypeAndOutboxStatus(CUSTOMER_SAGA_NAME, outboxStatus);
-    }
-
-    @Transactional
-    public void updateOutboxStatus(CustomerOutboxMessage customerOutboxMessage, OutboxStatus outboxStatus) {
-        customerOutboxMessage.setOutboxStatus(outboxStatus);
-        save(customerOutboxMessage);
-        log.info("CustomerOutboxMessage is updated with outbox status: {}", outboxStatus.name());
     }
 
     private String createPayload(CustomerEventPayload customerEventPayload) {

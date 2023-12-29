@@ -1,17 +1,17 @@
 package com.food.order.system.restaurant.service.domain;
 
-import com.food.order.system.domain.valueobject.OrderApprovalStatus;
 import com.food.order.system.restaurant.service.domain.entity.Restaurant;
 import com.food.order.system.restaurant.service.domain.event.OrderApprovalEvent;
 import com.food.order.system.restaurant.service.domain.event.OrderApprovedEvent;
 import com.food.order.system.restaurant.service.domain.event.OrderRejectedEvent;
+import com.food.order.system.restaurant.service.domain.valueobject.OrderApprovalStatus;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.food.order.system.domain.DomainConstants.UTC;
+import static com.food.order.system.restaurant.service.domain.constants.DomainConstants.UTC;
 
 /**
  * @Author mselvi

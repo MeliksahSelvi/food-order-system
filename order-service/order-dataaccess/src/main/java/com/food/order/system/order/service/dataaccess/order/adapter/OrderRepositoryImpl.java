@@ -1,6 +1,5 @@
 package com.food.order.system.order.service.dataaccess.order.adapter;
 
-import com.food.order.system.domain.valueobject.OrderId;
 import com.food.order.system.order.service.dataaccess.order.entity.OrderAddressEntity;
 import com.food.order.system.order.service.dataaccess.order.entity.OrderEntity;
 import com.food.order.system.order.service.dataaccess.order.entity.OrderItemEntity;
@@ -8,6 +7,7 @@ import com.food.order.system.order.service.dataaccess.order.repository.OrderJpaR
 import com.food.order.system.order.service.domain.entity.Order;
 import com.food.order.system.order.service.domain.entity.OrderItem;
 import com.food.order.system.order.service.domain.ports.output.repository.OrderRepository;
+import com.food.order.system.order.service.domain.valueobject.OrderId;
 import com.food.order.system.order.service.domain.valueobject.StreetAddress;
 import com.food.order.system.order.service.domain.valueobject.TrackingId;
 import lombok.RequiredArgsConstructor;

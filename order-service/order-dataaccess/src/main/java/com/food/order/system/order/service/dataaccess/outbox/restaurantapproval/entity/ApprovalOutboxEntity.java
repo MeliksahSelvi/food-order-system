@@ -1,7 +1,7 @@
 package com.food.order.system.order.service.dataaccess.outbox.restaurantapproval.entity;
 
-import com.food.order.system.domain.valueobject.OrderStatus;
 import com.food.order.system.order.service.domain.outbox.model.approval.OrderApprovalOutboxMessage;
+import com.food.order.system.order.service.domain.valueobject.OrderStatus;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.saga.SagaStatus;
 import jakarta.persistence.*;

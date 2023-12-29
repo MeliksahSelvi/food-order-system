@@ -1,7 +1,5 @@
 package com.food.order.system.order.service.domain;
 
-import com.food.order.system.domain.valueobject.ProductId;
-import com.food.order.system.domain.valueobject.RestaurantId;
 import com.food.order.system.order.service.domain.dto.create.CreateOrderCommand;
 import com.food.order.system.order.service.domain.entity.Customer;
 import com.food.order.system.order.service.domain.entity.Order;
@@ -12,6 +10,8 @@ import com.food.order.system.order.service.domain.exception.OrderDomainException
 import com.food.order.system.order.service.domain.ports.output.repository.CustomerRepository;
 import com.food.order.system.order.service.domain.ports.output.repository.OrderRepository;
 import com.food.order.system.order.service.domain.ports.output.repository.RestaurantRepository;
+import com.food.order.system.order.service.domain.valueobject.ProductId;
+import com.food.order.system.order.service.domain.valueobject.RestaurantId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

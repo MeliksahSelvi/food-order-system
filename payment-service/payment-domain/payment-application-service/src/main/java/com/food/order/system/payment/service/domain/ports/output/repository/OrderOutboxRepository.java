@@ -1,8 +1,8 @@
 package com.food.order.system.payment.service.domain.ports.output.repository;
 
-import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.payment.service.domain.outbox.model.OrderOutboxMessage;
+import com.food.order.system.payment.service.domain.valueobject.PaymentStatus;
 
 import java.util.List;
 import java.util.Optional;

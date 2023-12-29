@@ -11,10 +11,5 @@
 
     <artifactId>restaurant-domain-core</artifactId>
     <!-- bu modül domain core'u temsil ediyor.business logic'i barındırır.en içteki halka hiçbir dış katman,halkalara bağımlılığı olmamalı. -->
-    <dependencies>
-        <dependency>
-            <groupId>com.food.order.system</groupId>
-            <artifactId>common-domain</artifactId>
-        </dependency>
-    </dependencies>
+
 </project>

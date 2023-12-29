@@ -12,9 +12,5 @@
     <artifactId>customer-domain-core</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.food.order.system</groupId>
-            <artifactId>common-domain</artifactId>
-        </dependency>
     </dependencies>
 </project>

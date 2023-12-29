@@ -1,10 +1,10 @@
 package com.food.order.system.restaurant.service.domain.entity;
 
-import com.food.order.system.domain.entity.BaseEntity;
-import com.food.order.system.domain.valueobject.OrderApprovalStatus;
-import com.food.order.system.domain.valueobject.OrderId;
-import com.food.order.system.domain.valueobject.RestaurantId;
+import com.food.order.system.restaurant.service.domain.common.BaseEntity;
 import com.food.order.system.restaurant.service.domain.valueobject.OrderApprovalId;
+import com.food.order.system.restaurant.service.domain.valueobject.OrderApprovalStatus;
+import com.food.order.system.restaurant.service.domain.valueobject.OrderId;
+import com.food.order.system.restaurant.service.domain.valueobject.RestaurantId;
 
 /**
  * @Author mselvi

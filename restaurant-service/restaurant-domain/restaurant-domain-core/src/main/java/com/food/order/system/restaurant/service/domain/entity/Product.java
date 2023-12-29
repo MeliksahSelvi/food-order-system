@@ -1,8 +1,8 @@
 package com.food.order.system.restaurant.service.domain.entity;
 
-import com.food.order.system.domain.entity.BaseEntity;
-import com.food.order.system.domain.valueobject.Money;
-import com.food.order.system.domain.valueobject.ProductId;
+import com.food.order.system.restaurant.service.domain.common.BaseEntity;
+import com.food.order.system.restaurant.service.domain.valueobject.Money;
+import com.food.order.system.restaurant.service.domain.valueobject.ProductId;
 
 /**
  * @Author mselvi

@@ -1,7 +1,5 @@
 package com.food.order.system.payment.service.domain;
 
-import com.food.order.system.domain.valueobject.Money;
-import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.payment.service.domain.entity.CreditEntry;
 import com.food.order.system.payment.service.domain.entity.CreditHistory;
 import com.food.order.system.payment.service.domain.entity.Payment;
@@ -10,6 +8,8 @@ import com.food.order.system.payment.service.domain.event.PaymentCompletedEvent;
 import com.food.order.system.payment.service.domain.event.PaymentEvent;
 import com.food.order.system.payment.service.domain.event.PaymentFailedEvent;
 import com.food.order.system.payment.service.domain.valueobject.CreditHistoryId;
+import com.food.order.system.payment.service.domain.valueobject.Money;
+import com.food.order.system.payment.service.domain.valueobject.PaymentStatus;
 import com.food.order.system.payment.service.domain.valueobject.TransactionType;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import static com.food.order.system.domain.DomainConstants.UTC;
+import static com.food.order.system.payment.service.domain.constants.DomainConstants.UTC;
 
 /**
  * @Author mselvi

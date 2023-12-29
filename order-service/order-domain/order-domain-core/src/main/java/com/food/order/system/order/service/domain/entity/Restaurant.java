@@ -1,7 +1,7 @@
 package com.food.order.system.order.service.domain.entity;
 
-import com.food.order.system.domain.entity.AggregateRoot;
-import com.food.order.system.domain.valueobject.RestaurantId;
+import com.food.order.system.order.service.domain.common.AggregateRoot;
+import com.food.order.system.order.service.domain.valueobject.RestaurantId;
 
 import java.util.List;
 
@@ -15,13 +15,13 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
     private final List<Product> products;
     private boolean active;
 
-    private Restaurant(Builder builder){
+    private Restaurant(Builder builder) {
         setId(builder.restaurantId);
-        this.products=builder.products;
-        this.active= builder.active;
+        this.products = builder.products;
+        this.active = builder.active;
     }
 
-    public static Builder builder(){
+    public static Builder builder() {
         return new Builder();
     }
 
@@ -34,7 +34,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
     }
 
 
-    public static final class Builder{
+    public static final class Builder {
         private RestaurantId restaurantId;
         private List<Product> products;
         private boolean active;
@@ -42,22 +42,22 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
         private Builder() {
         }
 
-        public Builder restaurantId(RestaurantId val){
-            restaurantId=val;
+        public Builder restaurantId(RestaurantId val) {
+            restaurantId = val;
             return this;
         }
 
-        public Builder products(List<Product> val){
-            products=val;
+        public Builder products(List<Product> val) {
+            products = val;
             return this;
         }
 
-        public Builder active(boolean val){
-            active=val;
+        public Builder active(boolean val) {
+            active = val;
             return this;
         }
 
-        public Restaurant build(){
+        public Restaurant build() {
             return new Restaurant(this);
         }
     }

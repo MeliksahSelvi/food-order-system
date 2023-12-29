@@ -1,9 +1,5 @@
 # Project exclude paths
 
-/common/common-application/target
-/common/common-dataaccess/target
-/common/common-domain/target
-/common/common-outbox/target
 /infrastructure/docker-compose/volumes/
 /infrastructure/kafka/kafka-config-data/target
 /infrastructure/kafka/kafka-model/target

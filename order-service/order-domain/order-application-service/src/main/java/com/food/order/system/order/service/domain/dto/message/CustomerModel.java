@@ -1,7 +1,7 @@
 package com.food.order.system.order.service.domain.dto.message;
 
-import com.food.order.system.domain.valueobject.CustomerId;
 import com.food.order.system.order.service.domain.entity.Customer;
+import com.food.order.system.order.service.domain.valueobject.CustomerId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

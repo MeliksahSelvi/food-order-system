@@ -1,7 +1,7 @@
 package com.food.order.system.customer.service.dataaccess.customer.entity;
 
 import com.food.order.system.customer.service.domain.entity.Customer;
-import com.food.order.system.domain.valueobject.CustomerId;
+import com.food.order.system.customer.service.domain.valueobject.CustomerId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;

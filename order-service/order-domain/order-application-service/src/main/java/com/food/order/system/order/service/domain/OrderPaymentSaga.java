@@ -1,8 +1,5 @@
 package com.food.order.system.order.service.domain;
 
-import com.food.order.system.domain.valueobject.OrderStatus;
-import com.food.order.system.domain.valueobject.PaymentStatus;
-import com.food.order.system.domain.valueobject.RestaurantOrderStatus;
 import com.food.order.system.order.service.domain.dto.message.PaymentResponse;
 import com.food.order.system.order.service.domain.entity.Order;
 import com.food.order.system.order.service.domain.event.OrderPaidEvent;
@@ -13,6 +10,9 @@ import com.food.order.system.order.service.domain.outbox.model.approval.OrderApp
 import com.food.order.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
 import com.food.order.system.order.service.domain.outbox.scheduler.approval.ApprovalOutboxHelper;
 import com.food.order.system.order.service.domain.outbox.scheduler.payment.PaymentOutboxHelper;
+import com.food.order.system.order.service.domain.valueobject.OrderStatus;
+import com.food.order.system.order.service.domain.valueobject.PaymentStatus;
+import com.food.order.system.order.service.domain.valueobject.RestaurantOrderStatus;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.saga.SagaStatus;
 import com.food.order.system.saga.SagaStep;
@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.food.order.system.domain.DomainConstants.UTC;
+import static com.food.order.system.order.service.domain.constants.DomainConstants.UTC;
 
 /**
  * @Author mselvi
@@ -72,10 +72,10 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(orderStatus);
 
         /*
-        * bu save işleminde amacımız payment outbox kaydı processing olarak güncelleniyor.
-        * ayrıca bu save işlemi ile version arttırılır ve optimistic locking sağlanır.
-        * bu lock sayesinde bu methoda giren 2.thread, methodun başındaki if clause'ye takılması sağlanır.
-        * */
+         * bu save işleminde amacımız payment outbox kaydı processing olarak güncelleniyor.
+         * ayrıca bu save işlemi ile version arttırılır ve optimistic locking sağlanır.
+         * bu lock sayesinde bu methoda giren 2.thread, methodun başındaki if clause'ye takılması sağlanır.
+         * */
         paymentOutboxHelper.save(getUpdatedPaymentOutboxMessage(orderPaymentOutboxMessage, orderStatus, sagaStatus));
         /* bu save işleminde ise amacımız restaurant service'yi tetikleyecek outbox kaydı oluşturmak
          * ayrıca; type,sagaid ve saga status üzerinde oluşturulan unique index sayesinde
@@ -189,7 +189,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         return OrderApprovalEventPayload.builder()
                 .orderId(orderPaidEvent.getOrder().getId().getValue().toString())
                 .restaurantId(orderPaidEvent.getOrder().getRestaurantId().getValue().toString())
-                .restaurantOrderStatus(RestaurantOrderStatus.PAID.name())
+                .restaurantOrderStatus(RestaurantOrderStatus.PAID.name())//todo restaurantorderstatus gereklimi
                 .products(orderPaidEvent.getOrder().getItems().stream().map(orderItem ->
                         OrderApprovalEventProduct.builder()
                                 .id(orderItem.getProduct().getId().getValue().toString())

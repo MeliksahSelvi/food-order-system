@@ -2,12 +2,12 @@ package com.food.order.system.payment.service.domain.outbox.scheduler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.payment.service.domain.exception.PaymentDomainException;
 import com.food.order.system.payment.service.domain.outbox.model.OrderEventPayload;
 import com.food.order.system.payment.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.payment.service.domain.ports.output.repository.OrderOutboxRepository;
+import com.food.order.system.payment.service.domain.valueobject.PaymentStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.food.order.system.domain.DomainConstants.UTC;
+import static com.food.order.system.payment.service.domain.constants.DomainConstants.UTC;
 import static com.food.order.system.saga.order.SagaConstants.ORDER_SAGA_NAME;
 
 /**

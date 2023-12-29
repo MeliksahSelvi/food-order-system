@@ -1,8 +1,8 @@
 package com.food.order.system.order.service.dataaccess.restaurant.entity;
 
-import com.food.order.system.domain.valueobject.RestaurantId;
 import com.food.order.system.order.service.domain.entity.Product;
 import com.food.order.system.order.service.domain.entity.Restaurant;
+import com.food.order.system.order.service.domain.valueobject.RestaurantId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;

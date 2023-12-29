@@ -1,11 +1,7 @@
 package com.food.order.system.payment.service.domain.entity;
 
-import com.food.order.system.domain.entity.AggregateRoot;
-import com.food.order.system.domain.valueobject.CustomerId;
-import com.food.order.system.domain.valueobject.Money;
-import com.food.order.system.domain.valueobject.OrderId;
-import com.food.order.system.domain.valueobject.PaymentStatus;
-import com.food.order.system.payment.service.domain.valueobject.PaymentId;
+import com.food.order.system.payment.service.domain.common.AggregateRoot;
+import com.food.order.system.payment.service.domain.valueobject.*;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -18,8 +14,8 @@ import java.util.UUID;
  */
 
 /*
-* Payment Aggregate'inin Aggregate Root'u olarak bu Entity'i seçtik.
-* */
+ * Payment Aggregate'inin Aggregate Root'u olarak bu Entity'i seçtik.
+ * */
 public class Payment extends AggregateRoot<PaymentId> {
 
     private final OrderId orderId;

@@ -1,9 +1,9 @@
 package com.food.order.system.order.service.domain;
 
-import com.food.order.system.domain.valueobject.PaymentStatus;
 import com.food.order.system.order.service.dataaccess.outbox.payment.entity.PaymentOutboxEntity;
 import com.food.order.system.order.service.dataaccess.outbox.payment.repository.PaymentOutboxJpaRepository;
 import com.food.order.system.order.service.domain.dto.message.PaymentResponse;
+import com.food.order.system.order.service.domain.valueobject.PaymentStatus;
 import com.food.order.system.saga.SagaStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -54,8 +54,8 @@ public class OrderPaymentSagaTest {
     }
 
     /*
-    * Optimistic locking almamız gerekiyor
-    * */
+     * Optimistic locking almamız gerekiyor
+     * */
     @Test
     void testDoublePaymentWithThreads() throws InterruptedException {
         Thread thread1 = new Thread(() -> orderPaymentSaga.process(getPaymentResponse()));

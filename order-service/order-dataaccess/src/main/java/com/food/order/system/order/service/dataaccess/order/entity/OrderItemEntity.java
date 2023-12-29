@@ -1,10 +1,10 @@
 package com.food.order.system.order.service.dataaccess.order.entity;
 
-import com.food.order.system.domain.valueobject.Money;
-import com.food.order.system.domain.valueobject.ProductId;
 import com.food.order.system.order.service.domain.entity.OrderItem;
 import com.food.order.system.order.service.domain.entity.Product;
+import com.food.order.system.order.service.domain.valueobject.Money;
 import com.food.order.system.order.service.domain.valueobject.OrderItemId;
+import com.food.order.system.order.service.domain.valueobject.ProductId;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,8 +26,8 @@ import java.util.UUID;
 @IdClass(OrderItemEntityId.class)//multiple column primary key'e sahip olduğunu gösterip mapleme işlemi yapıyoruz.
 @Table(name = "order_items")
 /*
-* OrderItemEntity 2 tane primary key barındırıyor.
-* */
+ * OrderItemEntity 2 tane primary key barındırıyor.
+ * */
 public class OrderItemEntity {
     @Id
     private Long id;
@@ -42,7 +42,7 @@ public class OrderItemEntity {
     private Integer quantity;
     private BigDecimal subTotal;
 
-    public OrderItem toModel(){
+    public OrderItem toModel() {
         return OrderItem.builder()
                 .orderItemId(new OrderItemId(id))
                 .price(new Money(price))
@@ -51,6 +51,7 @@ public class OrderItemEntity {
                 .product(new Product(new ProductId(productId)))
                 .build();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

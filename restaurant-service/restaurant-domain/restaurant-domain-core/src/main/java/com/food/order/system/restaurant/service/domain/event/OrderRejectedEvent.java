@@ -1,7 +1,7 @@
 package com.food.order.system.restaurant.service.domain.event;
 
-import com.food.order.system.domain.valueobject.RestaurantId;
 import com.food.order.system.restaurant.service.domain.entity.OrderApproval;
+import com.food.order.system.restaurant.service.domain.valueobject.RestaurantId;
 
 import java.time.ZonedDateTime;
 import java.util.List;
