@@ -11,4 +11,5 @@ public class DomainConstants {
     }
 
     public static final String UTC = "UTC";
+    public static final String ORDER_SAGA_NAME = "OrderProcessingSaga";
 }
