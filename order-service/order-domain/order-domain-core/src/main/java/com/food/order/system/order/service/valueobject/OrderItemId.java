@@ -1,6 +1,6 @@
-package com.food.order.system.order.service.domain.valueobject;
+package com.food.order.system.order.service.valueobject;
 
-import com.food.order.system.order.service.domain.common.BaseId;
+import com.food.order.system.order.service.common.BaseId;
 
 /**
  * @Author mselvi

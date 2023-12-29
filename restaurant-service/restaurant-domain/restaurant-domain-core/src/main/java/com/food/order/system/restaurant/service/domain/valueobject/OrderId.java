@@ -9,7 +9,6 @@ import java.util.UUID;
  * @Created 29.12.2023
  */
 
-//todo belkide bu id'leri burada tutmak yerine json ile string yapsak olur mu?
 public class OrderId extends BaseId<UUID> {
     public OrderId(UUID value) {
         super(value);

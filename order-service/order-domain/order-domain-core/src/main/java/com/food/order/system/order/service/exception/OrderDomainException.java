@@ -1,4 +1,4 @@
-package com.food.order.system.order.service.domain.exception;
+package com.food.order.system.order.service.exception;
 
 
 /**

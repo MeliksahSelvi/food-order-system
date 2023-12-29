@@ -1,4 +1,4 @@
-package com.food.order.system.order.service.domain.valueobject;
+package com.food.order.system.order.service.valueobject;
 
 /**
  * @Author mselvi

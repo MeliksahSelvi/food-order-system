@@ -1,4 +1,4 @@
-package com.food.order.system.order.service.domain.common;
+package com.food.order.system.order.service.common;
 
 /**
  * @Author mselvi
