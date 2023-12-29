@@ -1,6 +1,5 @@
 package com.food.order.system.payment.service.domain;
 
-import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.payment.service.domain.dto.PaymentRequest;
 import com.food.order.system.payment.service.domain.entity.CreditEntry;
 import com.food.order.system.payment.service.domain.entity.CreditHistory;
@@ -8,6 +7,7 @@ import com.food.order.system.payment.service.domain.entity.Payment;
 import com.food.order.system.payment.service.domain.event.PaymentEvent;
 import com.food.order.system.payment.service.domain.exception.PaymentApplicationServiceException;
 import com.food.order.system.payment.service.domain.exception.PaymentNotFoundException;
+import com.food.order.system.payment.service.domain.outbox.common.OutboxStatus;
 import com.food.order.system.payment.service.domain.outbox.model.OrderEventPayload;
 import com.food.order.system.payment.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.payment.service.domain.outbox.scheduler.OrderOutboxHelper;

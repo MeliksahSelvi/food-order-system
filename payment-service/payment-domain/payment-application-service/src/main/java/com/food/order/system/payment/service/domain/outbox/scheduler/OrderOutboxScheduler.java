@@ -1,7 +1,7 @@
 package com.food.order.system.payment.service.domain.outbox.scheduler;
 
-import com.food.order.system.outbox.OutboxScheduler;
-import com.food.order.system.outbox.OutboxStatus;
+import com.food.order.system.payment.service.domain.outbox.common.OutboxScheduler;
+import com.food.order.system.payment.service.domain.outbox.common.OutboxStatus;
 import com.food.order.system.payment.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.payment.service.domain.ports.output.message.publisher.PaymentResponseMessagePublisher;
 import lombok.RequiredArgsConstructor;

@@ -1,15 +1,17 @@
-package com.food.order.system.payment.service.domain;
+package com.food.order.system.payment.service.domain.config;
 
+import com.food.order.system.payment.service.domain.PaymentDomainService;
+import com.food.order.system.payment.service.domain.PaymentDomainServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @Author mselvi
- * @Created 20.12.2023
+ * @Created 29.12.2023
  */
 
 @Configuration
-public class BeanConfiguration {
+public class DomainConfig {
 
     /*
      * PaymentDomainServiceImpl domain-core içinde olduğu için herhangi bir sprean işaretlemesi yapmadık fakat
