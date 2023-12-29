@@ -1,12 +1,12 @@
 package com.food.order.system.restaurant.service.domain;
 
-import com.food.order.system.outbox.OutboxStatus;
 import com.food.order.system.restaurant.service.domain.dto.RestaurantApprovalRequest;
 import com.food.order.system.restaurant.service.domain.entity.OrderDetail;
 import com.food.order.system.restaurant.service.domain.entity.Product;
 import com.food.order.system.restaurant.service.domain.entity.Restaurant;
 import com.food.order.system.restaurant.service.domain.event.OrderApprovalEvent;
 import com.food.order.system.restaurant.service.domain.exception.RestaurantNotFoundException;
+import com.food.order.system.restaurant.service.domain.outbox.common.OutboxStatus;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderEventPayload;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.restaurant.service.domain.outbox.scheduler.OrderOutboxHelper;

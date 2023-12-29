@@ -1,15 +1,17 @@
-package com.food.order.system.restaurant.service.domain;
+package com.food.order.system.restaurant.service.domain.config;
 
+import com.food.order.system.restaurant.service.domain.RestaurantDomainService;
+import com.food.order.system.restaurant.service.domain.RestaurantDomainServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * @Author mselvi
- * @Created 20.12.2023
+ * @Created 29.12.2023
  */
 
 @Configuration
-public class BeanConfiguration {
+public class DomainConfig {
 
     /*
      * RestaurantDomainServiceImpl domain-core içinde olduğu için herhangi bir sprean işaretlemesi yapmadık fakat

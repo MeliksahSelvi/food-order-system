@@ -1,6 +1,6 @@
-package com.food.order.system.order.service.domain.ports.input.message.listener.restaurantapproval;
+package com.food.order.system.order.service.ports.input.message.listener.restaurantapproval;
 
-import com.food.order.system.order.service.domain.dto.message.RestaurantApprovalResponse;
+import com.food.order.system.order.service.dto.message.RestaurantApprovalResponse;
 
 /**
  * @Author mselvi

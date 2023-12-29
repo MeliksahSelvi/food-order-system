@@ -1,7 +1,7 @@
 package com.food.order.system.restaurant.service.domain.outbox.scheduler;
 
-import com.food.order.system.outbox.OutboxScheduler;
-import com.food.order.system.outbox.OutboxStatus;
+import com.food.order.system.restaurant.service.domain.outbox.common.OutboxScheduler;
+import com.food.order.system.restaurant.service.domain.outbox.common.OutboxStatus;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
