@@ -8,7 +8,7 @@ import com.food.order.system.restaurant.service.domain.config.RestaurantServiceC
 import com.food.order.system.restaurant.service.domain.outbox.common.OutboxStatus;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderEventPayload;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
-import com.food.order.system.restaurant.service.domain.ports.output.message.publisher.RestaurantApprovalResponseMessagePublisher;
+import com.food.order.system.restaurant.service.domain.ports.output.message.publisher.ApprovalResponseMessagePublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ import java.util.function.BiConsumer;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RestaurantApprovalEventKafkaPublisher implements RestaurantApprovalResponseMessagePublisher {
+public class ApprovalEventKafkaPublisher implements ApprovalResponseMessagePublisher {
 
     private final RestaurantServiceConfigData restaurantServiceConfigData;
     private final KafkaMessageHelper kafkaMessageHelper;

@@ -10,7 +10,7 @@ import com.food.order.system.restaurant.service.domain.outbox.common.OutboxStatu
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderEventPayload;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.restaurant.service.domain.outbox.scheduler.OrderOutboxHelper;
-import com.food.order.system.restaurant.service.domain.ports.output.message.publisher.RestaurantApprovalResponseMessagePublisher;
+import com.food.order.system.restaurant.service.domain.ports.output.message.publisher.ApprovalResponseMessagePublisher;
 import com.food.order.system.restaurant.service.domain.ports.output.repository.OrderApprovalRepository;
 import com.food.order.system.restaurant.service.domain.ports.output.repository.RestaurantRepository;
 import com.food.order.system.restaurant.service.domain.valueobject.Money;
@@ -42,7 +42,7 @@ public class RestaurantApprovalRequestHelper {
     private final RestaurantRepository restaurantRepository;
     private final OrderApprovalRepository orderApprovalRepository;
     private final OrderOutboxHelper orderOutboxHelper;
-    private final RestaurantApprovalResponseMessagePublisher restaurantApprovalResponseMessagePublisher;
+    private final ApprovalResponseMessagePublisher approvalResponseMessagePublisher;
 
     @Transactional
     public void persistOrderApproval(RestaurantApprovalRequest restaurantApprovalRequest) {
@@ -90,7 +90,7 @@ public class RestaurantApprovalRequestHelper {
                         UUID.fromString(restaurantApprovalRequest.getSagaId()),
                         OutboxStatus.COMPLETED);
         if (orderOutboxMessage.isPresent()) {
-            restaurantApprovalResponseMessagePublisher.publish(
+            approvalResponseMessagePublisher.publish(
                     orderOutboxMessage.get(), orderOutboxHelper::updateOutboxStatus);
             return true;
         }

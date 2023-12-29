@@ -3,7 +3,7 @@ package com.food.order.system.order.service.outbox.scheduler.approval;
 import com.food.order.system.order.service.outbox.common.OutboxScheduler;
 import com.food.order.system.order.service.outbox.common.OutboxStatus;
 import com.food.order.system.order.service.outbox.model.approval.OrderApprovalOutboxMessage;
-import com.food.order.system.order.service.ports.output.message.publisher.restaurantapproval.RestaurantApprovalRequestMessagePublisher;
+import com.food.order.system.order.service.ports.output.message.publisher.restaurantapproval.ApprovalRequestMessagePublisher;
 import com.food.order.system.order.service.saga.SagaStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class ApprovalOutboxScheduler implements OutboxScheduler {
 
     private final ApprovalOutboxHelper approvalOutboxHelper;
-    private final RestaurantApprovalRequestMessagePublisher restaurantApprovalRequestMessagePublisher;
+    private final ApprovalRequestMessagePublisher approvalRequestMessagePublisher;
 
     @Override
     @Transactional
@@ -49,7 +49,7 @@ public class ApprovalOutboxScheduler implements OutboxScheduler {
                     outboxMessages.stream().map(outboxMessage -> outboxMessage.getId().toString())
                             .collect(Collectors.joining(",")));
 
-            outboxMessages.forEach(outboxMessage -> restaurantApprovalRequestMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
+            outboxMessages.forEach(outboxMessage -> approvalRequestMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
             log.info("{} OrderApprovalOutboxMessage sent to message bus!", outboxMessages.size());
         }
     }

@@ -9,7 +9,7 @@ import com.food.order.system.order.service.config.OrderServiceConfigData;
 import com.food.order.system.order.service.outbox.common.OutboxStatus;
 import com.food.order.system.order.service.outbox.model.approval.OrderApprovalEventPayload;
 import com.food.order.system.order.service.outbox.model.approval.OrderApprovalOutboxMessage;
-import com.food.order.system.order.service.ports.output.message.publisher.restaurantapproval.RestaurantApprovalRequestMessagePublisher;
+import com.food.order.system.order.service.ports.output.message.publisher.restaurantapproval.ApprovalRequestMessagePublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class OrderApprovalEventKafkaPublisher implements RestaurantApprovalRequestMessagePublisher {
+public class OrderApprovalEventKafkaPublisher implements ApprovalRequestMessagePublisher {
 
     private final OrderServiceConfigData orderServiceConfigData;
     private final KafkaMessageHelper kafkaMessageHelper;

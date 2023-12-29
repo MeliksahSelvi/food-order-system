@@ -1,7 +1,7 @@
 package com.food.order.system.order.service;
 
 import com.food.order.system.order.service.ports.output.message.publisher.payment.PaymentRequestMessagePublisher;
-import com.food.order.system.order.service.ports.output.message.publisher.restaurantapproval.RestaurantApprovalRequestMessagePublisher;
+import com.food.order.system.order.service.ports.output.message.publisher.restaurantapproval.ApprovalRequestMessagePublisher;
 import com.food.order.system.order.service.ports.output.repository.*;
 import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,8 +21,8 @@ public class OrderTestConfiguration {
 
 
     @Bean
-    public RestaurantApprovalRequestMessagePublisher restaurantApprovalRequestMessagePublisher() {
-        return Mockito.mock(RestaurantApprovalRequestMessagePublisher.class);
+    public ApprovalRequestMessagePublisher restaurantApprovalRequestMessagePublisher() {
+        return Mockito.mock(ApprovalRequestMessagePublisher.class);
     }
 
     @Bean
