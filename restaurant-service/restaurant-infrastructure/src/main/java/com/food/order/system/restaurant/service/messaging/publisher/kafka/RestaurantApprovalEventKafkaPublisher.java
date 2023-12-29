@@ -1,11 +1,11 @@
 package com.food.order.system.restaurant.service.messaging.publisher.kafka;
 
-import com.food.order.system.kafka.order.avro.model.OrderApprovalStatus;
-import com.food.order.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
-import com.food.order.system.kafka.producer.KafkaMessageHelper;
-import com.food.order.system.kafka.producer.service.KafkaProducer;
-import com.food.order.system.outbox.OutboxStatus;
+import com.food.order.system.restaurant.service.common.messaging.kafka.model.OrderApprovalStatus;
+import com.food.order.system.restaurant.service.common.messaging.kafka.model.RestaurantApprovalResponseAvroModel;
+import com.food.order.system.restaurant.service.common.messaging.kafka.producer.KafkaProducer;
+import com.food.order.system.restaurant.service.common.messaging.kafka.producer.util.KafkaMessageHelper;
 import com.food.order.system.restaurant.service.domain.config.RestaurantServiceConfigData;
+import com.food.order.system.restaurant.service.domain.outbox.common.OutboxStatus;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderEventPayload;
 import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
 import com.food.order.system.restaurant.service.domain.ports.output.message.publisher.RestaurantApprovalResponseMessagePublisher;
