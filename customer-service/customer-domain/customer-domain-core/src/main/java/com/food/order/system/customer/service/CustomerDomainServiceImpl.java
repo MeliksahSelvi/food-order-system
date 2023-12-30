@@ -1,6 +1,6 @@
 package com.food.order.system.customer.service;
 
-import com.food.order.system.customer.service.constants.DomainConstants;
+import com.food.order.system.customer.service.common.DomainConstants;
 import com.food.order.system.customer.service.entity.Customer;
 import com.food.order.system.customer.service.event.CustomerCreatedEvent;
 import lombok.extern.slf4j.Slf4j;

@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.food.order.system.restaurant.service.constants.DomainConstants.ORDER_SAGA_NAME;
-import static com.food.order.system.restaurant.service.constants.DomainConstants.UTC;
+import static com.food.order.system.restaurant.service.common.DomainConstants.ORDER_SAGA_NAME;
+import static com.food.order.system.restaurant.service.common.DomainConstants.UTC;
 
 /**
  * @Author mselvi

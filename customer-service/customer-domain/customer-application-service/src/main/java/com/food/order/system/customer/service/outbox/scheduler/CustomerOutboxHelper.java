@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.food.order.system.customer.service.constants.DomainConstants.CUSTOMER_SAGA_NAME;
-import static com.food.order.system.customer.service.constants.DomainConstants.UTC;
+import static com.food.order.system.customer.service.common.DomainConstants.CUSTOMER_SAGA_NAME;
+import static com.food.order.system.customer.service.common.DomainConstants.UTC;
 
 /**
  * @Author mselvi

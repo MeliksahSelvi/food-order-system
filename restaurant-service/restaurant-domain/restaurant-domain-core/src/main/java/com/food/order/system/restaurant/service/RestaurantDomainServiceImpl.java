@@ -11,7 +11,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.food.order.system.restaurant.service.constants.DomainConstants.UTC;
+import static com.food.order.system.restaurant.service.common.DomainConstants.UTC;
 
 /**
  * @Author mselvi

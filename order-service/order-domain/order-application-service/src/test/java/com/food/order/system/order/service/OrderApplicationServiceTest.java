@@ -2,7 +2,7 @@ package com.food.order.system.order.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.food.order.system.order.service.constants.DomainConstants;
+import com.food.order.system.order.service.common.DomainConstants;
 import com.food.order.system.order.service.dto.create.CreateOrderCommand;
 import com.food.order.system.order.service.dto.create.CreateOrderResponse;
 import com.food.order.system.order.service.dto.create.OrderAddress;

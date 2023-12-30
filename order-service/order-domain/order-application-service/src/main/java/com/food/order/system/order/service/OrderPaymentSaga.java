@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.food.order.system.order.service.constants.DomainConstants.UTC;
+import static com.food.order.system.order.service.common.DomainConstants.UTC;
 
 /**
  * @Author mselvi

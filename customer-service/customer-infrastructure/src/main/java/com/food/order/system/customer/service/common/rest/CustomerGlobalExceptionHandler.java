@@ -47,6 +47,7 @@ public class CustomerGlobalExceptionHandler {
                 .build();
     }
 
+    //todo gereksiz ise kaldırılabilir.
     @ResponseBody
     @ExceptionHandler(value = ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

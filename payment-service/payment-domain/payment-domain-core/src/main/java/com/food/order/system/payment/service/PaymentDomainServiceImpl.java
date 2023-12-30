@@ -1,6 +1,6 @@
 package com.food.order.system.payment.service;
 
-import com.food.order.system.payment.service.constants.DomainConstants;
+import com.food.order.system.payment.service.common.DomainConstants;
 import com.food.order.system.payment.service.entity.CreditEntry;
 import com.food.order.system.payment.service.entity.CreditHistory;
 import com.food.order.system.payment.service.entity.Payment;

@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
-import static com.food.order.system.order.service.constants.DomainConstants.ORDER_SAGA_NAME;
+import static com.food.order.system.order.service.common.DomainConstants.ORDER_SAGA_NAME;
 
 
 /**

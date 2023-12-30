@@ -1,4 +1,4 @@
-package com.food.order.system.customer.service.constants;
+package com.food.order.system.customer.service.common;
 
 /**
  * @Author mselvi

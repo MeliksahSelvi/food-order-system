@@ -22,7 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.food.order.system.payment.service.constants.DomainConstants.ORDER_SAGA_NAME;
+import static com.food.order.system.payment.service.common.DomainConstants.ORDER_SAGA_NAME;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
