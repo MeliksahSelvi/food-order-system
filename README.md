@@ -22,6 +22,7 @@ This project created to be used by guide on topics as Clean & Hexagonal Architec
 <li>Outbox Pattern with Outbox Schedulers</li>
 <li>Outbox Pattern with Change Data Capture(CDC)</li>
 <li>Externalizing Configuration with Spring Cloud</li>
+<li>Authentication with Jwt Token</li>
 <li>Encryption with Jasypt</li>
 </ul>
 
