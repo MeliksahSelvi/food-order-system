@@ -10,7 +10,7 @@ import org.springframework.cloud.config.server.EnableConfigServer;
  */
 
 @EnableConfigServer
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.food.order.system.config.server")
 public class ConfigServerApplication {
 
     public static void main(String[] args) {

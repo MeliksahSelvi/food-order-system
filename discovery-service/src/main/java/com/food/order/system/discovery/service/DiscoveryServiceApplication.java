@@ -9,8 +9,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * @Created 30.12.2023
  */
 
-@SpringBootApplication
 @EnableEurekaServer
+@SpringBootApplication(scanBasePackages = "com.food.order.system.discovery.service")
 public class DiscoveryServiceApplication {
 
     public static void main(String[] args) {

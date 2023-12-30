@@ -10,12 +10,13 @@
         <module>restaurant-service</module>
         <module>config-server</module>
         <module>discovery-service</module>
+        <module>api-gateway</module>
     </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.6</version>
+        <version>3.0.13</version>
         <relativePath/>
     </parent>
 
@@ -27,12 +28,17 @@
 
     <properties>
         <maven-compiler-plugin.version>3.9.0</maven-compiler-plugin.version>
-        <mockito.version>5.7.0</mockito.version>
-        <spring-kafka.version>3.0.12</spring-kafka.version>
-        <kafka-avro-serializers.version>7.4.0</kafka-avro-serializers.version>
-        <avro.version>1.11.0</avro.version>
-        <jasypt-spring.version>3.0.5</jasypt-spring.version>
+        <spring-cloud-dependencies.version>2022.0.4</spring-cloud-dependencies.version>
         <spring-cloud.version>4.0.3</spring-cloud.version>
+        <spring-cloud-circuitbreaker-reactor-resilience4j.version>3.0.3</spring-cloud-circuitbreaker-reactor-resilience4j.version>
+        <spring-kafka.version>3.0.12</spring-kafka.version>
+        <mockito.version>5.7.0</mockito.version>
+        <avro.version>1.11.0</avro.version>
+        <kafka-avro-serializers.version>7.4.0</kafka-avro-serializers.version>
+        <jwt.version>0.9.1</jwt.version>
+        <lombok.version>1.18.28</lombok.version>
+        <jakarta-xml-bind.version>4.0.0</jakarta-xml-bind.version>
+        <jasypt-spring.version>3.0.5</jasypt-spring.version>
     </properties>
 
     <repositories>
@@ -77,8 +83,23 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-config</artifactId>
                 <version>${spring-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-gateway</artifactId>
+                <version>${spring-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-circuitbreaker-reactor-resilience4j</artifactId>
+                <version>${spring-cloud-circuitbreaker-reactor-resilience4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -95,6 +116,17 @@
                 <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
                 <version>${spring-cloud.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>${jakarta-xml-bind.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.kafka</groupId>
                 <artifactId>spring-kafka</artifactId>
@@ -127,6 +159,12 @@
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro</artifactId>
                 <version>${avro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

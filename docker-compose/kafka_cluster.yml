@@ -72,7 +72,7 @@ services:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
     ports:
-      - "9000:8080"
+      - "9000:9000"
     environment:
       ZK_HOSTS: "zookeeper:2181"
       KAFKA_CLUSTERS_0_NAME: local
