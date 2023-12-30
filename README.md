@@ -29,7 +29,6 @@ This project created to be used by guide on topics as Clean & Hexagonal Architec
 
 <ul>
 <li>Security Authentication for Whole Microservices</li>
-<li>Api Gateway Pattern</li>
 <li>Cache Mechanism With Redis</li>
 <li>Tests</li>
 <li>Adding Java and Spring Boot version features</li>
