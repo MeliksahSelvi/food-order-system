@@ -2,9 +2,9 @@ package com.food.order.system.payment.service.dataaccess.creditentry.adapter;
 
 import com.food.order.system.payment.service.dataaccess.creditentry.entity.CreditEntryEntity;
 import com.food.order.system.payment.service.dataaccess.creditentry.repository.CreditEntryJpaRepository;
-import com.food.order.system.payment.service.domain.entity.CreditEntry;
-import com.food.order.system.payment.service.domain.ports.output.repository.CreditEntryRepository;
-import com.food.order.system.payment.service.domain.valueobject.CustomerId;
+import com.food.order.system.payment.service.entity.CreditEntry;
+import com.food.order.system.payment.service.ports.output.repository.CreditEntryRepository;
+import com.food.order.system.payment.service.valueobject.CustomerId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @Created 19.12.2023
  */
 
-
 @EnableJpaRepositories(basePackages = {"com.food.order.system.order.service.dataaccess"})
 @EntityScan(basePackages = {"com.food.order.system.order.service.dataaccess"})
 @SpringBootApplication(scanBasePackages = "com.food.order.system.order.service")

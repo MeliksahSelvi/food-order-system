@@ -2,8 +2,8 @@ package com.food.order.system.restaurant.service.dataaccess.restaurant.adapter;
 
 import com.food.order.system.restaurant.service.dataaccess.restaurant.entity.OrderApprovalEntity;
 import com.food.order.system.restaurant.service.dataaccess.restaurant.repository.OrderApprovalJpaRepository;
-import com.food.order.system.restaurant.service.domain.entity.OrderApproval;
-import com.food.order.system.restaurant.service.domain.ports.output.repository.OrderApprovalRepository;
+import com.food.order.system.restaurant.service.entity.OrderApproval;
+import com.food.order.system.restaurant.service.ports.output.repository.OrderApprovalRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

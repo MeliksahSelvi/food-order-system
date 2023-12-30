@@ -2,8 +2,8 @@ package com.food.order.system.payment.service.common.messaging.kafka.producer.ut
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.food.order.system.payment.service.domain.exception.PaymentDomainException;
-import com.food.order.system.payment.service.domain.outbox.common.OutboxStatus;
+import com.food.order.system.payment.service.exception.PaymentDomainException;
+import com.food.order.system.payment.service.outbox.common.OutboxStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;

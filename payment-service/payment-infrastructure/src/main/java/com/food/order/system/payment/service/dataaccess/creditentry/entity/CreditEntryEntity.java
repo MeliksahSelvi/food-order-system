@@ -1,9 +1,9 @@
 package com.food.order.system.payment.service.dataaccess.creditentry.entity;
 
-import com.food.order.system.payment.service.domain.entity.CreditEntry;
-import com.food.order.system.payment.service.domain.valueobject.CreditEntryId;
-import com.food.order.system.payment.service.domain.valueobject.CustomerId;
-import com.food.order.system.payment.service.domain.valueobject.Money;
+import com.food.order.system.payment.service.entity.CreditEntry;
+import com.food.order.system.payment.service.valueobject.CreditEntryId;
+import com.food.order.system.payment.service.valueobject.CustomerId;
+import com.food.order.system.payment.service.valueobject.Money;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;

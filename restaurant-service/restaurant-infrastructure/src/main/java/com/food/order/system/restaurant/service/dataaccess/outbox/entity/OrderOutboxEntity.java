@@ -1,8 +1,8 @@
 package com.food.order.system.restaurant.service.dataaccess.outbox.entity;
 
-import com.food.order.system.restaurant.service.domain.outbox.common.OutboxStatus;
-import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
-import com.food.order.system.restaurant.service.domain.valueobject.OrderApprovalStatus;
+import com.food.order.system.restaurant.service.outbox.common.OutboxStatus;
+import com.food.order.system.restaurant.service.outbox.model.OrderOutboxMessage;
+import com.food.order.system.restaurant.service.valueobject.OrderApprovalStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

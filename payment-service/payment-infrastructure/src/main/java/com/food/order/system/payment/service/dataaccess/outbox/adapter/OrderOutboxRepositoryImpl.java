@@ -3,10 +3,10 @@ package com.food.order.system.payment.service.dataaccess.outbox.adapter;
 import com.food.order.system.payment.service.dataaccess.outbox.entity.OrderOutboxEntity;
 import com.food.order.system.payment.service.dataaccess.outbox.exception.OrderOutboxNotFoundException;
 import com.food.order.system.payment.service.dataaccess.outbox.repository.OrderOutboxJpaRepository;
-import com.food.order.system.payment.service.domain.outbox.common.OutboxStatus;
-import com.food.order.system.payment.service.domain.outbox.model.OrderOutboxMessage;
-import com.food.order.system.payment.service.domain.ports.output.repository.OrderOutboxRepository;
-import com.food.order.system.payment.service.domain.valueobject.PaymentStatus;
+import com.food.order.system.payment.service.outbox.common.OutboxStatus;
+import com.food.order.system.payment.service.outbox.model.OrderOutboxMessage;
+import com.food.order.system.payment.service.ports.output.repository.OrderOutboxRepository;
+import com.food.order.system.payment.service.valueobject.PaymentStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

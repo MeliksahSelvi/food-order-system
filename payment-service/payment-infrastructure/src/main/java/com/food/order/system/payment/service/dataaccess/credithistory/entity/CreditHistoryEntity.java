@@ -1,10 +1,10 @@
 package com.food.order.system.payment.service.dataaccess.credithistory.entity;
 
-import com.food.order.system.payment.service.domain.entity.CreditHistory;
-import com.food.order.system.payment.service.domain.valueobject.CreditHistoryId;
-import com.food.order.system.payment.service.domain.valueobject.CustomerId;
-import com.food.order.system.payment.service.domain.valueobject.Money;
-import com.food.order.system.payment.service.domain.valueobject.TransactionType;
+import com.food.order.system.payment.service.entity.CreditHistory;
+import com.food.order.system.payment.service.valueobject.CreditHistoryId;
+import com.food.order.system.payment.service.valueobject.CustomerId;
+import com.food.order.system.payment.service.valueobject.Money;
+import com.food.order.system.payment.service.valueobject.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
 

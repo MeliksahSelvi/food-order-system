@@ -2,11 +2,11 @@ package com.food.order.system.payment.service;
 
 import com.food.order.system.payment.service.dataaccess.outbox.entity.OrderOutboxEntity;
 import com.food.order.system.payment.service.dataaccess.outbox.repository.OrderOutboxJpaRepository;
-import com.food.order.system.payment.service.domain.dto.PaymentRequest;
-import com.food.order.system.payment.service.domain.outbox.common.OutboxStatus;
-import com.food.order.system.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
-import com.food.order.system.payment.service.domain.valueobject.PaymentOrderStatus;
-import com.food.order.system.payment.service.domain.valueobject.PaymentStatus;
+import com.food.order.system.payment.service.dto.PaymentRequest;
+import com.food.order.system.payment.service.outbox.common.OutboxStatus;
+import com.food.order.system.payment.service.ports.input.message.listener.PaymentRequestMessageListener;
+import com.food.order.system.payment.service.valueobject.PaymentOrderStatus;
+import com.food.order.system.payment.service.valueobject.PaymentStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.food.order.system.payment.service.domain.constants.DomainConstants.ORDER_SAGA_NAME;
+import static com.food.order.system.payment.service.constants.DomainConstants.ORDER_SAGA_NAME;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**

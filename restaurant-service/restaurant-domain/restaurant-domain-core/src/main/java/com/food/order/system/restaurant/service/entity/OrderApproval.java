@@ -1,0 +1,78 @@
+package com.food.order.system.restaurant.service.entity;
+
+import com.food.order.system.restaurant.service.common.BaseEntity;
+import com.food.order.system.restaurant.service.valueobject.OrderApprovalId;
+import com.food.order.system.restaurant.service.valueobject.OrderApprovalStatus;
+import com.food.order.system.restaurant.service.valueobject.OrderId;
+import com.food.order.system.restaurant.service.valueobject.RestaurantId;
+
+/**
+ * @Author mselvi
+ * @Created 20.12.2023
+ */
+
+/*
+ * Restaurant aggregate'sinin entity'si
+ * */
+public class OrderApproval extends BaseEntity<OrderApprovalId> {
+    private final RestaurantId restaurantId;
+    private final OrderId orderId;
+    private final OrderApprovalStatus approvalStatus;
+
+    private OrderApproval(Builder builder) {
+        setId(builder.orderApprovalId);
+        restaurantId = builder.restaurantId;
+        orderId = builder.orderId;
+        approvalStatus = builder.approvalStatus;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public RestaurantId getRestaurantId() {
+        return restaurantId;
+    }
+
+    public OrderId getOrderId() {
+        return orderId;
+    }
+
+    public OrderApprovalStatus getApprovalStatus() {
+        return approvalStatus;
+    }
+
+    public static final class Builder {
+        private OrderApprovalId orderApprovalId;
+        private RestaurantId restaurantId;
+        private OrderId orderId;
+        private OrderApprovalStatus approvalStatus;
+
+        private Builder() {
+        }
+
+        public Builder orderApprovalId(OrderApprovalId val) {
+            orderApprovalId = val;
+            return this;
+        }
+
+        public Builder restaurantId(RestaurantId val) {
+            restaurantId = val;
+            return this;
+        }
+
+        public Builder orderId(OrderId val) {
+            orderId = val;
+            return this;
+        }
+
+        public Builder approvalStatus(OrderApprovalStatus val) {
+            approvalStatus = val;
+            return this;
+        }
+
+        public OrderApproval build() {
+            return new OrderApproval(this);
+        }
+    }
+}

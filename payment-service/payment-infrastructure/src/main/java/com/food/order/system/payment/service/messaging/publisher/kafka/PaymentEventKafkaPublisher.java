@@ -4,11 +4,11 @@ import com.food.order.system.payment.service.common.messaging.kafka.model.Paymen
 import com.food.order.system.payment.service.common.messaging.kafka.model.PaymentStatus;
 import com.food.order.system.payment.service.common.messaging.kafka.producer.KafkaProducer;
 import com.food.order.system.payment.service.common.messaging.kafka.producer.util.KafkaMessageHelper;
-import com.food.order.system.payment.service.domain.config.PaymentServiceConfigData;
-import com.food.order.system.payment.service.domain.outbox.common.OutboxStatus;
-import com.food.order.system.payment.service.domain.outbox.model.OrderEventPayload;
-import com.food.order.system.payment.service.domain.outbox.model.OrderOutboxMessage;
-import com.food.order.system.payment.service.domain.ports.output.message.publisher.PaymentResponseMessagePublisher;
+import com.food.order.system.payment.service.config.PaymentServiceConfigData;
+import com.food.order.system.payment.service.outbox.common.OutboxStatus;
+import com.food.order.system.payment.service.outbox.model.OrderEventPayload;
+import com.food.order.system.payment.service.outbox.model.OrderOutboxMessage;
+import com.food.order.system.payment.service.ports.output.message.publisher.PaymentResponseMessagePublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

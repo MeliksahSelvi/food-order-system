@@ -3,9 +3,9 @@ package com.food.order.system.restaurant.service.dataaccess.outbox.adapter;
 import com.food.order.system.restaurant.service.dataaccess.outbox.entity.OrderOutboxEntity;
 import com.food.order.system.restaurant.service.dataaccess.outbox.exception.OrderOutboxNotFoundException;
 import com.food.order.system.restaurant.service.dataaccess.outbox.repository.OrderOutboxJpaRepository;
-import com.food.order.system.restaurant.service.domain.outbox.common.OutboxStatus;
-import com.food.order.system.restaurant.service.domain.outbox.model.OrderOutboxMessage;
-import com.food.order.system.restaurant.service.domain.ports.output.repository.OrderOutboxRepository;
+import com.food.order.system.restaurant.service.outbox.common.OutboxStatus;
+import com.food.order.system.restaurant.service.outbox.model.OrderOutboxMessage;
+import com.food.order.system.restaurant.service.ports.output.repository.OrderOutboxRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -2,11 +2,11 @@ package com.food.order.system.payment.service.messaging.listener.kafka;
 
 import com.food.order.system.payment.service.common.messaging.kafka.consumer.KafkaConsumer;
 import com.food.order.system.payment.service.common.messaging.kafka.model.PaymentRequestAvroModel;
-import com.food.order.system.payment.service.domain.dto.PaymentRequest;
-import com.food.order.system.payment.service.domain.exception.PaymentApplicationServiceException;
-import com.food.order.system.payment.service.domain.exception.PaymentNotFoundException;
-import com.food.order.system.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
-import com.food.order.system.payment.service.domain.valueobject.PaymentOrderStatus;
+import com.food.order.system.payment.service.dto.PaymentRequest;
+import com.food.order.system.payment.service.exception.PaymentApplicationServiceException;
+import com.food.order.system.payment.service.exception.PaymentNotFoundException;
+import com.food.order.system.payment.service.ports.input.message.listener.PaymentRequestMessageListener;
+import com.food.order.system.payment.service.valueobject.PaymentOrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.postgresql.util.PSQLState;

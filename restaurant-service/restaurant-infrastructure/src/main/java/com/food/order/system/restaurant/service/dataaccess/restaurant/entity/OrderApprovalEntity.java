@@ -1,10 +1,10 @@
 package com.food.order.system.restaurant.service.dataaccess.restaurant.entity;
 
-import com.food.order.system.restaurant.service.domain.entity.OrderApproval;
-import com.food.order.system.restaurant.service.domain.valueobject.OrderApprovalId;
-import com.food.order.system.restaurant.service.domain.valueobject.OrderApprovalStatus;
-import com.food.order.system.restaurant.service.domain.valueobject.OrderId;
-import com.food.order.system.restaurant.service.domain.valueobject.RestaurantId;
+import com.food.order.system.restaurant.service.entity.OrderApproval;
+import com.food.order.system.restaurant.service.valueobject.OrderApprovalId;
+import com.food.order.system.restaurant.service.valueobject.OrderApprovalStatus;
+import com.food.order.system.restaurant.service.valueobject.OrderId;
+import com.food.order.system.restaurant.service.valueobject.RestaurantId;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -11,7 +11,4 @@
 
     <artifactId>order-domain-core</artifactId>
 <!-- bu modül domain core'u temsil ediyor.business logic'i barındırır.en içteki halka hiçbir dış katman,halkalara bağımlılığı olmamalı. -->
-
-    <dependencies>
-    </dependencies>
 </project>
