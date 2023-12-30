@@ -13,6 +13,9 @@
 /restaurant-service/restaurant-infrastructure/target
 /restaurant-service/restaurant-domain/restaurant-domain-core/target
 /restaurant-service/restaurant-domain/restaurant-application-service/target
+/user-service/user-infrastructure/target
+/user-service/user-domain/user-application-service/target
+/user-service/user-domain/user-domain-core/target
 /config-server/target
 /discovery-service/target
 /api-gateway/target

@@ -49,11 +49,14 @@ public class ApiGatewayConfig {
     @Bean
     public RouteLocator routes(RouteLocatorBuilder builder) {
         return builder.routes()
+                .route("user-service", r -> r.path("/user-service/**")
+                        .filters(f -> f.filter(authenticationFilter))
+                        .uri("lb://user-service"))
                 .route("order-service", r -> r.path("/order-service/**")
-//                        .filters(f -> f.filter(authenticationFilter))
+                        .filters(f -> f.filter(authenticationFilter))
                         .uri("lb://order-service"))
                 .route("customer-service", r -> r.path("/customer-service/**")
-//                        .filters(f -> f.filter(authenticationFilter))
+                        .filters(f -> f.filter(authenticationFilter))
                         .uri("lb://customer-service"))
                 .build();
     }

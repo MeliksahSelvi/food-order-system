@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain webFluxSecurityConfig(ServerHttpSecurity httpSecurity) {
         httpSecurity.authorizeExchange()
                 .anyExchange()
-                .permitAll();
+                .authenticated();
         httpSecurity.csrf().disable();
         return httpSecurity.build();
     }
