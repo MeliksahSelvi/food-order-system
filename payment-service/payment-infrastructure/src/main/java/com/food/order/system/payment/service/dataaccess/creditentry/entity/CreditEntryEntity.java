@@ -7,6 +7,7 @@ import com.food.order.system.payment.service.valueobject.Money;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -31,6 +32,8 @@ public class CreditEntryEntity {
     private UUID id;
     private UUID customerId;
     private BigDecimal totalCreditAmount;
+    @Version
+    private int version;
 
     public CreditEntry toModel() {
         return CreditEntry.builder()

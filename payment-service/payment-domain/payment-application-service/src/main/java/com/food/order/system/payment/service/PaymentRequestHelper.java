@@ -47,11 +47,11 @@ public class PaymentRequestHelper {
     private final PaymentResponseMessagePublisher paymentResponseMessagePublisher;
 
     @Transactional
-    public void persistPayment(PaymentRequest paymentRequest) {
+    public boolean persistPayment(PaymentRequest paymentRequest) {
         if (publishIfOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.COMPLETED)) {
             log.info("An outbox message with saga id: {} is already saved to database!",
                     paymentRequest.getSagaId());
-            return;
+            return true;
         }
         log.info("Received payment complete event for order id: {}", paymentRequest.getOrderId());
         Payment payment = createPayment(paymentRequest);
@@ -59,20 +59,16 @@ public class PaymentRequestHelper {
         List<CreditHistory> creditHistories = getCreditHistories(payment.getCustomerId());
         List<String> failureMessages = new ArrayList<>();
         PaymentEvent paymentEvent = paymentDomainService.validateAndInitiatePayment(payment, creditEntry, creditHistories, failureMessages);
-        persistEntities(payment, creditEntry, creditHistories, failureMessages);
 
-        orderOutboxHelper.persistOrderOutboxMessage(createOrderEventPayload(paymentEvent),
-                paymentEvent.getPayment().getPaymentstatus(),
-                OutboxStatus.STARTED,
-                UUID.fromString(paymentRequest.getSagaId()));
+        return persistIfSucceeded(paymentRequest, payment, creditEntry, creditHistories, failureMessages, paymentEvent);
     }
 
     @Transactional
-    public void persistCancelPayment(PaymentRequest paymentRequest) {
+    public boolean persistCancelPayment(PaymentRequest paymentRequest) {
         if (publishIfOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.CANCELLED)) {
             log.info("An outbox message with saga id: {} is already saved to database!",
                     paymentRequest.getSagaId());
-            return;
+            return true;
         }
         log.info("Received payment rollback event for order id: {}", paymentRequest.getOrderId());
         Optional<Payment> paymentOptional = paymentRepository.findByOrderId(UUID.fromString(paymentRequest.getOrderId()));
@@ -86,12 +82,8 @@ public class PaymentRequestHelper {
         List<CreditHistory> creditHistories = getCreditHistories(payment.getCustomerId());
         List<String> failureMessages = new ArrayList<>();
         PaymentEvent paymentEvent = paymentDomainService.validateAndCancelPayment(payment, creditEntry, creditHistories, failureMessages);
-        persistEntities(payment, creditEntry, creditHistories, failureMessages);
 
-        orderOutboxHelper.persistOrderOutboxMessage(createOrderEventPayload(paymentEvent),
-                paymentEvent.getPayment().getPaymentstatus(),
-                OutboxStatus.STARTED,
-                UUID.fromString(paymentRequest.getSagaId()));
+        return persistIfSucceeded(paymentRequest, payment, creditEntry, creditHistories, failureMessages, paymentEvent);
     }
 
     private CreditEntry getCreditEntry(CustomerId customerId) {
@@ -161,4 +153,45 @@ public class PaymentRequestHelper {
                 .failureMessages(paymentEvent.getFailureMessages())
                 .build();
     }
+
+    private boolean persistIfSucceeded(PaymentRequest paymentRequest,
+                                       Payment payment,
+                                       CreditEntry creditEntry,
+                                       List<CreditHistory> creditHistories,
+                                       List<String> failureMessages,
+                                       PaymentEvent paymentEvent) {
+        /*
+         * Başka bir transaction tarafından creditentry güncellenmiş mi diye bakmak için kontrol yapacağız.
+         * Optimistic locking control
+         * */
+        boolean isSucceeded = true;
+        if (!failureMessages.isEmpty()) {
+            int oldVersion = creditEntry.getVersion();
+            /*
+             * getCreditEntry methodu tekrar çağrıldığında creditentryrepo'daki findbycustomerid çalışacak
+             * fakat bu durumda DB'deki versionu güncellenmiş CreditEntry yerine hibernate first cache level'daki
+             * old version number'lı kayıt gelicek.bu durumu engellemek için first cache level'daki CreditEntry'i detach ile temizliyoruz.
+             * Bu sayede kaydımız DB'den güncel hali ile gelicek.
+             * */
+            creditEntryRepository.detach(creditEntry.getCustomerId());
+            creditEntry = getCreditEntry(payment.getCustomerId());
+            int newVersion = creditEntry.getVersion();
+            isSucceeded = versionIsSame(oldVersion, newVersion);
+        }
+
+        if (isSucceeded) {
+            persistEntities(payment, creditEntry, creditHistories, failureMessages);
+
+            orderOutboxHelper.persistOrderOutboxMessage(createOrderEventPayload(paymentEvent),
+                    paymentEvent.getPayment().getPaymentstatus(),
+                    OutboxStatus.STARTED,
+                    UUID.fromString(paymentRequest.getSagaId()));
+        }
+        return isSucceeded;
+    }
+
+    private boolean versionIsSame(int oldVersion, int newVersion) {
+        return oldVersion == newVersion;
+    }
 }
+

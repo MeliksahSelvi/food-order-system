@@ -83,6 +83,9 @@ public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequest
                 }
             } catch (PaymentNotFoundException e) {
                 log.error("No payment found for order id: {}", paymentRequestAvroModel.getOrderId());
+            } catch (Exception e) {
+                throw new PaymentApplicationServiceException("Throwing Unexpected Exception in" +
+                        " PaymentRequestKafkaListener: " + e.getMessage(), e);
             }
         });
 
