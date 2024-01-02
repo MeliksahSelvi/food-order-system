@@ -26,13 +26,5 @@ This project created to be used by guide on topics as Clean & Hexagonal Architec
 <li>Encryption with Jasypt</li>
 </ul>
 
-## These Features and Patterns be going to add on future times.
-
-<ul>
-<li>Cache Mechanism With Redis</li>
-<li>Tests</li>
-<li>Adding Java and Spring Boot version features</li>
-</ul>
-
 
 
