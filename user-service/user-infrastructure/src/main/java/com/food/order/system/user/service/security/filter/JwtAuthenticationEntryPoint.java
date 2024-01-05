@@ -13,7 +13,6 @@ import java.io.IOException;
  * @Created 30.12.2023
  */
 
-//todo neden kullanıyoruz?
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override

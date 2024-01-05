@@ -30,7 +30,6 @@ import java.util.List;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-//todo restaurant ve payment service security nasıl olmalı?
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenUtil jwtTokenUtil;
