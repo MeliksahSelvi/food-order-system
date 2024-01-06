@@ -19,7 +19,7 @@ import static com.food.order.system.user.service.common.DomainConstants.UTC;
  * */
 public class User extends AggregateRoot<UserId> {
     private final String email;
-    private final String password;
+    private String password;
     private ZonedDateTime createdAt;
 
     private User(Builder builder) {
@@ -48,6 +48,10 @@ public class User extends AggregateRoot<UserId> {
 
     public ZonedDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public static final class Builder {
