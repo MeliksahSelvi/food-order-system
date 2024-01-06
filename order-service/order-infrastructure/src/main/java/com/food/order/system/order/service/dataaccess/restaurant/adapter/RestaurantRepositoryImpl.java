@@ -21,9 +21,6 @@ import java.util.stream.Collectors;
  * @Created 18.12.2023
  */
 
-/*todo check restaurant entity jpa entity why materialized view
- * Restaurant aggregate root'unun secondary adapter'ı
- * */
 @Component
 @RequiredArgsConstructor
 public class RestaurantRepositoryImpl implements RestaurantRepository {

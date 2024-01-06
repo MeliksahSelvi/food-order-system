@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/v3/api-docs/**");
 
 
-    @Override//todo handle servletexception and IOexception
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         boolean isSecureEndpoint = servletPathSecureEndpoint(request);

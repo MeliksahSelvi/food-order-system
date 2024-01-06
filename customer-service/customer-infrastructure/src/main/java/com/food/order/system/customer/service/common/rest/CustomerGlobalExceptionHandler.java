@@ -46,35 +46,4 @@ public class CustomerGlobalExceptionHandler {
                 .message("Unexpected error!")
                 .build();
     }
-
-    //todo gereksiz ise kaldırılabilir.
-    @ResponseBody
-    @ExceptionHandler(value = ValidationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDTO handleException(ValidationException validationException) {
-        ErrorDTO errorDTO;
-        if (validationException instanceof ConstraintViolationException violationException) {
-            String violations = extractViolationsFromException(violationException);
-            log.error(violations, validationException);
-            errorDTO = ErrorDTO.builder()
-                    .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                    .message(violations)
-                    .build();
-        } else {
-            String exceptionMessage = validationException.getMessage();
-            log.error(exceptionMessage, validationException);
-            errorDTO = ErrorDTO.builder()
-                    .code(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                    .message(exceptionMessage)
-                    .build();
-        }
-        return errorDTO;
-    }
-
-    private String extractViolationsFromException(ConstraintViolationException violationException) {
-        return violationException.getConstraintViolations()
-                .stream()
-                .map(ConstraintViolation::getMessage)
-                .collect(Collectors.joining("--"));
-    }
 }
